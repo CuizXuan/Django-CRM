@@ -16,6 +16,11 @@ app_name = "crm"
 
 urlpatterns = [
     url(
+        r"^$",
+        TemplateView.as_view(template_name="home.html"),
+        name="home",
+    ),
+    url(
         r"^healthz/$",
         TemplateView.as_view(template_name="healthz.html"),
         name="healthz",
