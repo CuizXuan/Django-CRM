@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(python manage.py makemessages:*)",
+      "Bash(python manage.py compilemessages:*)"
+    ]
+  }
+}

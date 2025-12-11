@@ -24,7 +24,7 @@
 	<title>Support - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Help & Support" subtitle="Get help with BottleCRM" />
+<PageHeader title="帮助与支持" subtitle="获取 BottleCRM 帮助" />
 
 <div class="flex-1 p-4 md:p-6">
 	<div class="mx-auto max-w-4xl space-y-6">

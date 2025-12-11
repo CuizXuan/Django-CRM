@@ -26,14 +26,19 @@
 		{ id: 'NEGOTIATION', color: 'bg-orange-500' }
 	];
 
-	const maxValue = $derived(
-		Math.max(...stages.map((s) => pipelineData[s.id]?.value || 0), 1)
-	);
+	const stageNameMap = {
+		PROSPECTING: '初步接触',
+		QUALIFICATION: '需求确认',
+		PROPOSAL: '方案报价',
+		NEGOTIATION: '谈判'
+	};
+
+	const maxValue = $derived(Math.max(...stages.map((s) => pipelineData[s.id]?.value || 0), 1));
 </script>
 
 <Card.Root class="p-5">
 	<Card.Header class="p-0 pb-4">
-		<Card.Title class="text-foreground text-sm font-medium">Pipeline by Stage</Card.Title>
+		<Card.Title class="text-foreground text-sm font-medium">按阶段的管道</Card.Title>
 	</Card.Header>
 	<Card.Content class="p-0">
 		<div class="space-y-3">
@@ -42,7 +47,7 @@
 				{@const percentage = maxValue > 0 ? (data.value / maxValue) * 100 : 0}
 				<div class="space-y-1.5">
 					<div class="flex items-center justify-between text-xs">
-						<span class="text-muted-foreground">{data.label || stage.id}</span>
+						<span class="text-muted-foreground">{stageNameMap[stage.id] || data.label || stage.id}</span>
 						<span class="text-foreground font-medium tabular-nums">{formatCurrency(data.value, currency, true)}</span>
 					</div>
 					<div class="bg-muted h-2 w-full overflow-hidden rounded-full">
@@ -56,7 +61,7 @@
 		</div>
 		<!-- Summary row -->
 		<div class="border-border/50 mt-4 flex justify-between border-t pt-3 text-xs">
-			<span class="text-muted-foreground">Total Open Pipeline</span>
+			<span class="text-muted-foreground">开放管道总额</span>
 			<span class="text-foreground font-semibold tabular-nums">
 				{formatCurrency(
 					stages.reduce((sum, s) => sum + (pipelineData[s.id]?.value || 0), 0),

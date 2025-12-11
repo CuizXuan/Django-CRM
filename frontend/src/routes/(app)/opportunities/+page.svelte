@@ -45,32 +45,32 @@
 	const stageOptions = [
 		{
 			value: 'PROSPECTING',
-			label: 'Prospecting',
+			label: '初步接触',
 			color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
 		},
 		{
 			value: 'QUALIFICATION',
-			label: 'Qualification',
+			label: '需求确认',
 			color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
 		},
 		{
 			value: 'PROPOSAL',
-			label: 'Proposal',
+			label: '方案报价',
 			color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
 		},
 		{
 			value: 'NEGOTIATION',
-			label: 'Negotiation',
+			label: '谈判',
 			color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
 		},
 		{
 			value: 'CLOSED_WON',
-			label: 'Won',
+			label: '赢单',
 			color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
 		},
 		{
 			value: 'CLOSED_LOST',
-			label: 'Lost',
+			label: '丢单',
 			color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
 		}
 	];
@@ -105,15 +105,15 @@
 	const columns = [
 		{
 			key: 'name',
-			label: 'Opportunity',
+			label: '商机',
 			type: 'text',
 			width: 'w-48',
 			canHide: false,
-			emptyText: 'Untitled'
+			emptyText: '未命名'
 		},
 		{
 			key: 'account',
-			label: 'Account',
+			label: '客户',
 			type: 'relation',
 			width: 'w-40',
 			relationIcon: 'building',
@@ -123,16 +123,16 @@
 		},
 		{
 			key: 'amount',
-			label: 'Amount',
+			label: '金额',
 			type: 'number',
 			width: 'w-32',
 			format: (value, row) => formatAmount(value, row?.currency)
 		},
-		{ key: 'stage', label: 'Stage', type: 'select', options: stageOptions, width: 'w-32' },
-		{ key: 'closedOn', label: 'Close Date', type: 'date', width: 'w-36' },
+		{ key: 'stage', label: '阶段', type: 'select', options: stageOptions, width: 'w-32' },
+		{ key: 'closedOn', label: '预计成交日期', type: 'date', width: 'w-36' },
 		{
 			key: 'assignedTo',
-			label: 'Assigned To',
+			label: '分配给',
 			type: 'relation',
 			width: 'w-40',
 			relationIcon: 'user',
@@ -148,7 +148,7 @@
 		// Hidden by default
 		{
 			key: 'probability',
-			label: 'Probability',
+			label: '成交概率',
 			type: 'number',
 			width: 'w-28',
 			canHide: true,
@@ -156,7 +156,7 @@
 		},
 		{
 			key: 'opportunityType',
-			label: 'Type',
+			label: '类型',
 			type: 'select',
 			options: typeOptions,
 			width: 'w-32',
@@ -223,104 +223,104 @@
 
 	// Drawer column definitions for CrmDrawer (derived since some options come from data)
 	const drawerColumns = $derived([
-		{ key: 'name', label: 'Name', type: 'text' },
+		{ key: 'name', label: '名称', type: 'text' },
 		{
 			key: 'account',
-			label: 'Account',
+			label: '客户',
 			type: 'select',
 			icon: Building2,
 			options: accountOptions,
-			placeholder: 'Select account'
+			placeholder: '选择客户'
 		},
 		{
 			key: 'stage',
-			label: 'Stage',
+			label: '阶段',
 			type: 'select',
 			icon: Target,
 			options: stageOptions
 		},
 		{
 			key: 'opportunityType',
-			label: 'Type',
+			label: '类型',
 			type: 'select',
 			icon: Briefcase,
 			options: typeOptions,
-			placeholder: 'Select type'
+			placeholder: '选择类型'
 		},
 		{
 			key: 'amount',
-			label: 'Amount',
+			label: '金额',
 			type: 'number',
 			icon: DollarSign,
 			placeholder: '0'
 		},
 		{
 			key: 'currency',
-			label: 'Currency',
+			label: '币种',
 			type: 'select',
 			icon: Banknote,
 			options: currencyOptions,
-			placeholder: 'Select currency'
+			placeholder: '选择币种'
 		},
 		{
 			key: 'probability',
-			label: 'Probability',
+			label: '成交概率',
 			type: 'number',
 			icon: Percent,
 			placeholder: '0'
 		},
 		{
 			key: 'closedOn',
-			label: 'Close Date',
+			label: '预计成交日期',
 			type: 'date',
 			icon: Calendar
 		},
 		{
 			key: 'leadSource',
-			label: 'Lead Source',
+			label: '线索来源',
 			type: 'select',
 			icon: Globe,
 			options: sourceOptions,
-			placeholder: 'Select source'
+			placeholder: '选择来源'
 		},
 		{
 			key: 'contacts',
-			label: 'Contacts',
+			label: '联系人',
 			type: 'multiselect',
 			icon: Contact,
 			options: contactOptions,
-			placeholder: 'Select contacts'
+			placeholder: '选择联系人'
 		},
 		{
 			key: 'assignedTo',
-			label: 'Assigned To',
+			label: '分配给',
 			type: 'multiselect',
 			icon: Users,
 			options: userOptions,
-			placeholder: 'Select users'
+			placeholder: '选择用户'
 		},
 		{
 			key: 'teams',
-			label: 'Teams',
+			label: '团队',
 			type: 'multiselect',
 			icon: Users,
 			options: teamOptions,
-			placeholder: 'Select teams'
+			placeholder: '选择团队'
 		},
 		{
 			key: 'tags',
-			label: 'Tags',
+			label: '标签',
 			type: 'multiselect',
 			icon: Tags,
 			options: tagOptions,
-			placeholder: 'Select tags'
+			placeholder: '选择标签'
 		},
 		{
 			key: 'description',
-			label: 'Notes',
+			label: '备注',
 			type: 'textarea',
 			icon: FileText,
-			placeholder: 'Add notes...'
+			placeholder: '添加备注...'
 		}
 	]);
 
@@ -328,7 +328,7 @@
 	const filters = $derived(data.filters || {});
 
 	// Stage options for filter dropdown (includes ALL option)
-	const stageFilterOptions = $derived([{ value: '', label: 'All Stages' }, ...stageOptions]);
+	const stageFilterOptions = $derived([{ value: '', label: '全部阶段' }, ...stageOptions]);
 
 	// Count active filters (excluding stage since it's handled via chips in header)
 	const activeFiltersCount = $derived.by(() => {
@@ -733,7 +733,7 @@
 		isLoading = true;
 		try {
 			const form = new FormData();
-			form.append('name', drawerFormData.name || 'New Opportunity');
+			form.append('name', drawerFormData.name || '新建商机');
 			form.append('stage', drawerFormData.stage || 'PROSPECTING');
 			form.append('amount', drawerFormData.amount?.toString() || '0');
 			form.append('probability', drawerFormData.probability?.toString() || '50');
@@ -849,10 +849,10 @@
 </script>
 
 <svelte:head>
-	<title>Opportunities - BottleCRM</title>
+	<title>商机 - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Opportunities" subtitle="Pipeline: {formatCurrency(stats.pipeline)}">
+<PageHeader title="商机" subtitle="销售管道: {formatCurrency(stats.pipeline)}">
 	{#snippet actions()}
 		<div class="flex items-center gap-2">
 			<!-- Status Filter Chips -->
@@ -865,7 +865,7 @@
 						? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					All
+					全部
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'ALL'
 							? 'bg-gray-700 text-gray-200 dark:bg-gray-200 dark:text-gray-700'
@@ -882,7 +882,7 @@
 						? 'bg-blue-600 text-white dark:bg-blue-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Open
+					进行中
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'open'
 							? 'bg-blue-700 text-blue-100 dark:bg-blue-600'
@@ -899,7 +899,7 @@
 						? 'bg-emerald-600 text-white dark:bg-emerald-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Won
+					赢单
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'won'
 							? 'bg-emerald-700 text-emerald-100 dark:bg-emerald-600'
@@ -916,7 +916,7 @@
 						? 'bg-red-600 text-white dark:bg-red-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Lost
+					丢单
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'lost'
 							? 'bg-red-700 text-red-100 dark:bg-red-600'
@@ -937,7 +937,7 @@
 				onclick={() => (filtersExpanded = !filtersExpanded)}
 			>
 				<Filter class="h-4 w-4" />
-				Filters
+				筛选
 				{#if activeFiltersCount > 0}
 					<span
 						class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -953,7 +953,7 @@
 					{#snippet child({ props })}
 						<Button {...props} variant="outline" size="sm" class="gap-2">
 							<Eye class="h-4 w-4" />
-							Columns
+							列
 							{#if visibleColumns.length < columns.length}
 								<span
 									class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -965,7 +965,7 @@
 					{/snippet}
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end" class="w-48">
-					<DropdownMenu.Label>Toggle columns</DropdownMenu.Label>
+					<DropdownMenu.Label>切换列</DropdownMenu.Label>
 					<DropdownMenu.Separator />
 					{#each columns as column (column.key)}
 						<DropdownMenu.CheckboxItem
@@ -1000,17 +1000,17 @@
 		<SearchInput
 			value={filters.search}
 			onchange={(value) => updateFilters({ ...filters, search: value })}
-			placeholder="Search opportunities..."
+			placeholder="搜索商机..."
 		/>
 		<DateRangeFilter
-			label="Close Date"
+			label="预计成交日期"
 			startDate={filters.closed_on_gte}
 			endDate={filters.closed_on_lte}
 			onchange={(start, end) =>
 				updateFilters({ ...filters, closed_on_gte: start, closed_on_lte: end })}
 		/>
 		<DateRangeFilter
-			label="Created"
+			label="创建时间"
 			startDate={filters.created_at_gte}
 			endDate={filters.created_at_lte}
 			onchange={(start, end) =>
@@ -1021,7 +1021,7 @@
 	{#if filteredOpportunities.length === 0}
 		<div class="flex flex-col items-center justify-center py-16 text-center">
 			<Target class="text-muted-foreground/50 mb-4 h-12 w-12" />
-			<h3 class="text-foreground text-lg font-medium">No opportunities found</h3>
+			<h3 class="text-foreground text-lg font-medium">未找到商机</h3>
 		</div>
 	{:else}
 		<CrmTable
@@ -1034,7 +1034,7 @@
 			{#snippet emptyState()}
 				<div class="flex flex-col items-center justify-center py-16 text-center">
 					<Target class="text-muted-foreground/50 mb-4 h-12 w-12" />
-					<h3 class="text-foreground text-lg font-medium">No opportunities found</h3>
+					<h3 class="text-foreground text-lg font-medium">未找到商机</h3>
 				</div>
 			{/snippet}
 		</CrmTable>
@@ -1057,7 +1057,7 @@
 	data={drawerFormData}
 	columns={drawerColumns}
 	titleKey="name"
-	titlePlaceholder="Opportunity name"
+	titlePlaceholder="商机名称"
 	headerLabel="Opportunity"
 	mode={drawerMode}
 	loading={isLoading}
@@ -1113,7 +1113,7 @@
 	{#snippet footerActions()}
 		{#if drawerMode === 'create'}
 			<Button onclick={handleDrawerSave} disabled={isLoading || !drawerFormData.name?.trim()}>
-				{isLoading ? 'Creating...' : 'Create Opportunity'}
+				{isLoading ? '创建中...' : '创建商机'}
 			</Button>
 		{:else}
 			{#if !isClosed}
@@ -1133,11 +1133,11 @@
 					disabled={isLoading}
 				>
 					<XCircle class="mr-1.5 h-4 w-4" />
-					Mark Lost
+					标记为丢单
 				</Button>
 			{/if}
 			<Button onclick={handleDrawerUpdate} disabled={isLoading || !drawerFormData.name?.trim()}>
-				{isLoading ? 'Saving...' : 'Save'}
+				{isLoading ? '保存中...' : '保存'}
 			</Button>
 		{/if}
 	{/snippet}

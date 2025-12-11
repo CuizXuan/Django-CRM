@@ -82,15 +82,15 @@
 	$effect(() => {
 		if (form?.success) {
 			if (form.action === 'create_team') {
-				toast.success('Team created successfully');
+				toast.success('团队创建成功');
 				teamDialogOpen = false;
 				editingTeam = null;
 			} else if (form.action === 'update_team') {
-				toast.success('Team updated successfully');
+				toast.success('团队更新成功');
 				teamDialogOpen = false;
 				editingTeam = null;
 			} else if (form.action === 'delete_team') {
-				toast.success('Team deleted successfully');
+				toast.success('团队删除成功');
 			}
 			invalidateAll();
 		} else if (form?.error) {
@@ -173,10 +173,10 @@
 </script>
 
 <svelte:head>
-	<title>Users & Teams - BottleCRM</title>
+	<title>用户与团队 - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Users & Teams" subtitle="Manage users and teams in your organization" />
+<PageHeader title="用户与团队" subtitle="管理组织中的用户和团队" />
 
 <div class="flex-1 space-y-6 p-4 md:p-6">
 	<!-- Error Message -->
@@ -199,11 +199,11 @@
 				<Tabs.List class="mb-6 grid w-full grid-cols-2 lg:w-[400px]">
 					<Tabs.Trigger value="users" class="gap-2">
 						<Users class="h-4 w-4" />
-						Users
+						用户
 					</Tabs.Trigger>
 					<Tabs.Trigger value="teams" class="gap-2">
 						<UsersRound class="h-4 w-4" />
-						Teams
+						团队
 					</Tabs.Trigger>
 				</Tabs.List>
 
@@ -219,8 +219,8 @@
 									<Plus class="h-5 w-5 text-green-600 dark:text-green-400" />
 								</div>
 								<div>
-									<Card.Title class="">Add New Member</Card.Title>
-									<Card.Description class="">Invite a user to join your organization</Card.Description>
+									<Card.Title class="">添加新成员</Card.Title>
+									<Card.Description class="">邀请新用户加入您的组织</Card.Description>
 								</div>
 							</div>
 						</Card.Header>
@@ -231,30 +231,30 @@
 								class="flex flex-col gap-4 sm:flex-row sm:items-end"
 							>
 								<div class="flex-1">
-									<Label class="" for="add-user-email">Email Address *</Label>
+									<Label class="" for="add-user-email">邮箱地址 *</Label>
 									<Input
 										id="add-user-email"
 										name="email"
 										type="email"
 										required
-										placeholder="user@example.com"
+										placeholder="请输入邮箱地址"
 										class="mt-1.5"
 									/>
 								</div>
 								<div class="sm:w-40">
-									<Label class="" for="add-user-role">Role</Label>
+									<Label class="" for="add-user-role">角色</Label>
 									<select
 										id="add-user-role"
 										name="role"
 										class="border-input bg-background ring-offset-background focus-visible:ring-ring mt-1.5 flex h-10 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
 									>
-										<option value="USER">User</option>
-										<option value="ADMIN">Admin</option>
+										<option value="USER">用户</option>
+										<option value="ADMIN">管理员</option>
 									</select>
 								</div>
 								<Button type="submit">
 									<Plus class="mr-2 h-4 w-4" />
-									Add Member
+									添加成员
 								</Button>
 							</form>
 						</Card.Content>
@@ -270,9 +270,9 @@
 									<Users class="h-5 w-5 text-blue-600 dark:text-blue-400" />
 								</div>
 								<div>
-									<Card.Title class="">Team Members</Card.Title>
+									<Card.Title class="">团队成员</Card.Title>
 									<Card.Description class=""
-										>{users.length} member{users.length !== 1 ? 's' : ''} in your organization</Card.Description
+										>您的组织中有 {users.length} 名成员</Card.Description
 									>
 								</div>
 							</div>
@@ -282,10 +282,10 @@
 								<Table.Root>
 									<Table.Header>
 										<Table.Row>
-											<Table.Head class="w-[300px]">Member</Table.Head>
-											<Table.Head>Role</Table.Head>
-											<Table.Head>Joined</Table.Head>
-											<Table.Head class="w-[80px]">Actions</Table.Head>
+											<Table.Head class="w-[300px]">成员</Table.Head>
+											<Table.Head>角色</Table.Head>
+											<Table.Head>加入时间</Table.Head>
+											<Table.Head class="w-[80px]">操作</Table.Head>
 										</Table.Row>
 									</Table.Header>
 									<Table.Body>
@@ -307,11 +307,11 @@
 															<div class="flex items-center gap-2">
 																<span class="text-foreground font-medium">{user.name}</span>
 																{#if user.isSelf}
-																	<Badge variant="secondary" class="text-xs">You</Badge>
+																	<Badge variant="secondary" class="text-xs">您</Badge>
 																{/if}
 																{#if !user.isActive}
 																	<Badge variant="outline" class="text-muted-foreground text-xs"
-																		>Inactive</Badge
+																		>未激活</Badge
 																	>
 																{/if}
 															</div>
@@ -330,7 +330,7 @@
 															{:else}
 																<User class="mr-1 h-3 w-3" />
 															{/if}
-															{user.role}
+															{user.role === 'ADMIN' ? '管理员' : '用户'}
 														</Badge>
 														{#if !user.isSelf}
 															<Button
@@ -349,8 +349,8 @@
 																name="role"
 																class="border-input bg-background h-8 rounded-md border px-2 text-sm"
 															>
-																<option value="USER" selected={user.role === 'USER'}>User</option>
-																<option value="ADMIN" selected={user.role === 'ADMIN'}>Admin</option>
+																<option value="USER" selected={user.role === 'USER'}>用户</option>
+																<option value="ADMIN" selected={user.role === 'ADMIN'}>管理员</option>
 															</select>
 															<Button type="submit" size="icon" class="h-7 w-7" variant="default">
 																<Check class="h-3.5 w-3.5" />
@@ -388,17 +388,16 @@
 															</AlertDialog.Trigger>
 															<AlertDialog.Content>
 																<AlertDialog.Header>
-																	<AlertDialog.Title>Remove Team Member</AlertDialog.Title>
+																	<AlertDialog.Title>移除团队成员</AlertDialog.Title>
 																	<AlertDialog.Description>
-																		Are you sure you want to remove <strong>{user.name}</strong> from
-																		the organization? This action cannot be undone.
+																		确定要将 <strong>{user.name}</strong> 从组织中移除吗？此操作无法撤销。
 																	</AlertDialog.Description>
 																</AlertDialog.Header>
 																<AlertDialog.Footer>
-																	<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+																	<AlertDialog.Cancel>取消</AlertDialog.Cancel>
 																	<form method="POST" action="?/remove_user" class="inline">
 																		<input type="hidden" name="user_id" value={user.id} />
-																		<Button type="submit" variant="destructive">Remove</Button>
+																		<Button type="submit" variant="destructive">移除</Button>
 																	</form>
 																</AlertDialog.Footer>
 															</AlertDialog.Content>
@@ -412,7 +411,7 @@
 											<Table.Row>
 												<Table.Cell colspan={4} class="py-8 text-center">
 													<Users class="text-muted-foreground/50 mx-auto h-8 w-8" />
-													<p class="text-muted-foreground mt-2 text-sm">No team members found</p>
+													<p class="text-muted-foreground mt-2 text-sm">未找到团队成员</p>
 												</Table.Cell>
 											</Table.Row>
 										{/if}
@@ -428,14 +427,14 @@
 					<!-- Header with Create Button -->
 					<div class="flex items-center justify-between">
 						<div>
-							<h2 class="text-lg font-semibold">Teams</h2>
+							<h2 class="text-lg font-semibold">团队</h2>
 							<p class="text-muted-foreground text-sm">
-								Create teams to group users for assignments and access control.
+								创建团队来分组用户，用于分配任务和访问控制。
 							</p>
 						</div>
 						<Button onclick={openCreateTeamDialog}>
 							<Plus class="mr-2 h-4 w-4" />
-							Create Team
+							创建团队
 						</Button>
 					</div>
 
@@ -455,14 +454,13 @@
 								>
 									<UsersRound class="h-8 w-8 text-purple-600 dark:text-purple-400" />
 								</div>
-								<h3 class="mb-2 text-lg font-semibold">No teams yet</h3>
+								<h3 class="mb-2 text-lg font-semibold">暂无团队</h3>
 								<p class="text-muted-foreground mx-auto mb-6 max-w-sm text-sm">
-									Teams help you organize users and manage access to records. Create your first
-									team to get started.
+									团队可以帮助您组织用户并管理对记录的访问。创建您的第一个团队以开始使用。
 								</p>
 								<Button onclick={openCreateTeamDialog}>
 									<Plus class="mr-2 h-4 w-4" />
-									Create Your First Team
+									创建您的第一个团队
 								</Button>
 							</Card.Content>
 						</Card.Root>

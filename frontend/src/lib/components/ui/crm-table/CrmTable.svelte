@@ -15,7 +15,7 @@
 	 * @property {{ value: string, label: string, color: string }[]} [options] - Options for select type
 	 * @property {boolean} [editable=true] - Allow inline editing
 	 * @property {boolean} [canHide=true] - Allow hiding column
-	 * @property {string} [emptyText='Empty'] - Text when value is empty
+	 * @property {string} [emptyText='空'] - Text when value is empty
 	 * @property {(value: any, row?: any) => string} [format] - Custom value formatter (receives value and optional row data)
 	 * @property {(row: any) => any} [getValue] - Custom value getter for nested data
 	 * @property {string} [relationIcon] - Icon type for relation cells ('building' | 'user')
@@ -198,7 +198,7 @@
 			{@render emptyState()}
 		{:else}
 			<div class="flex flex-col items-center justify-center py-16 text-center">
-				<p class="text-muted-foreground text-sm">No items found</p>
+				<p class="text-muted-foreground text-sm">未找到项目</p>
 			</div>
 		{/if}
 	{:else}

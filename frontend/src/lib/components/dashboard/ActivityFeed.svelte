@@ -53,12 +53,32 @@
 		ASSIGN: 'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400'
 	});
 
+	const actionLabel = /** @type {Record<string, string>} */ ({
+		CREATE: '创建',
+		UPDATE: '更新',
+		DELETE: '删除',
+		VIEW: '查看',
+		COMMENT: '评论',
+		ASSIGN: '分配'
+	});
+
+	const entityLabel = /** @type {Record<string, string>} */ ({
+		LEAD: '线索',
+		CONTACT: '联系人',
+		ACCOUNT: '客户',
+		OPPORTUNITY: '商机',
+		TASK: '任务',
+		CASE: '工单',
+		USER: '用户',
+		TEAM: '团队'
+	});
+
 	/**
 	 * Get date category for grouping
 	 * @param {string | undefined} dateStr
 	 */
 	function getDateCategory(dateStr) {
-		if (!dateStr) return 'Earlier';
+		if (!dateStr) return '更早';
 		const date = new Date(dateStr);
 		const now = new Date();
 		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -67,10 +87,10 @@
 		const weekAgo = new Date(today);
 		weekAgo.setDate(weekAgo.getDate() - 7);
 
-		if (date >= today) return 'Today';
-		if (date >= yesterday) return 'Yesterday';
-		if (date >= weekAgo) return 'This Week';
-		return 'Earlier';
+		if (date >= today) return '今天';
+		if (date >= yesterday) return '昨天';
+		if (date >= weekAgo) return '本周';
+		return '更早';
 	}
 
 	/**
@@ -80,7 +100,7 @@
 	function formatTime(dateStr) {
 		if (!dateStr) return '';
 		const date = new Date(dateStr);
-		return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+		return date.toLocaleTimeString('zh-CN', { hour: 'numeric', minute: '2-digit' });
 	}
 
 	/**
@@ -89,7 +109,7 @@
 	 */
 	function groupByDate(activities) {
 		const groups = /** @type {Record<string, ActivityItem[]>} */ ({});
-		const order = ['Today', 'Yesterday', 'This Week', 'Earlier'];
+		const order = ['今天', '昨天', '本周', '更早'];
 
 		for (const activity of activities) {
 			const category = getDateCategory(activity.timestamp || activity.createdAt);
@@ -111,10 +131,10 @@
 	<Card.Header class="flex-row items-center justify-between space-y-0 pb-3">
 		<div class="flex items-center gap-2">
 			<Activity class="text-muted-foreground h-4 w-4" />
-			<Card.Title class="text-foreground text-sm font-medium">Recent Activity</Card.Title>
+			<Card.Title class="text-foreground text-sm font-medium">最新动态</Card.Title>
 		</div>
 		<Button variant="ghost" size="sm" href="/activities" class="text-xs">
-			View all
+			查看全部
 			<ChevronRight class="ml-1 h-3 w-3" />
 		</Button>
 	</Card.Header>
@@ -122,7 +142,7 @@
 		{#if activities.length === 0}
 			<div class="text-muted-foreground flex h-full flex-col items-center justify-center py-8 text-center">
 				<Activity class="text-muted-foreground/30 mb-2 h-10 w-10" />
-				<p class="text-sm">No recent activity</p>
+				<p class="text-sm">暂无动态</p>
 			</div>
 		{:else}
 			<div class="space-y-4">
@@ -141,10 +161,16 @@
 									</div>
 									<div class="min-w-0 flex-1">
 										<p class="text-foreground text-sm">
-											{activity.description || activity.message || `${activity.action} ${activity.entityType}: ${activity.entityName}`}
+											{activity.description ||
+												activity.message ||
+												`${actionLabel[activity.action || ''] || activity.action || '操作'} ${
+													entityLabel[(activity.entityType || '').toUpperCase()] ||
+													activity.entityType ||
+													'记录'
+												}：${activity.entityName || ''}`}
 										</p>
 										<p class="text-muted-foreground text-xs">
-											{activity.user?.name || 'System'} &middot; {formatTime(activity.timestamp || activity.createdAt)}
+											{activity.user?.name || '系统'} &middot; {formatTime(activity.timestamp || activity.createdAt)}
 										</p>
 									</div>
 								</div>
@@ -160,7 +186,7 @@
 					class="mt-3 w-full text-xs"
 					onclick={() => (showAll = true)}
 				>
-					Show more ({activities.length - 5} more)
+					展开更多（{activities.length - 5} 条）
 				</Button>
 			{/if}
 		{/if}

@@ -8,63 +8,63 @@ from common.utils import COUNTRIES
 
 class Contact(AssignableMixin, BaseModel):
     """
-    Contact model for CRM - Streamlined for modern sales workflow
-    Based on Twenty CRM and Salesforce patterns
+    CRM联系人模型 - 为现代销售工作流程优化
+    基于 Twenty CRM 和 Salesforce 模式设计
     """
 
-    # Core Contact Information
+    # 核心联系人信息
     first_name = models.CharField(_("First name"), max_length=255)
     last_name = models.CharField(_("Last name"), max_length=255)
     email = models.EmailField(_("Email"), blank=True, null=True)
-    phone = models.CharField(_("Phone"), max_length=20, null=True, blank=True)
+    phone = models.CharField(_("电话"), max_length=20, null=True, blank=True)
 
-    # Professional Information
-    organization = models.CharField(_("Company"), max_length=255, blank=True, null=True)
-    title = models.CharField(_("Job Title"), max_length=255, blank=True, null=True)
+    # 专业信息
+    organization = models.CharField(_("公司"), max_length=255, blank=True, null=True)
+    title = models.CharField(_("职位"), max_length=255, blank=True, null=True)
     department = models.CharField(
-        _("Department"), max_length=255, blank=True, null=True
+        _("部门"), max_length=255, blank=True, null=True
     )
 
-    # Communication Preferences
-    do_not_call = models.BooleanField(_("Do Not Call"), default=False)
+    # 沟通偏好
+    do_not_call = models.BooleanField(_("请勿致电"), default=False)
     linkedin_url = models.URLField(_("LinkedIn URL"), blank=True, null=True)
 
-    # Address (flat fields like Lead model)
-    address_line = models.CharField(_("Address"), max_length=255, blank=True, null=True)
-    city = models.CharField(_("City"), max_length=255, blank=True, null=True)
-    state = models.CharField(_("State"), max_length=255, blank=True, null=True)
-    postcode = models.CharField(_("Postal Code"), max_length=64, blank=True, null=True)
+    # 地址信息（类似 Lead 模型的扁平字段）
+    address_line = models.CharField(_("地址"), max_length=255, blank=True, null=True)
+    city = models.CharField(_("城市"), max_length=255, blank=True, null=True)
+    state = models.CharField(_("州/省"), max_length=255, blank=True, null=True)
+    postcode = models.CharField(_("邮政编码"), max_length=64, blank=True, null=True)
     country = models.CharField(
-        _("Country"), max_length=3, choices=COUNTRIES, blank=True, null=True
+        _("国家"), max_length=3, choices=COUNTRIES, blank=True, null=True
     )
 
-    # Assignment
+    # 分配
     assigned_to = models.ManyToManyField(Profile, related_name="contact_assigned_users")
     teams = models.ManyToManyField(Teams, related_name="contact_teams")
 
-    # Tags
+    # 标签
     tags = models.ManyToManyField(Tags, related_name="contact_tags", blank=True)
 
-    # Notes
-    description = models.TextField(_("Notes"), blank=True, null=True)
+    # 备注
+    description = models.TextField(_("备注"), blank=True, null=True)
 
-    # System Fields
+    # 系统字段
     is_active = models.BooleanField(default=True)
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="contacts")
 
-    # Account relationship (optional - contact can exist without an account)
+    # 账户关系（可选 - 联系人可以独立存在，不关联账户）
     account = models.ForeignKey(
         "accounts.Account",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="primary_contacts",
-        help_text="Primary account this contact belongs to",
+        help_text="该联系人所属的主要账户",
     )
 
     class Meta:
-        verbose_name = "Contact"
-        verbose_name_plural = "Contacts"
+        verbose_name = "联系人"
+        verbose_name_plural = "联系人"
         db_table = "contacts"
         ordering = ("-created_at",)
         indexes = [

@@ -1,4 +1,4 @@
-<script>
+·<script>
 	import { X, Trash2, ChevronDown, ChevronUp } from '@lucide/svelte';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -34,9 +34,9 @@
 		data = null,
 		columns = [],
 		titleKey = 'name',
-		titlePlaceholder = 'Untitled',
+		titlePlaceholder = '未命名',
 		titleEditable = true,
-		headerLabel = 'Item',
+		headerLabel = '项目',
 		onFieldChange,
 		onDelete,
 		onClose,
@@ -249,10 +249,10 @@
 								>
 									{#if showAllFields}
 										<ChevronUp class="h-4 w-4" />
-										<span>Hide additional fields</span>
+										<span>隐藏额外字段</span>
 									{:else}
 										<ChevronDown class="h-4 w-4" />
-										<span>Show {hiddenFieldsCount} more {hiddenFieldsCount === 1 ? 'field' : 'fields'}</span>
+										<span>显示 {hiddenFieldsCount} 个额外字段</span>
 									{/if}
 								</button>
 							{/if}
@@ -312,7 +312,7 @@
 								class="flex items-center gap-2 rounded px-3 py-1.5 text-sm text-red-600 transition-colors duration-75 hover:bg-red-50 dark:hover:bg-red-900/20"
 							>
 								<Trash2 class="h-4 w-4" />
-								Delete
+								删除
 							</button>
 						{:else}
 							<div></div>

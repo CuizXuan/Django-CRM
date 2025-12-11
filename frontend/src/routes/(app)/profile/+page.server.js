@@ -70,9 +70,9 @@ export const actions = {
 		const errors = {};
 
 		if (!name || name.trim().length === 0) {
-			errors.name = 'Name is required';
+			errors.name = '姓名为必填项';
 		} else if (name.trim().length < 2) {
-			errors.name = 'Name must be at least 2 characters long';
+			errors.name = '姓名至少需要2个字符';
 		}
 
 		// Validate phone if provided
@@ -80,7 +80,7 @@ export const actions = {
 		if (phone && phone.trim().length > 0) {
 			const phoneValidation = validatePhoneNumber(phone.trim());
 			if (!phoneValidation.isValid) {
-				errors.phone = phoneValidation.error || 'Please enter a valid phone number';
+				errors.phone = phoneValidation.error || '请输入有效的电话号码';
 			} else {
 				formattedPhone = formatPhoneForStorage(phone.trim());
 			}
@@ -112,13 +112,13 @@ export const actions = {
 
 			return {
 				success: true,
-				message: 'Profile updated successfully'
+				message: '个人资料更新成功'
 			};
 		} catch (err) {
 			console.error('Error updating profile:', err);
 			return fail(500, {
 				error:
-					'Failed to update profile: ' + (err instanceof Error ? err.message : 'Unknown error'),
+					'更新个人资料失败：' + (err instanceof Error ? err.message : '未知错误'),
 				data: { name, phone }
 			});
 		}

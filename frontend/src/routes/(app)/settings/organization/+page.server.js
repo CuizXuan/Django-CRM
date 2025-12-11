@@ -10,7 +10,7 @@ export async function load({ cookies }) {
 		};
 	} catch (err) {
 		console.error('Failed to load org settings:', err);
-		throw error(500, 'Failed to load organization settings');
+		throw error(500, '加载组织设置失败');
 	}
 }
 
@@ -34,7 +34,7 @@ export const actions = {
 			console.error('Failed to update org settings:', err);
 			const message =
 				err?.message ||
-				'Failed to update settings';
+				'更新设置失败';
 			return fail(400, { error: message });
 		}
 	}

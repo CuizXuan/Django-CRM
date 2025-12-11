@@ -26,8 +26,8 @@
 	let {
 		value = [],
 		options = [],
-		placeholder = 'Select...',
-		emptyText = 'None selected',
+		placeholder = '选择...',
+		emptyText = '未选择',
 		disabled = false,
 		onchange,
 		class: className,
@@ -118,7 +118,7 @@
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content class="max-h-64 w-64 overflow-y-auto" align="start">
 			{#if options.length === 0}
-				<div class="text-muted-foreground px-2 py-4 text-center text-sm">No options available</div>
+				<div class="text-muted-foreground px-2 py-4 text-center text-sm">无可用选项</div>
 			{:else}
 				<DropdownMenu.CheckboxGroup>
 					{#each options as opt (opt.id)}

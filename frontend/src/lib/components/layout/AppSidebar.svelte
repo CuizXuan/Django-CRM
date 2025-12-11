@@ -35,7 +35,7 @@
 	 */
 
 	/** @type {Props} */
-	let { user = {}, org_name = 'BottleCRM' } = $props();
+	let { user = {}, org_name = 'CRM系统' } = $props();
 
 	const sidebar = Sidebar.useSidebar();
 
@@ -94,6 +94,12 @@
 		localStorage.setItem('theme', newTheme);
 	};
 
+	const themeLabelMap = {
+		light: '浅色',
+		dark: '深色',
+		system: '跟随系统'
+	};
+
 	let currentPath = $derived($page.url.pathname);
 
 	/** @type {{ [key: string]: boolean }} */
@@ -122,56 +128,56 @@
 	const navigationItems = [
 		{
 			href: '/',
-			label: 'Dashboard',
+			label: '仪表盘',
 			icon: LayoutDashboard,
 			type: 'link',
 			preload: 'off'
 		},
 		{
 			href: '/leads',
-			label: 'Leads',
+			label: '线索',
 			icon: Target,
 			type: 'link',
 			preload: 'off'
 		},
 		{
 			href: '/contacts',
-			label: 'Contacts',
+			label: '联系人',
 			icon: Users,
 			type: 'link',
 			preload: 'off'
 		},
 		{
 			href: '/accounts',
-			label: 'Accounts',
+			label: '客户',
 			icon: Building,
 			type: 'link',
 			preload: 'off'
 		},
 		{
 			href: '/opportunities',
-			label: 'Opportunities',
+			label: '商机',
 			icon: Target,
 			type: 'link',
 			preload: 'off'
 		},
 		{
 			href: '/cases',
-			label: 'Cases',
+			label: '工单',
 			icon: Briefcase,
 			type: 'link',
 			preload: 'off'
 		},
 		{
 			href: '/tasks',
-			label: 'Tasks',
+			label: '任务',
 			icon: CheckSquare,
 			type: 'link',
 			preload: 'off'
 		},
 		{
 			href: '/support',
-			label: 'Support',
+			label: '支持',
 			icon: HelpCircle,
 			type: 'link',
 			preload: 'off'
@@ -217,21 +223,21 @@
 					{/snippet}
 				</Sidebar.MenuButton>
 				<!-- Collapse Button (visible when expanded) -->
-				<Button
+					<Button
 					onclick={() => sidebar.toggle()}
 					variant="outline"
 					size="icon"
 					class="border-sidebar-border bg-sidebar text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground absolute top-1/2 right-1 size-6 -translate-y-1/2 rounded-md shadow-sm transition-all group-data-[collapsible=icon]:hidden hover:shadow-md"
-					title="Collapse Sidebar"
+					title="折叠侧边栏"
 				>
 					<ChevronsLeft class="size-3.5" />
 				</Button>
 			</Sidebar.MenuItem>
 			<!-- Expand Button (visible when collapsed) -->
 			<Sidebar.MenuItem class="hidden group-data-[collapsible=icon]:block">
-				<Sidebar.MenuButton
+					<Sidebar.MenuButton
 					onclick={() => sidebar.toggle()}
-					tooltipContent="Expand Sidebar"
+					tooltipContent="展开侧边栏"
 					class="flex items-center justify-center"
 				>
 					{#snippet child({ props })}
@@ -323,7 +329,7 @@
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>
 						{#snippet child({ props })}
-							<Sidebar.MenuButton {...props} tooltipContent="Theme">
+							<Sidebar.MenuButton {...props} tooltipContent="主题">
 								{#if theme === 'dark'}
 									<Moon class="size-4" />
 								{:else if theme === 'light'}
@@ -331,23 +337,25 @@
 								{:else}
 									<Monitor class="size-4" />
 								{/if}
-								<span>Theme</span>
-								<span class="text-sidebar-foreground/60 ml-auto text-xs capitalize">{theme}</span>
+								<span>主题</span>
+								<span class="text-sidebar-foreground/60 ml-auto text-xs capitalize">
+									{themeLabelMap[theme] || theme}
+								</span>
 							</Sidebar.MenuButton>
 						{/snippet}
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content side="top" align="start" class="w-48">
 						<DropdownMenu.Item class="" inset={false} onclick={() => setTheme('light')}>
 							<Sun class="mr-2 size-4" />
-							<span>Light</span>
+							<span>浅色</span>
 						</DropdownMenu.Item>
 						<DropdownMenu.Item class="" inset={false} onclick={() => setTheme('dark')}>
 							<Moon class="mr-2 size-4" />
-							<span>Dark</span>
+							<span>深色</span>
 						</DropdownMenu.Item>
 						<DropdownMenu.Item class="" inset={false} onclick={() => setTheme('system')}>
 							<Monitor class="mr-2 size-4" />
-							<span>System</span>
+							<span>跟随系统</span>
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
@@ -366,7 +374,7 @@
 								<img
 									class="size-8 rounded-lg object-cover"
 									src={user.profilePhoto}
-									alt="User avatar"
+									alt="用户头像"
 								/>
 								<div class="grid flex-1 text-left text-sm leading-tight">
 									<span class="truncate font-semibold">{user.name}</span>
@@ -381,20 +389,20 @@
 						align="start"
 						class="w-[--bits-dropdown-menu-anchor-width] min-w-56"
 					>
-						<DropdownMenu.Label class="">My Account</DropdownMenu.Label>
+						<DropdownMenu.Label class="">我的账户</DropdownMenu.Label>
 						<DropdownMenu.Separator class="" />
 						<DropdownMenu.Group class="">
 							<DropdownMenu.Item class="" inset={false} onclick={() => navigateTo('/profile')}>
 								<User class="mr-2 size-4" />
-								<span>Profile</span>
+								<span>个人资料</span>
 							</DropdownMenu.Item>
 							<DropdownMenu.Item class="" inset={false} onclick={() => navigateTo('/users')}>
 								<Users class="mr-2 size-4" />
-								<span>Users & Teams</span>
+								<span>用户与团队</span>
 							</DropdownMenu.Item>
 							<DropdownMenu.Item class="" inset={false} onclick={() => navigateTo('/org')}>
 								<Building class="mr-2 size-4" />
-								<span>Organizations</span>
+								<span>组织</span>
 							</DropdownMenu.Item>
 							<DropdownMenu.Item
 								class=""
@@ -402,7 +410,7 @@
 								onclick={() => navigateTo('/settings/organization')}
 							>
 								<Settings class="mr-2 size-4" />
-								<span>Settings</span>
+								<span>设置</span>
 							</DropdownMenu.Item>
 						</DropdownMenu.Group>
 						<DropdownMenu.Separator class="" />
@@ -412,7 +420,7 @@
 							onclick={() => navigateTo('/logout')}
 						>
 							<LogOut class="mr-2 size-4" />
-							<span>Sign out</span>
+							<span>退出登录</span>
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>

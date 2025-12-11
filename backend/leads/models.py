@@ -22,90 +22,90 @@ from contacts.models import Contact
 
 class Lead(AssignableMixin, BaseModel):
     """
-    Lead model for CRM - Streamlined for modern sales workflow
-    Based on Twenty CRM and Salesforce patterns
+    CRM线索模型 - 为现代销售工作流程优化
+    基于 Twenty CRM 和 Salesforce 模式设计
     """
 
-    # Core Lead Information
+    # 核心线索信息
     title = models.CharField(
-        _("Title"), max_length=255, blank=True, null=True,
-        help_text="Lead name/subject (e.g., 'Enterprise Deal', 'Website Inquiry')"
+        _("标题"), max_length=255, blank=True, null=True,
+        help_text="线索名称/主题（例如：'企业交易'、'网站咨询'）"
     )
     salutation = models.CharField(
-        _("Salutation"), max_length=64, blank=True, null=True,
-        help_text="e.g., Mr, Mrs, Ms, Dr"
+        _("称谓"), max_length=64, blank=True, null=True,
+        help_text="例如：先生、女士、小姐、博士"
     )
-    first_name = models.CharField(_("First name"), null=True, max_length=255)
-    last_name = models.CharField(_("Last name"), null=True, max_length=255)
+    first_name = models.CharField(_("名字"), null=True, max_length=255)
+    last_name = models.CharField(_("姓氏"), null=True, max_length=255)
     email = models.EmailField(null=True, blank=True)
-    phone = models.CharField(_("Phone"), max_length=50, null=True, blank=True)
+    phone = models.CharField(_("电话"), max_length=50, null=True, blank=True)
     job_title = models.CharField(
-        _("Job Title"), max_length=255, blank=True, null=True,
-        help_text="Person's job title (e.g., 'VP of Sales', 'CTO')"
+        _("职位"), max_length=255, blank=True, null=True,
+        help_text="个人职位（例如：'销售副总裁'、'首席技术官'）"
     )
-    website = models.CharField(_("Website"), max_length=255, blank=True, null=True)
+    website = models.CharField(_("网站"), max_length=255, blank=True, null=True)
     linkedin_url = models.URLField(
         _("LinkedIn URL"), max_length=500, blank=True, null=True
     )
 
-    # Sales Pipeline
+    # 销售漏斗
     status = models.CharField(
-        _("Status"), max_length=255, blank=True, null=True, choices=LEAD_STATUS
+        _("状态"), max_length=255, blank=True, null=True, choices=LEAD_STATUS
     )
     source = models.CharField(
-        _("Source"), max_length=255, blank=True, null=True, choices=LEAD_SOURCE
+        _("来源"), max_length=255, blank=True, null=True, choices=LEAD_SOURCE
     )
     industry = models.CharField(
-        _("Industry"), max_length=255, choices=INDCHOICES, blank=True, null=True
+        _("行业"), max_length=255, choices=INDCHOICES, blank=True, null=True
     )
     rating = models.CharField(
-        _("Rating"),
+        _("评级"),
         max_length=10,
         blank=True,
         null=True,
         choices=[("HOT", "Hot"), ("WARM", "Warm"), ("COLD", "Cold")],
     )
     opportunity_amount = models.DecimalField(
-        _("Deal Value"), decimal_places=2, max_digits=12, blank=True, null=True
+        _("交易价值"), decimal_places=2, max_digits=12, blank=True, null=True
     )
     currency = models.CharField(
-        _("Currency"), max_length=3, choices=CURRENCY_CODES, blank=True, null=True
+        _("货币"), max_length=3, choices=CURRENCY_CODES, blank=True, null=True
     )
     probability = models.IntegerField(
-        _("Win Probability %"), default=0, blank=True, null=True
+        _("获胜概率 %"), default=0, blank=True, null=True
     )
-    close_date = models.DateField(_("Expected Close Date"), default=None, null=True)
+    close_date = models.DateField(_("预计成交日期"), default=None, null=True)
 
-    # Address
-    address_line = models.CharField(_("Address"), max_length=255, blank=True, null=True)
-    city = models.CharField(_("City"), max_length=255, blank=True, null=True)
-    state = models.CharField(_("State"), max_length=255, blank=True, null=True)
-    postcode = models.CharField(_("Postal Code"), max_length=64, blank=True, null=True)
+    # 地址
+    address_line = models.CharField(_("地址"), max_length=255, blank=True, null=True)
+    city = models.CharField(_("城市"), max_length=255, blank=True, null=True)
+    state = models.CharField(_("州/省"), max_length=255, blank=True, null=True)
+    postcode = models.CharField(_("邮政编码"), max_length=64, blank=True, null=True)
     country = models.CharField(
-        _("Country"), max_length=3, choices=COUNTRIES, blank=True, null=True
+        _("国家"), max_length=3, choices=COUNTRIES, blank=True, null=True
     )
 
-    # Assignment
+    # 分配
     assigned_to = models.ManyToManyField(Profile, related_name="lead_assigned_users")
     teams = models.ManyToManyField(Teams, related_name="lead_teams")
 
-    # Activity Tracking
+    # 活动跟踪
     last_contacted = models.DateField(_("Last Contacted"), blank=True, null=True)
     next_follow_up = models.DateField(_("Next Follow-up"), blank=True, null=True)
-    description = models.TextField(_("Notes"), blank=True, null=True)
+    description = models.TextField(_("备注"), blank=True, null=True)
 
-    # System Fields
+    # 系统字段
     is_active = models.BooleanField(default=True)
     tags = models.ManyToManyField(Tags, related_name="lead_tags", blank=True)
     contacts = models.ManyToManyField(Contact, related_name="lead_contacts")
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="leads")
     company_name = models.CharField(
-        _("Company Name"), max_length=255, blank=True, null=True
+        _("公司名称"), max_length=255, blank=True, null=True
     )
 
     class Meta:
-        verbose_name = "Lead"
-        verbose_name_plural = "Leads"
+        verbose_name = "线索"
+        verbose_name_plural = "线索"
         db_table = "lead"
         ordering = ("-created_at",)
         indexes = [

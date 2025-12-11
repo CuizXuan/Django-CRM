@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-	<title>Select Organization | BottleCRM</title>
+	<title>选择组织 | BottleCRM</title>
 </svelte:head>
 
 <div class="flex min-h-screen flex-col bg-slate-50">
@@ -28,7 +28,7 @@
 				class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
 			>
 				<LogOut class="h-4 w-4" />
-				<span class="hidden sm:inline">Sign out</span>
+				<span class="hidden sm:inline">退出登录</span>
 			</a>
 		</div>
 	</header>
@@ -38,8 +38,8 @@
 		<div class="w-full max-w-2xl">
 			<!-- Page Header -->
 			<div class="mb-8 text-center">
-				<h1 class="text-2xl font-bold text-slate-900">Select an organization</h1>
-				<p class="mt-2 text-slate-600">Choose which organization you'd like to work in</p>
+				<h1 class="text-2xl font-bold text-slate-900">选择组织</h1>
+				<p class="mt-2 text-slate-600">选择您想要工作的组织</p>
 			</div>
 
 			<!-- Organizations List -->
@@ -78,7 +78,7 @@
 										<div class="mt-1 flex items-center gap-3 text-sm text-slate-500">
 											<span class="inline-flex items-center gap-1 capitalize">
 												<Users class="h-3.5 w-3.5" />
-												{org.role?.toLowerCase() || 'Member'}
+												{org.role === 'ADMIN' ? '管理员' : '成员'}
 											</span>
 										</div>
 									</div>
@@ -104,7 +104,7 @@
 						class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 px-5 py-4 text-sm font-medium text-slate-600 transition-all hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600"
 					>
 						<Plus class="h-4 w-4" />
-						Create new organization
+						创建新组织
 					</a>
 				</div>
 			{:else}
@@ -113,14 +113,14 @@
 					<div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
 						<Building2 class="h-8 w-8 text-slate-400" />
 					</div>
-					<h3 class="text-lg font-semibold text-slate-900">No organizations yet</h3>
-					<p class="mt-2 text-slate-600">Create your first organization to get started with BottleCRM</p>
+					<h3 class="text-lg font-semibold text-slate-900">暂无组织</h3>
+					<p class="mt-2 text-slate-600">创建您的第一个组织以开始使用 BottleCRM</p>
 					<a
 						href="/org/new"
 						class="mt-6 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
 					>
 						<Plus class="h-4 w-4" />
-						Create organization
+						创建组织
 					</a>
 				</div>
 			{/if}
@@ -128,7 +128,7 @@
 			<!-- Trust Signal -->
 			<div class="mt-8 flex items-center justify-center gap-2 text-sm text-slate-500">
 				<Shield class="h-4 w-4" />
-				<span>Your data stays private and secure</span>
+				<span>您的数据保持私密和安全</span>
 			</div>
 		</div>
 	</main>

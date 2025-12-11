@@ -435,18 +435,18 @@
 
 	// Status options for filter dropdown
 	const statusFilterOptions = $derived([
-		{ value: '', label: 'All Statuses' },
+		{ value: '', label: '全部状态' },
 		...caseStatusOptions
 	]);
 
 	// Priority options for filter dropdown
 	const priorityFilterOptions = $derived([
-		{ value: '', label: 'All Priorities' },
+		{ value: '', label: '全部优先级' },
 		...casePriorityOptions
 	]);
 
 	// Type options for filter dropdown
-	const typeFilterOptions = $derived([{ value: '', label: 'All Types' }, ...caseTypeOptions]);
+	const typeFilterOptions = $derived([{ value: '', label: '全部类型' }, ...caseTypeOptions]);
 
 	// Count active filters (excluding status since it's handled via chips in header)
 	const activeFiltersCount = $derived.by(() => {
@@ -732,7 +732,7 @@
 	<title>Cases - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Cases" subtitle="{filteredCases.length} of {casesData.length} cases">
+<PageHeader title="工单" subtitle="{filteredCases.length} / {casesData.length} 个工单">
 	{#snippet actions()}
 		<div class="flex items-center gap-2">
 			<!-- Status Filter Chips -->
@@ -745,7 +745,7 @@
 						? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					All
+					全部
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'ALL'
 							? 'bg-gray-700 text-gray-200 dark:bg-gray-200 dark:text-gray-700'
@@ -762,7 +762,7 @@
 						? 'bg-blue-600 text-white dark:bg-blue-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Open
+					进行中
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'open'
 							? 'bg-blue-700 text-blue-100 dark:bg-blue-600'
@@ -779,7 +779,7 @@
 						? 'bg-gray-600 text-white dark:bg-gray-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Closed
+					已关闭
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'closed'
 							? 'bg-gray-700 text-gray-200 dark:bg-gray-600'
@@ -800,7 +800,7 @@
 				onclick={() => (filtersExpanded = !filtersExpanded)}
 			>
 				<Filter class="h-4 w-4" />
-				Filters
+				筛选
 				{#if activeFiltersCount > 0}
 					<span
 						class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -815,7 +815,7 @@
 					{#snippet child({ props })}
 						<Button {...props} variant="outline" size="sm" class="gap-2">
 							<Eye class="h-4 w-4" />
-							Columns
+							列
 							{#if columnCounts.visible < columnCounts.total}
 								<span
 									class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -844,7 +844,7 @@
 
 			<Button onclick={drawer.openCreate}>
 				<Plus class="mr-2 h-4 w-4" />
-				New Case
+				新建工单
 			</Button>
 		</div>
 	{/snippet}
@@ -862,22 +862,22 @@
 		<SearchInput
 			value={filters.search}
 			onchange={(value) => updateFilters({ ...filters, search: value })}
-			placeholder="Search cases..."
+			placeholder="搜索工单..."
 		/>
 		<SelectFilter
-			label="Priority"
+			label="优先级"
 			options={priorityFilterOptions}
 			value={filters.priority}
 			onchange={(value) => updateFilters({ ...filters, priority: value })}
 		/>
 		<SelectFilter
-			label="Type"
+			label="类型"
 			options={typeFilterOptions}
 			value={filters.case_type}
 			onchange={(value) => updateFilters({ ...filters, case_type: value })}
 		/>
 		<DateRangeFilter
-			label="Created"
+			label="创建时间"
 			startDate={filters.created_at_gte}
 			endDate={filters.created_at_lte}
 			onchange={(start, end) =>
@@ -894,7 +894,7 @@
 		{#snippet emptyState()}
 			<div class="flex flex-col items-center justify-center py-16 text-center">
 				<Briefcase class="text-muted-foreground/50 mb-4 h-12 w-12" />
-				<h3 class="text-foreground text-lg font-medium">No cases found</h3>
+				<h3 class="text-foreground text-lg font-medium">未找到工单</h3>
 			</div>
 		{/snippet}
 	</CrmTable>
@@ -916,8 +916,8 @@
 	data={drawerFormData}
 	columns={drawerColumns}
 	titleKey="subject"
-	titlePlaceholder="Case title"
-	headerLabel={drawer.mode === 'create' ? 'New Case' : 'Case'}
+	titlePlaceholder="工单标题"
+	headerLabel={drawer.mode === 'create' ? '新建工单' : '工单'}
 	onFieldChange={handleDrawerFieldChange}
 	onDelete={handleDelete}
 	onClose={() => drawer.closeAll()}
@@ -960,7 +960,7 @@
 		{:else if drawer.mode !== 'create'}
 			<div class="flex flex-col items-center justify-center py-6 text-center">
 				<MessageSquare class="mb-2 h-8 w-8 text-gray-300 dark:text-gray-600" />
-				<p class="text-sm text-gray-500 dark:text-gray-400">No activity yet</p>
+				<p class="text-sm text-gray-500 dark:text-gray-400">暂无活动</p>
 			</div>
 		{/if}
 	{/snippet}
@@ -968,21 +968,19 @@
 	{#snippet footerActions()}
 		{#if drawer.mode !== 'create' && drawer.selected}
 			{#if drawerFormData.status === 'Closed'}
-				<Button variant="outline" onclick={handleReopen} disabled={isSubmitting}>Reopen</Button>
+				<Button variant="outline" onclick={handleReopen} disabled={isSubmitting}>重新打开</Button>
 			{:else}
-				<Button variant="outline" onclick={handleClose} disabled={isSubmitting}>Close Case</Button>
+				<Button variant="outline" onclick={handleClose} disabled={isSubmitting}>关闭工单</Button>
 			{/if}
 		{/if}
-		<Button variant="outline" onclick={() => drawer.closeAll()} disabled={isSubmitting}>
-			Cancel
-		</Button>
+		<Button variant="outline" onclick={() => drawer.closeAll()} disabled={isSubmitting}>取消</Button>
 		{#if isDrawerDirty || drawer.mode === 'create'}
 			<Button onclick={handleSave} disabled={isSubmitting}>
 				{#if isSubmitting}
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-					{drawer.mode === 'create' ? 'Creating...' : 'Saving...'}
+					{drawer.mode === 'create' ? '创建中...' : '保存中...'}
 				{:else}
-					{drawer.mode === 'create' ? 'Create Case' : 'Save Changes'}
+					{drawer.mode === 'create' ? '创建工单' : '保存更改'}
 				{/if}
 			</Button>
 		{/if}

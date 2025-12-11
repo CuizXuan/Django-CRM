@@ -1,7 +1,8 @@
+<svelte:options runes={true} />
+
 <script>
 	import '../../../app.css';
 
-	import imgGoogle from '$lib/assets/images/google.svg';
 	import imgLogo from '$lib/assets/images/logo.png';
 	import {
 		Users,
@@ -17,49 +18,73 @@
 		PieChart
 	} from '@lucide/svelte';
 
-	let { data } = $props();
-
+	let { data, form } = $props();
 	let isLoading = $state(false);
+	let email = $state('');
+	let password = $state('');
+	let confirmPassword = $state('');
+	let mode = $state('login'); // 'login' | 'register'
 
 	const features = [
 		{
 			icon: Users,
-			title: 'Contact Management',
-			description: 'Organize and track all your customer relationships in one place'
+			title: '客户管理',
+			description: '集中管理客户信息，随时掌握联系记录'
 		},
 		{
 			icon: Target,
-			title: 'Sales Pipeline',
-			description: 'Visualize deals and track progress through custom stages'
+			title: '销售管道',
+			description: '清晰展示商机阶段，实时追踪进度'
 		},
 		{
 			icon: BarChart3,
-			title: 'Analytics & Reports',
-			description: 'Get insights with powerful dashboards and reporting'
+			title: '数据洞察',
+			description: '可视化报表与仪表盘，助力决策'
 		},
 		{
 			icon: Building2,
-			title: 'Multi-Organization',
-			description: 'Manage multiple businesses from a single account'
+			title: '多组织协同',
+			description: '一个账号管理多家公司与团队'
 		}
 	];
 
 	const stats = [
-		{ value: '10K+', label: 'Active Users' },
-		{ value: '500K+', label: 'Contacts Managed' },
-		{ value: '99.9%', label: 'Uptime' }
+		{ value: '10K+', label: '活跃用户' },
+		{ value: '500K+', label: '客户记录' },
+		{ value: '99.9%', label: '系统可用性' }
 	];
 
-	function handleGoogleLogin() {
+	const actionName = $derived(form?.action);
+	const loginError = $derived(actionName === 'login' ? form?.error || data?.error : null);
+	const registerError = $derived(actionName === 'register' ? form?.error : null);
+	const registerSuccess = $derived(actionName === 'register' ? form?.success : null);
+
+	$effect(() => {
+		// 根据上次提交的表单切换模式
+		if (actionName === 'register') {
+			mode = 'register';
+		} else if (actionName === 'login') {
+			mode = 'login';
+		}
+	});
+
+	$effect(() => {
+		// 动作完成后停止 loading
+		if (form && !form?.pending) {
+			isLoading = false;
+		}
+	});
+
+	function handleSubmit() {
 		isLoading = true;
 	}
 </script>
 
 <svelte:head>
-	<title>Sign In | BottleCRM - Modern CRM for Growing Teams</title>
+	<title>登录 | BottleCRM</title>
 	<meta
 		name="description"
-		content="Sign in to BottleCRM - the open-source CRM solution for startups and growing businesses. Manage contacts, track deals, and grow your business."
+		content="使用邮箱和密码登录 BottleCRM，管理客户、商机与团队协作。"
 	/>
 </svelte:head>
 
@@ -86,13 +111,13 @@
 			<div class="space-y-8">
 				<div>
 					<h1 class="text-4xl font-bold leading-tight text-white">
-						The CRM that grows
+						专为成长团队打造的
 						<span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-							with your business
+							现代化 CRM
 						</span>
 					</h1>
 					<p class="mt-4 text-lg text-slate-400">
-						Powerful, intuitive, and completely open-source. Manage your customer relationships without limits.
+						开源、直观、安全，帮助团队高效管理客户关系，持续增长。
 					</p>
 				</div>
 
@@ -147,33 +172,155 @@
 					<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
 						<Sparkles class="h-6 w-6 text-blue-600" />
 					</div>
-					<h2 class="text-2xl font-bold text-slate-900">Welcome back</h2>
-					<p class="mt-2 text-slate-600">Sign in to continue to your dashboard</p>
+					<h2 class="text-2xl font-bold text-slate-900">欢迎回来</h2>
+					<p class="mt-2 text-slate-600">使用邮箱和密码登录，继续你的工作</p>
 				</div>
 
-				<!-- Login Button -->
-				<div class="space-y-4">
-					<a
-						href={data['google_url']}
-						onclick={handleGoogleLogin}
-						class="group relative flex w-full items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3.5 font-medium text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						class:pointer-events-none={isLoading}
+				<!-- Mode Switch -->
+				<div class="mb-6 grid grid-cols-2 rounded-lg bg-slate-50 p-1 text-sm font-semibold text-slate-600">
+					<button
+						type="button"
+						class={`rounded-md px-3 py-2 transition ${mode === 'login' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+						onclick={() => (mode = 'login')}
 					>
-						{#if isLoading}
-							<div class="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600"></div>
-							<span>Signing in...</span>
-						{:else}
-							<img src={imgGoogle} alt="Google" class="h-5 w-5" />
-							<span>Continue with Google</span>
-							<ArrowRight class="ml-auto h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-0.5" />
-						{/if}
-					</a>
+						登录
+					</button>
+					<button
+						type="button"
+						class={`rounded-md px-3 py-2 transition ${mode === 'register' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
+						onclick={() => (mode = 'register')}
+					>
+						注册
+					</button>
 				</div>
+
+				{#if mode === 'login'}
+					<form method="POST" action="?/login" class="space-y-6" onsubmit={handleSubmit}>
+
+						{#if loginError}
+							<div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+								{loginError}
+							</div>
+						{/if}
+
+						<div class="space-y-2">
+							<label for="email" class="block text-sm font-medium text-slate-700">邮箱</label>
+							<input
+								id="email"
+								name="email"
+								type="email"
+								class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+								placeholder="请输入邮箱"
+								bind:value={email}
+								required
+							/>
+						</div>
+
+						<div class="space-y-2">
+							<label for="password" class="block text-sm font-medium text-slate-700">密码</label>
+							<input
+								id="password"
+								name="password"
+								type="password"
+								class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+								placeholder="请输入密码"
+								bind:value={password}
+								required
+							/>
+						</div>
+
+						<button
+							type="submit"
+							class="group relative flex w-full items-center justify-center gap-3 rounded-lg bg-blue-600 px-4 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70"
+							disabled={isLoading}
+						>
+							{#if isLoading}
+								<div class="h-5 w-5 animate-spin rounded-full border-2 border-white/60 border-t-white"></div>
+								<span>正在登录...</span>
+							{:else}
+								<span>登录</span>
+								<ArrowRight class="ml-auto h-4 w-4 text-white/80 transition-transform group-hover:translate-x-0.5" />
+							{/if}
+						</button>
+					</form>
+				{:else}
+					<form method="POST" action="?/register" class="space-y-6" onsubmit={handleSubmit}>
+						{#if registerError}
+							<div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+								{registerError}
+							</div>
+						{/if}
+
+						{#if registerSuccess}
+							<div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+								{registerSuccess}
+							</div>
+						{/if}
+
+						<div class="space-y-2">
+							<label for="register-email" class="block text-sm font-medium text-slate-700">邮箱</label>
+							<input
+								id="register-email"
+								name="email"
+								type="email"
+								class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+								placeholder="请输入邮箱"
+								required
+							/>
+						</div>
+
+						<div class="space-y-2">
+							<label for="register-password" class="block text-sm font-medium text-slate-700">密码（至少 8 位）</label>
+							<input
+								id="register-password"
+								name="password"
+								type="password"
+								minlength="8"
+								class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+								placeholder="请输入密码"
+								bind:value={password}
+								required
+							/>
+						</div>
+
+						<div class="space-y-2">
+							<label for="register-confirm" class="block text-sm font-medium text-slate-700">确认密码</label>
+							<input
+								id="register-confirm"
+								name="confirm_password"
+								type="password"
+								minlength="8"
+								class="block w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+								placeholder="再次输入密码"
+								bind:value={confirmPassword}
+								required
+							/>
+						</div>
+
+						<button
+							type="submit"
+							class="group relative flex w-full items-center justify-center gap-3 rounded-lg bg-slate-900 px-4 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-black focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70"
+							disabled={isLoading}
+						>
+							{#if isLoading}
+								<div class="h-5 w-5 animate-spin rounded-full border-2 border-white/60 border-t-white"></div>
+								<span>正在注册...</span>
+							{:else}
+								<span>注册并激活</span>
+								<ArrowRight class="ml-auto h-4 w-4 text-white/80 transition-transform group-hover:translate-x-0.5" />
+							{/if}
+						</button>
+
+						<p class="text-xs text-slate-500">
+							注册后我们会发送一封激活邮件，请前往邮箱完成激活，再使用上方登录方式进入系统。
+						</p>
+					</form>
+				{/if}
 
 				<!-- Divider -->
 				<div class="my-8 flex items-center gap-4">
 					<div class="h-px flex-1 bg-slate-200"></div>
-					<span class="text-xs font-medium uppercase tracking-wider text-slate-400">Secure login</span>
+					<span class="text-xs font-medium uppercase tracking-wider text-slate-400">安全登录</span>
 					<div class="h-px flex-1 bg-slate-200"></div>
 				</div>
 
@@ -184,8 +331,8 @@
 							<Shield class="h-4 w-4 text-green-600" />
 						</div>
 						<div class="flex-1">
-							<p class="text-sm font-medium text-slate-700">Enterprise-grade security</p>
-							<p class="text-xs text-slate-500">Your data is encrypted and secure</p>
+							<p class="text-sm font-medium text-slate-700">企业级安全</p>
+							<p class="text-xs text-slate-500">数据全程加密传输与存储</p>
 						</div>
 					</div>
 
@@ -194,17 +341,17 @@
 							<Lock class="h-4 w-4 text-blue-600" />
 						</div>
 						<div class="flex-1">
-							<p class="text-sm font-medium text-slate-700">Privacy first</p>
-							<p class="text-xs text-slate-500">Self-host for complete data ownership</p>
+							<p class="text-sm font-medium text-slate-700">隐私优先</p>
+							<p class="text-xs text-slate-500">自部署可控，数据完全归你所有</p>
 						</div>
 					</div>
 				</div>
 
 				<!-- Features for Mobile -->
 				<div class="mt-8 lg:hidden">
-					<p class="mb-3 text-xs font-medium uppercase tracking-wider text-slate-400">What you get</p>
+					<p class="mb-3 text-xs font-medium uppercase tracking-wider text-slate-400">你将获得</p>
 					<div class="grid grid-cols-2 gap-2">
-						{#each ['Unlimited contacts', 'Sales pipeline', 'Task management', 'Team collaboration'] as item}
+						{#each ['不限客户数量', '销售阶段看板', '任务提醒', '团队协作'] as item}
 							<div class="flex items-center gap-2 text-sm text-slate-600">
 								<CheckCircle2 class="h-4 w-4 text-green-500" />
 								<span>{item}</span>
@@ -219,17 +366,17 @@
 		<div class="border-t border-slate-100 p-6">
 			<div class="flex flex-col items-center justify-between gap-4 text-sm sm:flex-row">
 				<p class="text-slate-500">
-					Don't have an account?
-					<span class="text-slate-700">Sign in with Google to get started</span>
+					还没有账号？
+					<span class="text-slate-700">联系管理员创建或邀请加入团队</span>
 				</p>
 				<div class="flex items-center gap-4 text-slate-400">
 					<a href="https://github.com/MicroPyramid/Django-CRM" target="_blank" rel="noopener noreferrer" class="hover:text-slate-600">
 						GitHub
 					</a>
 					<span>·</span>
-					<a href="/docs" class="hover:text-slate-600">Docs</a>
+					<a href="/docs" class="hover:text-slate-600">文档</a>
 					<span>·</span>
-					<a href="/privacy" class="hover:text-slate-600">Privacy</a>
+					<a href="/privacy" class="hover:text-slate-600">隐私政策</a>
 				</div>
 			</div>
 		</div>

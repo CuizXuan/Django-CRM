@@ -113,7 +113,25 @@ export async function load({ locals, cookies }) {
 			last_contacted: lead.last_contacted
 		}));
 
+		// Also fetch org settings for currency
+		let orgSettings = {
+			default_currency: 'CNY',
+			default_country: 'CN'
+		};
+
+		try {
+			const settingsResponse = await apiRequest('/org/settings/', {}, { cookies, org });
+			console.log('Server: Org settings response:', settingsResponse);
+			orgSettings = {
+				default_currency: settingsResponse.default_currency || 'CNY',
+				default_country: settingsResponse.default_country || 'CN'
+			};
+		} catch (err) {
+			console.warn('Failed to load org settings, using defaults:', err);
+		}
+
 		return {
+			orgSettings,
 			metrics: {
 				totalLeads: dashboardResponse.leads_count || 0,
 				totalOpportunities: dashboardResponse.opportunities_count || 0,

@@ -18,17 +18,25 @@
 		};
 		return classes[status] || 'bg-gray-100 text-gray-700';
 	}
+
+	const statusLabelMap = {
+		ACCEPTED: '已接受',
+		PRESENTED: '已提交',
+		DRAFT: '草稿',
+		APPROVED: '已批准',
+		REJECTED: '已拒绝'
+	};
 </script>
 
 <!-- Super Rich Invoice List Page - Uniform Blue-Purple Theme -->
 <div class="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 p-8">
 	<div class="mx-auto max-w-5xl">
 		<div class="mb-10 flex items-center justify-between">
-			<h1 class="text-4xl font-extrabold tracking-tight text-blue-900">Invoices</h1>
+			<h1 class="text-4xl font-extrabold tracking-tight text-blue-900">发票</h1>
 			<a
 				href="/invoices/new"
 				class="inline-flex items-center rounded-xl bg-gradient-to-r from-blue-700 to-purple-700 px-6 py-3 text-lg font-semibold text-white shadow-lg transition hover:from-blue-800 hover:to-purple-800"
-				>+ New Invoice</a
+				>+ 新建发票</a
 			>
 		</div>
 
@@ -48,11 +56,11 @@
 					<circle cx="11" cy="11" r="8" />
 					<line x1="21" y1="21" x2="16.65" y2="16.65" />
 				</svg>
-				<label for="invoice-search" class="sr-only">Search invoices</label>
+				<label for="invoice-search" class="sr-only">搜索发票</label>
 				<input
 					id="invoice-search"
 					type="text"
-					placeholder="Search invoices..."
+					placeholder="搜索发票..."
 					class="flex-1 bg-transparent text-blue-900 placeholder-blue-400 outline-none"
 				/>
 			</div>
@@ -71,15 +79,15 @@
 					<rect x="3" y="7" width="18" height="13" rx="2" />
 					<path d="M16 3v4M8 3v4" />
 				</svg>
-				<label for="invoice-status-filter" class="sr-only">Filter by status</label>
+				<label for="invoice-status-filter" class="sr-only">按状态筛选</label>
 				<select
 					id="invoice-status-filter"
 					class="bg-transparent font-semibold text-blue-900 outline-none"
 				>
-					<option>All Statuses</option>
-					<option>Paid</option>
-					<option>Unpaid</option>
-					<option>Overdue</option>
+					<option>全部状态</option>
+					<option>已付款</option>
+					<option>未付款</option>
+					<option>逾期</option>
 				</select>
 			</div>
 
@@ -97,11 +105,11 @@
 					<rect x="3" y="4" width="18" height="18" rx="2" />
 					<path d="M16 2v4M8 2v4M3 10h18" />
 				</svg>
-				<label for="invoice-date-range" class="sr-only">Date range filter</label>
+				<label for="invoice-date-range" class="sr-only">日期范围筛选</label>
 				<input
 					id="invoice-date-range"
 					type="text"
-					placeholder="Date range"
+					placeholder="选择日期范围"
 					class="w-28 bg-transparent text-blue-900 placeholder-blue-400 outline-none"
 				/>
 			</div>
@@ -118,12 +126,12 @@
 							<span
 								class="w-fit rounded-full px-2 py-0.5 text-xs font-bold tracking-widest uppercase {getStatusClass(
 									invoice.status
-								)}">{invoice.status.toLowerCase()}</span
+								)}">{statusLabelMap[invoice.status] || invoice.status}</span
 							>
 							<span class="text-xs text-blue-500"
-								>Due: {invoice.expirationDate
-									? new Date(invoice.expirationDate).toLocaleDateString()
-									: 'N/A'}</span
+								>到期：{invoice.expirationDate
+									? new Date(invoice.expirationDate).toLocaleDateString('zh-CN')
+									: '未设置'}</span
 							>
 						</div>
 						<div class="flex-1">
@@ -147,12 +155,12 @@
 							<a
 								href="/invoices/{invoice.id}"
 								class="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white transition hover:bg-blue-700"
-								>View</a
+								>查看</a
 							>
 							<a
 								href="/invoices/{invoice.id}/edit"
 								class="rounded-full bg-purple-600 px-3 py-1 text-xs font-semibold text-white transition hover:bg-purple-700"
-								>Edit</a
+								>编辑</a
 							>
 						</div>
 					</div>
@@ -167,13 +175,13 @@
 			{#if data.invoices.length === 0}
 				<div class="rounded-2xl bg-white/80 p-12 text-center shadow-xl backdrop-blur-md">
 					<div class="mb-4 text-6xl">📄</div>
-					<h3 class="mb-2 text-2xl font-bold text-blue-900">No invoices yet</h3>
-					<p class="mb-6 text-blue-600">Create your first invoice to get started</p>
+					<h3 class="mb-2 text-2xl font-bold text-blue-900">暂无发票</h3>
+					<p class="mb-6 text-blue-600">创建您的第一张发票开始使用</p>
 					<a
 						href="/invoices/new"
 						class="inline-flex items-center rounded-xl bg-gradient-to-r from-blue-700 to-purple-700 px-6 py-3 font-semibold text-white shadow-lg transition hover:from-blue-800 hover:to-purple-800"
 					>
-						Create Invoice
+						创建发票
 					</a>
 				</div>
 			{/if}

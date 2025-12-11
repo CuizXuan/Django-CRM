@@ -27,9 +27,9 @@
 		options = [],
 		value = $bindable(''),
 		multiple = false,
-		placeholder = 'Select...',
+		placeholder = '选择...',
 		label = '',
-		allLabel = 'All',
+		allLabel = '全部',
 		class: className,
 		onchange
 	} = $props();
@@ -47,7 +47,7 @@
 				const opt = options.find((o) => o.value === selectedValues[0]);
 				return opt?.label || selectedValues[0];
 			}
-			return `${selectedValues.length} selected`;
+			return `已选择 ${selectedValues.length} 项`;
 		} else {
 			if (!value || value === 'ALL') return allLabel;
 			const opt = options.find((o) => o.value === value);

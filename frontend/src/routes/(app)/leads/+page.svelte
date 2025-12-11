@@ -62,15 +62,15 @@
 	const columns = [
 		{
 			key: 'title',
-			label: 'Title',
+			label: '标题',
 			type: 'text',
 			width: 'w-[200px]',
 			canHide: false,
-			emptyText: 'Untitled'
+			emptyText: '未命名'
 		},
 		{
 			key: 'name',
-			label: 'Name',
+			label: '姓名',
 			type: 'text',
 			width: 'w-[180px]',
 			editable: false,
@@ -80,7 +80,7 @@
 		},
 		{
 			key: 'company',
-			label: 'Company',
+			label: '公司',
 			type: 'relation',
 			width: 'w-40',
 			relationIcon: 'building',
@@ -89,28 +89,28 @@
 		},
 		{
 			key: 'email',
-			label: 'Email',
+			label: '邮箱',
 			type: 'email',
 			width: 'w-52',
 			emptyText: ''
 		},
 		{
 			key: 'status',
-			label: 'Status',
+			label: '状态',
 			type: 'select',
 			width: 'w-36',
 			options: leadStatusOptions
 		},
 		{
 			key: 'rating',
-			label: 'Rating',
+			label: '评分',
 			type: 'select',
 			width: 'w-28',
 			options: leadRatingOptions
 		},
 		{
 			key: 'createdAt',
-			label: 'Created',
+			label: '创建时间',
 			type: 'date',
 			width: 'w-36',
 			editable: false
@@ -118,7 +118,7 @@
 		// Hidden by default
 		{
 			key: 'phone',
-			label: 'Phone',
+			label: '电话',
 			type: 'text',
 			width: 'w-36',
 			canHide: true,
@@ -126,7 +126,7 @@
 		},
 		{
 			key: 'jobTitle',
-			label: 'Job Title',
+			label: '职位',
 			type: 'text',
 			width: 'w-36',
 			canHide: true,
@@ -134,14 +134,14 @@
 		},
 		{
 			key: 'leadSource',
-			label: 'Source',
+			label: '来源',
 			type: 'select',
 			width: 'w-28',
 			canHide: true
 		},
 		{
 			key: 'industry',
-			label: 'Industry',
+			label: '行业',
 			type: 'select',
 			width: 'w-32',
 			canHide: true,
@@ -152,7 +152,7 @@
 		},
 		{
 			key: 'owner',
-			label: 'Assigned',
+			label: '负责人',
 			type: 'relation',
 			width: 'w-36',
 			canHide: true,
@@ -178,37 +178,37 @@
 	const sourceOptions = [
 		{
 			value: 'call',
-			label: 'Call',
+			label: '电话',
 			color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
 		},
 		{
 			value: 'email',
-			label: 'Email',
+			label: '邮件',
 			color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
 		},
 		{
 			value: 'existing customer',
-			label: 'Existing Customer',
+			label: '现有客户',
 			color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
 		},
 		{
 			value: 'partner',
-			label: 'Partner',
+			label: '合作伙伴',
 			color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
 		},
 		{
 			value: 'public relations',
-			label: 'Public Relations',
+			label: '公共关系',
 			color: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400'
 		},
 		{
 			value: 'campaign',
-			label: 'Campaign',
+			label: '营销活动',
 			color: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400'
 		},
 		{
 			value: 'other',
-			label: 'Other',
+			label: '其他',
 			color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
 		}
 	];
@@ -255,78 +255,78 @@
 		// Contact Information
 		{
 			key: 'salutation',
-			label: 'Salutation',
+			label: '称谓',
 			type: 'select',
 			icon: User,
 			options: salutationOptions
 		},
 		{
 			key: 'firstName',
-			label: 'First Name',
+			label: '名',
 			type: 'text',
 			icon: User,
-			placeholder: 'First name',
+			placeholder: '请输入名',
 			essential: true
 		},
 		{
 			key: 'lastName',
-			label: 'Last Name',
+			label: '姓',
 			type: 'text',
 			icon: User,
-			placeholder: 'Last name',
+			placeholder: '请输入姓',
 			essential: true
 		},
 		{
 			key: 'email',
-			label: 'Email',
+			label: '邮箱',
 			type: 'email',
 			icon: Mail,
-			placeholder: 'Add email',
+			placeholder: '请输入邮箱',
 			essential: true
 		},
 		{
 			key: 'phone',
-			label: 'Phone',
+			label: '电话',
 			type: 'text',
 			icon: Phone,
-			placeholder: 'Add phone',
+			placeholder: '请输入电话',
 			essential: true
 		},
 		{
 			key: 'jobTitle',
-			label: 'Job Title',
+			label: '职位',
 			type: 'text',
 			icon: Briefcase,
-			placeholder: 'Add job title'
+			placeholder: '请输入职位'
 		},
 		{
 			key: 'company',
-			label: 'Company',
+			label: '公司',
 			type: 'text',
 			icon: Building2,
 			getValue: (/** @type {any} */ row) =>
 				typeof row.company === 'object' ? row.company?.name : row.company,
-			placeholder: 'Add company',
+			placeholder: '请输入公司名称',
 			essential: true
 		},
 		{
 			key: 'website',
-			label: 'Website',
+			label: '网站',
 			type: 'text',
 			icon: Globe,
-			placeholder: 'Add website'
+			placeholder: '请输入网站地址'
 		},
 		{
 			key: 'linkedinUrl',
 			label: 'LinkedIn',
 			type: 'text',
 			icon: Linkedin,
-			placeholder: 'Add LinkedIn URL'
+			placeholder: '请输入LinkedIn链接'
 		},
 		// Lead Details
 		{
 			key: 'status',
-			label: 'Status',
+			label: '状态',
 			type: 'select',
 			icon: Briefcase,
 			options: leadStatusOptions,
@@ -334,7 +334,7 @@
 		},
 		{
 			key: 'rating',
-			label: 'Rating',
+			label: '评分',
 			type: 'select',
 			icon: Star,
 			options: leadRatingOptions
@@ -342,7 +342,7 @@
 		// Metadata
 		{
 			key: 'createdAt',
-			label: 'Created',
+			label: '创建时间',
 			type: 'date',
 			icon: Calendar,
 			editable: false,
@@ -350,14 +350,14 @@
 		},
 		{
 			key: 'leadSource',
-			label: 'Source',
+			label: '来源',
 			type: 'select',
 			icon: Target,
 			options: sourceOptions
 		},
 		{
 			key: 'industry',
-			label: 'Industry',
+			label: '行业',
 			type: 'select',
 			icon: Building2,
 			options: INDUSTRIES.map((i) => ({
@@ -368,7 +368,7 @@
 		// Deal Information
 		{
 			key: 'opportunityAmount',
-			label: 'Deal Value',
+			label: '交易金额',
 			type: 'number',
 			icon: DollarSign,
 			placeholder: '0',
@@ -376,76 +376,76 @@
 		},
 		{
 			key: 'currency',
-			label: 'Currency',
+			label: '币种',
 			type: 'select',
 			icon: Banknote,
 			options: currencyOptions,
-			placeholder: 'Select currency',
+			placeholder: '选择币种',
 			essential: true
 		},
 		{
 			key: 'probability',
-			label: 'Probability',
+			label: '成交概率',
 			type: 'number',
 			icon: Percent,
 			placeholder: '0-100'
 		},
 		{
 			key: 'closeDate',
-			label: 'Close Date',
+			label: '预计成交日期',
 			type: 'date',
 			icon: Calendar,
-			placeholder: 'Set date',
+			placeholder: '选择日期',
 			hideOnCreate: true
 		},
 		// Activity
 		{
 			key: 'lastContacted',
-			label: 'Last Contact',
+			label: '最后联系',
 			type: 'date',
 			icon: Calendar,
-			placeholder: 'Set date',
+			placeholder: '选择日期',
 			hideOnCreate: true
 		},
 		{
 			key: 'nextFollowUp',
-			label: 'Follow-up',
+			label: '下次跟进',
 			type: 'date',
 			icon: Calendar,
-			placeholder: 'Set date'
+			placeholder: '选择日期'
 		},
 		// Address
 		{
 			key: 'addressLine',
-			label: 'Address',
+			label: '地址',
 			type: 'text',
 			icon: MapPin,
-			placeholder: 'Street address'
+			placeholder: '街道地址'
 		},
 		{
 			key: 'city',
-			label: 'City',
+			label: '城市',
 			type: 'text',
 			icon: MapPin,
-			placeholder: 'City'
+			placeholder: '城市'
 		},
 		{
 			key: 'state',
-			label: 'State',
+			label: '省/州',
 			type: 'text',
 			icon: MapPin,
-			placeholder: 'State/Province'
+			placeholder: '省/州'
 		},
 		{
 			key: 'postcode',
-			label: 'Postal Code',
+			label: '邮编',
 			type: 'text',
 			icon: MapPin,
-			placeholder: 'Postal code'
+			placeholder: '邮政编码'
 		},
 		{
 			key: 'country',
-			label: 'Country',
+			label: '国家',
 			type: 'select',
 			icon: Globe,
 			options: COUNTRIES.map((c) => ({
@@ -457,36 +457,36 @@
 		// Notes
 		{
 			key: 'description',
-			label: 'Notes',
+			label: '备注',
 			type: 'textarea',
 			icon: FileText,
-			placeholder: 'Add notes...'
+			placeholder: '添加备注...'
 		},
 		// Assignment (multi-select fields - options populated dynamically)
 		{
 			key: 'assignedTo',
-			label: 'Assigned To',
+			label: '分配给',
 			type: 'multiselect',
 			icon: Users,
 			options: []
 		},
 		{
 			key: 'teams',
-			label: 'Teams',
+			label: '团队',
 			type: 'multiselect',
 			icon: Users,
 			options: []
 		},
 		{
 			key: 'contacts',
-			label: 'Contacts',
+			label: '联系人',
 			type: 'multiselect',
 			icon: UserPlus,
 			options: []
 		},
 		{
 			key: 'tags',
-			label: 'Tags',
+			label: '标签',
 			type: 'multiselect',
 			icon: Tag,
 			options: []
@@ -1259,10 +1259,10 @@
 </script>
 
 <svelte:head>
-	<title>Leads - BottleCRM</title>
+	<title>线索 - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Leads" subtitle="{filteredLeads.length} of {leads.length} leads">
+<PageHeader title="线索" subtitle="{filteredLeads.length} / {leads.length} 条线索">
 	{#snippet actions()}
 		<div class="flex items-center gap-2">
 			<!-- Status Filter Chips -->
@@ -1275,7 +1275,7 @@
 						? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					All
+					全部
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'ALL'
 							? 'bg-gray-700 text-gray-200 dark:bg-gray-200 dark:text-gray-700'
@@ -1292,7 +1292,7 @@
 						? 'bg-blue-600 text-white dark:bg-blue-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Open
+					进行中
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'open'
 							? 'bg-blue-700 text-blue-100 dark:bg-blue-600'
@@ -1309,7 +1309,7 @@
 						? 'bg-red-600 text-white dark:bg-red-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Lost
+					已关闭
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'lost'
 							? 'bg-red-700 text-red-100 dark:bg-red-600'
@@ -1346,7 +1346,7 @@
 					{#snippet child({ props })}
 						<Button {...props} variant="outline" size="sm" class="gap-2">
 							<Eye class="h-4 w-4" />
-							Columns
+							列
 							{#if visibleColumns.length < columns.length}
 								<span
 									class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -1358,7 +1358,7 @@
 					{/snippet}
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end" class="w-48">
-					<DropdownMenu.Label>Toggle columns</DropdownMenu.Label>
+					<DropdownMenu.Label>切换列</DropdownMenu.Label>
 					<DropdownMenu.Separator />
 					{#each columns as column (column.key)}
 						<DropdownMenu.CheckboxItem
@@ -1375,7 +1375,7 @@
 
 			<Button onclick={openCreate}>
 				<Plus class="mr-2 h-4 w-4" />
-				New Lead
+				新建线索
 			</Button>
 		</div>
 	{/snippet}
@@ -1392,26 +1392,26 @@
 	>
 		<SearchInput
 			value={filters.search}
-			placeholder="Search leads..."
+			placeholder="搜索线索..."
 			onchange={(value) => updateFilters({ ...filters, search: value })}
 			class="w-64"
 		/>
 		<SelectFilter
-			label="Source"
+			label="来源"
 			options={filterOptions.sources}
 			value={filters.source || 'ALL'}
 			onchange={(value) => updateFilters({ ...filters, source: value })}
 			class="w-40"
 		/>
 		<SelectFilter
-			label="Rating"
+			label="评分"
 			options={filterOptions.ratings}
 			value={filters.rating || 'ALL'}
 			onchange={(value) => updateFilters({ ...filters, rating: value })}
 			class="w-32"
 		/>
 		<DateRangeFilter
-			label="Created"
+			label="创建时间"
 			startDate={filters.created_at_gte}
 			endDate={filters.created_at_lte}
 			onchange={(start, end) =>
@@ -1424,7 +1424,7 @@
 	{#if filteredLeads.length === 0}
 		<div class="flex flex-col items-center justify-center py-16 text-center">
 			<User class="mb-4 h-12 w-12 text-gray-300 dark:text-gray-600" />
-			<h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">No leads found</h3>
+			<h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">未找到线索</h3>
 		</div>
 	{:else}
 		<!-- Desktop Table using CrmTable -->
@@ -1439,7 +1439,7 @@
 				{#snippet emptyState()}
 					<div class="flex flex-col items-center justify-center py-16 text-center">
 						<User class="mb-4 h-12 w-12 text-gray-300 dark:text-gray-600" />
-						<h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">No leads found</h3>
+						<h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">未找到线索</h3>
 					</div>
 				{/snippet}
 			</CrmTable>
@@ -1519,8 +1519,8 @@
 	data={currentDrawerData}
 	columns={drawerColumnsWithOptions}
 	titleKey="title"
-	titlePlaceholder={drawerMode === 'create' ? 'Lead Title' : 'Untitled Lead'}
-	headerLabel={drawerMode === 'create' ? 'New Lead' : 'Lead'}
+	titlePlaceholder={drawerMode === 'create' ? '线索标题' : '未命名线索'}
+	headerLabel={drawerMode === 'create' ? '新建线索' : '线索'}
 	mode={drawerMode}
 	loading={drawerLoading}
 	onFieldChange={handleDrawerFieldChange}
@@ -1561,13 +1561,13 @@
 
 	{#snippet footerActions()}
 		{#if drawerMode === 'create'}
-			<Button variant="outline" onclick={closeDrawer}>Cancel</Button>
+			<Button variant="outline" onclick={closeDrawer}>取消</Button>
 			<Button onclick={handleCreateLead} disabled={isSaving}>
 				{#if isSaving}
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 					Creating...
 				{:else}
-					Create Lead
+					创建线索
 				{/if}
 			</Button>
 		{:else}
@@ -1575,15 +1575,15 @@
 			{#if drawerData?.status !== 'converted'}
 				<Button variant="outline" onclick={handleDrawerConvert} disabled={isSaving}>
 					<ArrowRightCircle class="mr-2 h-4 w-4" />
-					Convert
+					转化
 				</Button>
 			{/if}
 			<Button onclick={handleDrawerUpdate} disabled={isSaving}>
 				{#if isSaving}
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-					Saving...
+					保存中...
 				{:else}
-					Save
+					保存
 				{/if}
 			</Button>
 		{/if}

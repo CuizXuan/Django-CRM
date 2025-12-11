@@ -46,17 +46,17 @@
 	const statusOptions = [
 		{
 			value: 'New',
-			label: 'New',
+			label: '新建',
 			color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
 		},
 		{
 			value: 'In Progress',
-			label: 'In Progress',
+			label: '进行中',
 			color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
 		},
 		{
 			value: 'Completed',
-			label: 'Completed',
+			label: '已完成',
 			color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
 		}
 	];
@@ -64,17 +64,17 @@
 	const priorityOptions = [
 		{
 			value: 'High',
-			label: 'High',
+			label: '高',
 			color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
 		},
 		{
 			value: 'Medium',
-			label: 'Medium',
+			label: '中',
 			color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
 		},
 		{
 			value: 'Low',
-			label: 'Low',
+			label: '低',
 			color: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
 		}
 	];
@@ -109,38 +109,38 @@
 	function getRelatedEntity(row) {
 		if (row.lead) {
 			const leadName =
-				row.lead.title || `${row.lead.firstName || ''} ${row.lead.lastName || ''}`.trim() || 'Lead';
-			return { name: `Lead: ${leadName}` };
+				row.lead.title || `${row.lead.firstName || ''} ${row.lead.lastName || ''}`.trim() || '线索';
+			return { name: `线索: ${leadName}` };
 		}
 		if (row.opportunity) {
-			return { name: `Opp: ${row.opportunity.name || 'Opportunity'}` };
+			return { name: `商机: ${row.opportunity.name || '商机'}` };
 		}
 		if (row.case_) {
-			return { name: `Case: ${row.case_.subject || row.case_.name || 'Case'}` };
+			return { name: `工单: ${row.case_.subject || row.case_.name || '工单'}` };
 		}
 		if (row.account) {
-			return { name: `Account: ${row.account.name || 'Account'}` };
+			return { name: `客户: ${row.account.name || '客户'}` };
 		}
 		return null;
 	}
 
 	/** @type {TaskColumn[]} */
 	const taskColumns = [
-		{ key: 'subject', label: 'Task', type: 'text', width: 'w-64', canHide: false },
+		{ key: 'subject', label: '任务', type: 'text', width: 'w-64', canHide: false },
 		{
 			key: 'relatedTo',
-			label: 'Related To',
+			label: '关联对象',
 			type: 'relation',
 			width: 'w-48',
 			relationIcon: 'link',
 			getValue: getRelatedEntity
 		},
-		{ key: 'dueDate', label: 'Due Date', type: 'date', width: 'w-36' },
-		{ key: 'priority', label: 'Priority', type: 'select', options: priorityOptions, width: 'w-28' },
-		{ key: 'status', label: 'Status', type: 'select', options: statusOptions, width: 'w-36' },
+		{ key: 'dueDate', label: '到期日期', type: 'date', width: 'w-36' },
+		{ key: 'priority', label: '优先级', type: 'select', options: priorityOptions, width: 'w-28' },
+		{ key: 'status', label: '状态', type: 'select', options: statusOptions, width: 'w-36' },
 		{
 			key: 'assignedTo',
-			label: 'Assigned To',
+			label: '分配给',
 			type: 'relation',
 			width: 'w-36',
 			relationIcon: 'user',
@@ -148,13 +148,13 @@
 				const assigned = row.assignedTo || [];
 				if (assigned.length === 0) return null;
 				if (assigned.length === 1) return assigned[0];
-				return { name: `${assigned.length} users` };
+				return { name: `${assigned.length} 个用户` };
 			}
 		},
 		// Hidden by default
 		{
 			key: 'account',
-			label: 'Account',
+			label: '客户',
 			type: 'relation',
 			width: 'w-40',
 			relationIcon: 'building',
@@ -163,7 +163,7 @@
 		},
 		{
 			key: 'contacts',
-			label: 'Contacts',
+			label: '联系人',
 			type: 'relation',
 			width: 'w-36',
 			relationIcon: 'contact',
@@ -172,12 +172,12 @@
 				const contacts = row.contacts || [];
 				if (contacts.length === 0) return null;
 				if (contacts.length === 1) return contacts[0];
-				return { name: `${contacts.length} contacts` };
+				return { name: `${contacts.length} 个联系人` };
 			}
 		},
 		{
 			key: 'teams',
-			label: 'Teams',
+			label: '团队',
 			type: 'relation',
 			width: 'w-36',
 			relationIcon: 'users',
@@ -186,7 +186,7 @@
 				const teams = row.teams || [];
 				if (teams.length === 0) return null;
 				if (teams.length === 1) return teams[0];
-				return { name: `${teams.length} teams` };
+				return { name: `${teams.length} 个团队` };
 			}
 		},
 		{
@@ -452,11 +452,11 @@
 	const filters = $derived(data.filters || {});
 
 	// Status options for filter dropdown
-	const statusFilterOptions = $derived([{ value: '', label: 'All Statuses' }, ...statusOptions]);
+	const statusFilterOptions = $derived([{ value: '', label: '全部状态' }, ...statusOptions]);
 
 	// Priority options for filter dropdown
 	const priorityFilterOptions = $derived([
-		{ value: '', label: 'All Priorities' },
+		{ value: '', label: '全部优先级' },
 		...priorityOptions
 	]);
 
@@ -896,7 +896,7 @@
 
 	// Account options for sheet
 	const accountOptions = $derived([
-		{ value: '', label: 'None' },
+		{ value: '', label: '无' },
 		...accounts.map((/** @type {any} */ a) => ({ value: a.id, label: a.name }))
 	]);
 
@@ -917,19 +917,19 @@
 
 	// Opportunity options for drawer
 	const opportunityOptions = $derived([
-		{ value: '', label: 'None' },
+		{ value: '', label: '无' },
 		...opportunities.map((/** @type {any} */ o) => ({ value: o.id, label: o.name }))
 	]);
 
 	// Case options for drawer
 	const caseOptions = $derived([
-		{ value: '', label: 'None' },
+		{ value: '', label: '无' },
 		...cases.map((/** @type {any} */ c) => ({ value: c.id, label: c.name }))
 	]);
 
 	// Lead options for drawer
 	const leadOptions = $derived([
-		{ value: '', label: 'None' },
+		{ value: '', label: '无' },
 		...leads.map((/** @type {any} */ l) => ({ value: l.id, label: l.name }))
 	]);
 
@@ -942,45 +942,45 @@
 	// Drawer columns for NotionDrawer (derived to use dynamic options)
 	// Parent entity fields (account, opportunity, case, lead) are only shown in edit mode
 	const drawerColumns = $derived([
-		{ key: 'subject', label: 'Subject', type: 'text', icon: FileText },
-		{ key: 'status', label: 'Status', type: 'select', icon: Circle, options: statusOptions },
-		{ key: 'priority', label: 'Priority', type: 'select', icon: Flag, options: priorityOptions },
-		{ key: 'dueDate', label: 'Due Date', type: 'date', icon: Calendar },
+		{ key: 'subject', label: '主题', type: 'text', icon: FileText },
+		{ key: 'status', label: '状态', type: 'select', icon: Circle, options: statusOptions },
+		{ key: 'priority', label: '优先级', type: 'select', icon: Flag, options: priorityOptions },
+		{ key: 'dueDate', label: '到期日期', type: 'date', icon: Calendar },
 		// Only show the parent entity field if one exists (read-only, only one can be associated)
 		...(selectedTaskId
 			? (() => {
 					const task = localTasks.find((t) => t.id === selectedTaskId);
 					if (!task) return [];
 					if (task.account)
-						return [{ key: 'accountName', label: 'Account', type: 'readonly', icon: Building2 }];
+						return [{ key: 'accountName', label: '客户', type: 'readonly', icon: Building2 }];
 					if (task.lead)
-						return [{ key: 'leadName', label: 'Lead', type: 'readonly', icon: UserPlus }];
+						return [{ key: 'leadName', label: '线索', type: 'readonly', icon: UserPlus }];
 					if (task.opportunity)
 						return [
-							{ key: 'opportunityName', label: 'Opportunity', type: 'readonly', icon: Target }
+							{ key: 'opportunityName', label: '商机', type: 'readonly', icon: Target }
 						];
 					if (task.case_)
-						return [{ key: 'caseName', label: 'Case', type: 'readonly', icon: Briefcase }];
+						return [{ key: 'caseName', label: '工单', type: 'readonly', icon: Briefcase }];
 					return [];
 				})()
 			: []),
 		{
 			key: 'assignedTo',
-			label: 'Assigned To',
+			label: '分配给',
 			type: 'multiselect',
 			icon: User,
 			options: userOptions
 		},
 		{
 			key: 'contacts',
-			label: 'Contacts',
+			label: '联系人',
 			type: 'multiselect',
 			icon: Contact,
 			options: contactOptions
 		},
-		{ key: 'teams', label: 'Teams', type: 'multiselect', icon: Users, options: teamOptions },
-		{ key: 'tags', label: 'Tags', type: 'multiselect', icon: Tag, options: tagOptions },
-		{ key: 'description', label: 'Description', type: 'textarea' }
+		{ key: 'teams', label: '团队', type: 'multiselect', icon: Users, options: teamOptions },
+		{ key: 'tags', label: '标签', type: 'multiselect', icon: Tag, options: tagOptions },
+		{ key: 'description', label: '描述', type: 'textarea' }
 	]);
 
 	// Drawer form data state
@@ -1046,10 +1046,10 @@
 </script>
 
 <svelte:head>
-	<title>Tasks - BottleCRM</title>
+	<title>任务 - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Tasks" subtitle="{filteredTasks.length} of {tasks.length} tasks">
+<PageHeader title="任务" subtitle="{filteredTasks.length} / {tasks.length} 个任务">
 	{#snippet actions()}
 		<div class="flex items-center gap-2">
 			<!-- Status Filter Chips -->
@@ -1062,7 +1062,7 @@
 						? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					All
+					全部
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'ALL'
 							? 'bg-gray-700 text-gray-200 dark:bg-gray-200 dark:text-gray-700'
@@ -1096,7 +1096,7 @@
 						? 'bg-emerald-600 text-white dark:bg-emerald-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Completed
+					已完成
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'completed'
 							? 'bg-emerald-700 text-emerald-100 dark:bg-emerald-600'
@@ -1127,7 +1127,7 @@
 					class="h-8 px-3"
 				>
 					<Calendar class="mr-1.5 h-4 w-4" />
-					Calendar
+					日历
 				</Button>
 			</div>
 
@@ -1139,7 +1139,7 @@
 				onclick={() => (filtersExpanded = !filtersExpanded)}
 			>
 				<Filter class="h-4 w-4" />
-				Filters
+				筛选
 				{#if activeFiltersCount > 0}
 					<span
 						class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -1155,7 +1155,7 @@
 						{#snippet child({ props })}
 							<Button {...props} variant="outline" size="sm" class="gap-2">
 								<Eye class="h-4 w-4" />
-								Columns
+								列
 								{#if columnCounts.visible < columnCounts.total}
 									<span
 										class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -1167,7 +1167,7 @@
 						{/snippet}
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content align="end" class="w-48">
-						<DropdownMenu.Label>Toggle columns</DropdownMenu.Label>
+						<DropdownMenu.Label>切换列</DropdownMenu.Label>
 						<DropdownMenu.Separator />
 						{#each taskColumns as column (column.key)}
 							<DropdownMenu.CheckboxItem
@@ -1203,16 +1203,16 @@
 		<SearchInput
 			value={filters.search}
 			onchange={(value) => updateFilters({ ...filters, search: value })}
-			placeholder="Search tasks..."
+			placeholder="搜索任务..."
 		/>
 		<SelectFilter
-			label="Priority"
+			label="优先级"
 			options={priorityFilterOptions}
 			value={filters.priority}
 			onchange={(value) => updateFilters({ ...filters, priority: value })}
 		/>
 		<DateRangeFilter
-			label="Due Date"
+			label="到期日期"
 			startDate={filters.due_date_gte}
 			endDate={filters.due_date_lte}
 			onchange={(start, end) =>
@@ -1230,7 +1230,7 @@
 			{#snippet emptyState()}
 				<div class="flex flex-col items-center justify-center py-16 text-center">
 					<CheckSquare class="text-muted-foreground/50 mb-4 h-12 w-12" />
-					<h3 class="text-foreground text-lg font-medium">No tasks found</h3>
+					<h3 class="text-foreground text-lg font-medium">未找到任务</h3>
 				</div>
 			{/snippet}
 		</CrmTable>
@@ -1408,7 +1408,7 @@
 						{:else}
 							<div class="py-12 text-center">
 								<Calendar class="text-muted-foreground/50 mx-auto mb-4 h-12 w-12" />
-								<p class="text-muted-foreground text-sm">No tasks scheduled for this date</p>
+								<p class="text-muted-foreground text-sm">此日期没有安排任务</p>
 								<Button onclick={addNewTask} variant="outline" size="sm" class="mt-4">
 									<Plus class="mr-2 h-4 w-4" />
 									Add Task
@@ -1455,8 +1455,8 @@
 	data={drawerFormData}
 	columns={drawerColumns}
 	titleKey="subject"
-	titlePlaceholder="Task title"
-	headerLabel={isCreateMode ? 'New Task' : 'Task'}
+	titlePlaceholder="任务标题"
+	headerLabel={isCreateMode ? '新建任务' : '任务'}
 	mode={isCreateMode ? 'create' : 'view'}
 	onFieldChange={handleDrawerFieldChange}
 	onDelete={deleteSelectedTask}
@@ -1485,10 +1485,10 @@
 
 	{#snippet footerActions()}
 		{#if isCreateMode}
-			<Button variant="outline" size="sm" onclick={closeTaskSheet}>Cancel</Button>
-			<Button size="sm" onclick={handleDrawerSave}>Create Task</Button>
+			<Button variant="outline" size="sm" onclick={closeTaskSheet}>取消</Button>
+			<Button size="sm" onclick={handleDrawerSave}>创建任务</Button>
 		{:else if selectedTask}
-			<Button variant="outline" size="sm" onclick={closeTaskSheet}>Cancel</Button>
+			<Button variant="outline" size="sm" onclick={closeTaskSheet}>取消</Button>
 			{#if isCompleted}
 				<Button variant="outline" size="sm" onclick={reopenSelectedTask}>
 					<RotateCcw class="mr-2 h-4 w-4" />
@@ -1500,7 +1500,7 @@
 					Complete
 				</Button>
 			{/if}
-			<Button size="sm" onclick={handleDrawerUpdate}>Save</Button>
+			<Button size="sm" onclick={handleDrawerUpdate}>保存</Button>
 		{/if}
 	{/snippet}
 </CrmDrawer>

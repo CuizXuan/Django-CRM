@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-	<title>Create Organization | BottleCRM</title>
+	<title>创建组织 | BottleCRM</title>
 </svelte:head>
 
 <div class="flex min-h-screen flex-col bg-slate-50">
@@ -37,7 +37,7 @@
 				class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
 			>
 				<ArrowLeft class="h-4 w-4" />
-				<span>Back</span>
+				<span>返回</span>
 			</a>
 		</div>
 	</header>
@@ -50,8 +50,8 @@
 				<div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
 					<Sparkles class="h-6 w-6 text-blue-600" />
 				</div>
-				<h1 class="text-2xl font-bold text-slate-900">Create organization</h1>
-				<p class="mt-2 text-slate-600">Set up a new workspace for your team</p>
+				<h1 class="text-2xl font-bold text-slate-900">创建组织</h1>
+				<p class="mt-2 text-slate-600">为您的团队设置新的工作空间</p>
 			</div>
 
 			<!-- Form Card -->
@@ -71,7 +71,7 @@
 					<!-- Organization Name Field -->
 					<div class="space-y-2">
 						<label for="org_name" class="block text-sm font-medium text-slate-700">
-							Organization name
+							组织名称
 						</label>
 						<input
 							type="text"
@@ -80,9 +80,9 @@
 							required
 							disabled={isSubmitting || !!form?.data}
 							class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-900 placeholder-slate-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:bg-slate-50 disabled:text-slate-500"
-							placeholder="e.g. Acme Inc."
+							placeholder="例如：某某公司"
 						/>
-						<p class="text-xs text-slate-500">This will be your workspace name in BottleCRM</p>
+						<p class="text-xs text-slate-500">这将是您在 BottleCRM 中的工作空间名称</p>
 					</div>
 
 					<!-- Error Message -->
@@ -90,8 +90,8 @@
 						<div class="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
 							<AlertCircle class="h-5 w-5 shrink-0 text-red-500" />
 							<div>
-								<p class="text-sm font-medium text-red-800">Unable to create organization</p>
-								<p class="mt-1 text-sm text-red-600">{form.error.name || 'Please try again'}</p>
+								<p class="text-sm font-medium text-red-800">无法创建组织</p>
+								<p class="mt-1 text-sm text-red-600">{form.error.name || '请重试'}</p>
 							</div>
 						</div>
 					{/if}
@@ -101,8 +101,8 @@
 						<div class="flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 p-4">
 							<Check class="h-5 w-5 shrink-0 text-green-500" />
 							<div>
-								<p class="text-sm font-medium text-green-800">Organization created!</p>
-								<p class="mt-1 text-sm text-green-600">Redirecting to your organizations...</p>
+								<p class="text-sm font-medium text-green-800">组织创建成功！</p>
+								<p class="mt-1 text-sm text-green-600">正在跳转到您的组织...</p>
 							</div>
 						</div>
 					{/if}
@@ -115,13 +115,13 @@
 					>
 						{#if isSubmitting}
 							<div class="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
-							<span>Creating...</span>
+							<span>创建中...</span>
 						{:else if form?.data}
 							<Check class="h-4 w-4" />
-							<span>Created!</span>
+							<span>已创建！</span>
 						{:else}
 							<Building2 class="h-4 w-4" />
-							<span>Create organization</span>
+							<span>创建组织</span>
 						{/if}
 					</button>
 				</form>
@@ -129,7 +129,7 @@
 
 			<!-- Help Text -->
 			<p class="mt-6 text-center text-sm text-slate-500">
-				You can invite team members after creating your organization
+				创建组织后，您可以邀请团队成员
 			</p>
 		</div>
 	</main>

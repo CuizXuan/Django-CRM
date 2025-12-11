@@ -29,12 +29,18 @@
 		COLD: { color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' }
 	});
 
+	const ratingLabel = /** @type {Record<string, string>} */ ({
+		HOT: '热点',
+		WARM: '温热',
+		COLD: '冷'
+	});
+
 	/**
 	 * Format date for display
 	 * @param {string | null | undefined} dateStr
 	 */
 	function formatFollowUp(dateStr) {
-		if (!dateStr) return 'No follow-up set';
+		if (!dateStr) return '未设置跟进';
 		const date = new Date(dateStr);
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
@@ -44,13 +50,13 @@
 		const dateOnly = new Date(date);
 		dateOnly.setHours(0, 0, 0, 0);
 
-		if (dateOnly.getTime() === today.getTime()) return 'Today';
-		if (dateOnly.getTime() === tomorrow.getTime()) return 'Tomorrow';
+		if (dateOnly.getTime() === today.getTime()) return '今天';
+		if (dateOnly.getTime() === tomorrow.getTime()) return '明天';
 		if (dateOnly.getTime() < today.getTime()) {
 			const days = Math.floor((today.getTime() - dateOnly.getTime()) / (1000 * 60 * 60 * 24));
-			return `${days}d overdue`;
+			return `逾期 ${days} 天`;
 		}
-		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+		return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 	}
 
 	/**
@@ -71,7 +77,7 @@
 	 */
 	function getLeadName(lead) {
 		const parts = [lead.first_name, lead.last_name].filter(Boolean);
-		return parts.length > 0 ? parts.join(' ') : 'Unnamed Lead';
+		return parts.length > 0 ? parts.join(' ') : '未命名线索';
 	}
 </script>
 
@@ -79,10 +85,10 @@
 	<Card.Header class="flex-row items-center justify-between space-y-0 pb-3">
 		<div class="flex items-center gap-2">
 			<Flame class="h-4 w-4 text-red-500" />
-			<Card.Title class="text-foreground text-sm font-medium">Hot Leads</Card.Title>
+			<Card.Title class="text-foreground text-sm font-medium">热点线索</Card.Title>
 		</div>
 		<Button variant="ghost" size="sm" href="/leads?rating=HOT" class="text-xs">
-			View all
+			查看全部
 			<ChevronRight class="ml-1 h-3 w-3" />
 		</Button>
 	</Card.Header>
@@ -90,8 +96,8 @@
 		{#if leads.length === 0}
 			<div class="text-muted-foreground flex h-full flex-col items-center justify-center py-8 text-center">
 				<Flame class="text-muted-foreground/30 mb-2 h-10 w-10" />
-				<p class="text-sm">No hot leads</p>
-				<p class="text-muted-foreground/70 text-xs">Mark leads as "Hot" to see them here</p>
+				<p class="text-sm">暂无热点线索</p>
+				<p class="text-muted-foreground/70 text-xs">将线索标记为“HOT”即可在此查看</p>
 			</div>
 		{:else}
 			<div class="divide-border/50 divide-y">
@@ -105,12 +111,12 @@
 								{getLeadName(lead)}
 							</p>
 							<p class="text-muted-foreground truncate text-xs">
-								{lead.company || 'No company'}
+								{lead.company || '未填写公司'}
 							</p>
 						</div>
 						<Badge class="{ratingConfig[lead.rating || 'HOT']?.color} flex-shrink-0 gap-1 text-[10px]">
 							<Flame class="h-3 w-3" />
-							{lead.rating || 'HOT'}
+							{ratingLabel[lead.rating || 'HOT'] || lead.rating || 'HOT'}
 						</Badge>
 						{#if lead.next_follow_up}
 							<div class="flex flex-shrink-0 items-center gap-1">
@@ -126,10 +132,10 @@
 						{/if}
 						<!-- Hover actions -->
 						<div class="flex flex-shrink-0 gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-							<Button variant="ghost" size="icon" class="h-7 w-7" title="Call">
+							<Button variant="ghost" size="icon" class="h-7 w-7" title="电话">
 								<Phone class="h-3.5 w-3.5" />
 							</Button>
-							<Button variant="ghost" size="icon" class="h-7 w-7" title="Email">
+							<Button variant="ghost" size="icon" class="h-7 w-7" title="邮件">
 								<Mail class="h-3.5 w-3.5" />
 							</Button>
 						</div>

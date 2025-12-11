@@ -20,7 +20,7 @@
 		startDate = $bindable(''),
 		endDate = $bindable(''),
 		label = '',
-		placeholder = 'Select date range',
+		placeholder = '选择日期范围',
 		class: className,
 		onchange
 	} = $props();
@@ -37,35 +37,35 @@
 	/** @type {{ label: string, getRange: () => { start: string, end: string } }[]} */
 	const presets = [
 		{
-			label: 'Today',
+			label: '今天',
 			getRange: () => {
 				const d = todayDate.toString();
 				return { start: d, end: d };
 			}
 		},
 		{
-			label: 'Last 7 days',
+			label: '最近7天',
 			getRange: () => ({
 				start: todayDate.subtract({ days: 7 }).toString(),
 				end: todayDate.toString()
 			})
 		},
 		{
-			label: 'Last 30 days',
+			label: '最近30天',
 			getRange: () => ({
 				start: todayDate.subtract({ days: 30 }).toString(),
 				end: todayDate.toString()
 			})
 		},
 		{
-			label: 'This month',
+			label: '本月',
 			getRange: () => ({
 				start: todayDate.set({ day: 1 }).toString(),
 				end: todayDate.toString()
 			})
 		},
 		{
-			label: 'Last month',
+			label: '上月',
 			getRange: () => {
 				const lastMonth = todayDate.subtract({ months: 1 });
 				const lastDayOfLastMonth = lastMonth.set({ day: 1 }).add({ months: 1 }).subtract({ days: 1 });
@@ -83,8 +83,8 @@
 			if (startDate === endDate) return formatDate(startDate);
 			return `${formatDate(startDate)} - ${formatDate(endDate)}`;
 		}
-		if (startDate) return `From ${formatDate(startDate)}`;
-		return `Until ${formatDate(endDate)}`;
+		if (startDate) return `从 ${formatDate(startDate)}`;
+		return `至 ${formatDate(endDate)}`;
 	});
 
 	/**
@@ -93,7 +93,7 @@
 	function formatDate(dateStr) {
 		if (!dateStr) return '';
 		const date = new Date(dateStr);
-		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+		return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric', year: 'numeric' });
 	}
 
 	/**
@@ -210,9 +210,9 @@
 				<div class="p-2">
 					<div class="mb-2 text-center text-sm text-muted-foreground">
 						{#if selectingEnd}
-							Select end date
+							选择结束日期
 						{:else}
-							Select start date
+							选择开始日期
 						{/if}
 					</div>
 					<Calendar
@@ -221,7 +221,7 @@
 					/>
 					{#if startDate && !endDate}
 						<div class="mt-2 text-center text-xs text-muted-foreground">
-							Start: {formatDate(startDate)}
+							开始：{formatDate(startDate)}
 						</div>
 					{/if}
 				</div>

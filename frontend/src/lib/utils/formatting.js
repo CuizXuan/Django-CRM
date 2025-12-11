@@ -4,31 +4,32 @@
  */
 
 import { format, formatDistanceToNow } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 
 /**
  * Format a date string to a human-readable format
  * @param {string | Date | null | undefined} date - Date to format
- * @param {string} [formatStr='MMM d, yyyy'] - date-fns format string
+ * @param {string} [formatStr='yyyy年M月d日'] - date-fns format string
  * @returns {string} Formatted date string or '-' if no date
  */
-export function formatDate(date, formatStr = 'MMM d, yyyy') {
+export function formatDate(date, formatStr = 'yyyy年M月d日') {
 	if (!date) return '-';
 	try {
-		return format(new Date(date), formatStr);
+		return format(new Date(date), formatStr, { locale: zhCN });
 	} catch {
 		return '-';
 	}
 }
 
 /**
- * Format a date as relative time (e.g., "2 hours ago")
+ * Format a date as relative time (e.g., "2小时前")
  * @param {string | Date | null | undefined} date - Date to format
  * @returns {string} Relative time string or '-' if no date
  */
 export function formatRelativeDate(date) {
 	if (!date) return '-';
 	try {
-		return formatDistanceToNow(new Date(date), { addSuffix: true });
+		return formatDistanceToNow(new Date(date), { addSuffix: true, locale: zhCN });
 	} catch {
 		return '-';
 	}
@@ -37,18 +38,31 @@ export function formatRelativeDate(date) {
 /**
  * Format a number as currency
  * @param {number | null | undefined} amount - Amount to format
- * @param {string} [currency='USD'] - Currency code
- * @param {boolean} [compact=false] - Use compact notation (e.g., $1.2M)
+ * @param {string} [currency='CNY'] - Currency code
+ * @param {boolean} [compact=false] - Use compact notation (e.g., 1.2万)
+ * @param {boolean} [showSymbol=true] - Show currency symbol
  * @returns {string} Formatted currency string or '-' if no amount
  */
-export function formatCurrency(amount, currency = 'USD', compact = false) {
+export function formatCurrency(amount, currency = 'CNY', compact = false, showSymbol = true) {
 	if (amount === null || amount === undefined) return '-';
-	return new Intl.NumberFormat('en-US', {
-		style: 'currency',
-		currency,
-		notation: compact ? 'compact' : 'standard',
-		maximumFractionDigits: compact ? 1 : 2
-	}).format(amount);
+
+	const locale = currency === 'CNY' || currency === 'CNH' ? 'zh-CN' : 'zh-CN';
+
+	if (showSymbol) {
+		return new Intl.NumberFormat(locale, {
+			style: 'currency',
+			currency,
+			notation: compact ? 'compact' : 'standard',
+			maximumFractionDigits: compact ? 1 : 2,
+			currencyDisplay: 'narrowSymbol'
+		}).format(amount);
+	} else {
+		// 不显示货币符号，只格式化数字
+		return new Intl.NumberFormat(locale, {
+			notation: compact ? 'compact' : 'standard',
+			maximumFractionDigits: compact ? 1 : 2
+		}).format(amount);
+	}
 }
 
 /**
@@ -58,7 +72,7 @@ export function formatCurrency(amount, currency = 'USD', compact = false) {
  */
 export function formatNumber(num) {
 	if (num === null || num === undefined) return '-';
-	return new Intl.NumberFormat('en-US').format(num);
+	return new Intl.NumberFormat('zh-CN').format(num);
 }
 
 /**

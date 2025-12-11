@@ -83,7 +83,7 @@ export async function load({ locals, cookies }) {
 		if (!isAdmin) {
 			return {
 				error: {
-					name: 'You do not have permission to access this page'
+					name: '您没有权限访问此页面'
 				}
 			};
 		}
@@ -137,7 +137,7 @@ export async function load({ locals, cookies }) {
 		console.error('Error loading users:', err);
 		return {
 			error: {
-				name: err.message || 'Failed to load users'
+				name: err.message || '加载用户失败'
 			}
 		};
 	}
@@ -157,7 +157,7 @@ export const actions = {
 			const role = formData.get('role')?.toString();
 
 			if (!email || !role) {
-				return fail(400, { error: 'Email and role are required' });
+				return fail(400, { error: '邮箱和角色为必填项' });
 			}
 
 			// Create user via Django API
@@ -187,12 +187,12 @@ export const actions = {
 				err.message.includes('already exists') ||
 				err.message.includes('already in organization')
 			) {
-				return fail(400, { error: 'User already in organization' });
+				return fail(400, { error: '用户已在组织中' });
 			}
 			if (err.message.includes('not found')) {
-				return fail(404, { error: 'No user found with that email' });
+				return fail(404, { error: '未找到使用该邮箱的用户' });
 			}
-			return fail(500, { error: err.message || 'Failed to add user' });
+			return fail(500, { error: err.message || '添加用户失败' });
 		}
 	},
 
@@ -209,12 +209,12 @@ export const actions = {
 			const role = formData.get('role')?.toString();
 
 			if (!user_id || !role) {
-				return fail(400, { error: 'User and role are required' });
+				return fail(400, { error: '用户和角色为必填项' });
 			}
 
 			// Don't allow editing own role
 			if (user_id === user.id) {
-				return fail(400, { error: 'You cannot change your own role' });
+				return fail(400, { error: '您不能更改自己的角色' });
 			}
 
 			// Update user role via Django API
@@ -232,9 +232,9 @@ export const actions = {
 		} catch (err) {
 			console.error('Error editing role:', err);
 			if (err.message.includes('at least one admin')) {
-				return fail(400, { error: 'Organization must have at least one admin' });
+				return fail(400, { error: '组织必须至少有一名管理员' });
 			}
-			return fail(500, { error: err.message || 'Failed to edit role' });
+			return fail(500, { error: err.message || '编辑角色失败' });
 		}
 	},
 
@@ -250,12 +250,12 @@ export const actions = {
 			const user_id = formData.get('user_id')?.toString();
 
 			if (!user_id) {
-				return fail(400, { error: 'User is required' });
+				return fail(400, { error: '用户为必填项' });
 			}
 
 			// Don't allow removing self
 			if (user_id === user.id) {
-				return fail(400, { error: 'You cannot remove yourself' });
+				return fail(400, { error: '您不能移除自己' });
 			}
 
 			// Remove user via Django API (soft delete - set is_active=False)
@@ -273,9 +273,9 @@ export const actions = {
 		} catch (err) {
 			console.error('Error removing user:', err);
 			if (err.message.includes('at least one admin')) {
-				return fail(400, { error: 'Organization must have at least one admin' });
+				return fail(400, { error: '组织必须至少有一名管理员' });
 			}
-			return fail(500, { error: err.message || 'Failed to remove user' });
+			return fail(500, { error: err.message || '移除用户失败' });
 		}
 	},
 
@@ -292,7 +292,7 @@ export const actions = {
 			const users = formData.getAll('users').map((u) => u.toString());
 
 			if (!name) {
-				return fail(400, { error: 'Team name is required' });
+				return fail(400, { error: '团队名称为必填项' });
 			}
 
 			// Create team via Django API
@@ -314,9 +314,9 @@ export const actions = {
 		} catch (err) {
 			console.error('Error creating team:', err);
 			if (err.message.includes('already exists')) {
-				return fail(400, { error: 'A team with this name already exists' });
+				return fail(400, { error: '该名称的团队已存在' });
 			}
-			return fail(500, { error: err.message || 'Failed to create team' });
+			return fail(500, { error: err.message || '创建团队失败' });
 		}
 	},
 
@@ -334,11 +334,11 @@ export const actions = {
 			const users = formData.getAll('users').map((u) => u.toString());
 
 			if (!teamId) {
-				return fail(400, { error: 'Team ID is required' });
+				return fail(400, { error: '团队ID为必填项' });
 			}
 
 			if (!name) {
-				return fail(400, { error: 'Team name is required' });
+				return fail(400, { error: '团队名称为必填项' });
 			}
 
 			// Update team via Django API
@@ -359,9 +359,9 @@ export const actions = {
 		} catch (err) {
 			console.error('Error updating team:', err);
 			if (err.message.includes('already exists')) {
-				return fail(400, { error: 'A team with this name already exists' });
+				return fail(400, { error: '该名称的团队已存在' });
 			}
-			return fail(500, { error: err.message || 'Failed to update team' });
+			return fail(500, { error: err.message || '更新团队失败' });
 		}
 	},
 
@@ -376,7 +376,7 @@ export const actions = {
 			const teamId = formData.get('team_id')?.toString();
 
 			if (!teamId) {
-				return fail(400, { error: 'Team ID is required' });
+				return fail(400, { error: '团队ID为必填项' });
 			}
 
 			// Delete team via Django API
@@ -391,7 +391,7 @@ export const actions = {
 			return { success: true, action: 'delete_team' };
 		} catch (err) {
 			console.error('Error deleting team:', err);
-			return fail(500, { error: err.message || 'Failed to delete team' });
+			return fail(500, { error: err.message || '删除团队失败' });
 		}
 	}
 };

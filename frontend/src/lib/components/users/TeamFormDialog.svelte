@@ -48,8 +48,8 @@
 	});
 
 	const isEditing = $derived(!!team?.id);
-	const dialogTitle = $derived(isEditing ? 'Edit Team' : 'Create Team');
-	const submitLabel = $derived(isEditing ? 'Save Changes' : 'Create Team');
+	const dialogTitle = $derived(isEditing ? '编辑团队' : '创建团队');
+	const submitLabel = $derived(isEditing ? '保存更改' : '创建团队');
 
 	// Transform users for multi-select
 	const userOptions = $derived(
@@ -94,29 +94,29 @@
 			<Dialog.Title class="">{dialogTitle}</Dialog.Title>
 			<Dialog.Description class="">
 				{isEditing
-					? 'Update team details and member assignments.'
-					: 'Create a new team to group users for assignments.'}
+					? '更新团队详情和成员分配。'
+					: '创建新团队以分组用户进行分配。'}
 			</Dialog.Description>
 		</Dialog.Header>
 
 		<form onsubmit={handleSubmit} class="space-y-4">
 			<div class="space-y-2">
-				<Label class="" for="team-name">Team Name *</Label>
+				<Label class="" for="team-name">团队名称 *</Label>
 				<Input
 					id="team-name"
 					bind:value={formName}
-					placeholder="e.g., Sales Team"
+					placeholder="例如：销售团队"
 					required
 					disabled={isLoading}
 				/>
 			</div>
 
 			<div class="space-y-2">
-				<Label class="" for="team-description">Description</Label>
+				<Label class="" for="team-description">描述</Label>
 				<textarea
 					id="team-description"
 					bind:value={formDescription}
-					placeholder="Describe the team's purpose..."
+					placeholder="描述团队的目的..."
 					rows="3"
 					disabled={isLoading}
 					class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -124,27 +124,27 @@
 			</div>
 
 			<div class="space-y-2">
-				<Label class="">Assign Members</Label>
+				<Label class="">分配成员</Label>
 				<EditableMultiSelect
 					value={formUsers}
 					options={userOptions}
-					placeholder="Select team members..."
-					emptyText="No members assigned"
+					placeholder="选择团队成员..."
+					emptyText="未分配成员"
 					onchange={handleUsersChange}
 					disabled={isLoading}
 					class="rounded-md border p-1"
 				/>
 				<p class="text-muted-foreground text-xs">
-					Team members will be able to access records assigned to this team.
+					团队成员将能够访问分配给此团队的记录。
 				</p>
 			</div>
 
 			<Dialog.Footer class="gap-2 sm:gap-0">
 				<Button type="button" variant="outline" onclick={handleClose} disabled={isLoading}>
-					Cancel
+					取消
 				</Button>
 				<Button type="submit" disabled={isLoading || !formName.trim()}>
-					{isLoading ? 'Saving...' : submitLabel}
+					{isLoading ? '保存中...' : submitLabel}
 				</Button>
 			</Dialog.Footer>
 		</form>

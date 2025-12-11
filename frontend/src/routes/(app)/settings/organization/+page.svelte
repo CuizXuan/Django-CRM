@@ -21,30 +21,34 @@
 
 	// Country options (simplified list of common countries)
 	const countryOptions = [
-		{ value: '', label: 'Select Country' },
-		{ value: 'US', label: 'United States' },
-		{ value: 'GB', label: 'United Kingdom' },
-		{ value: 'CA', label: 'Canada' },
-		{ value: 'AU', label: 'Australia' },
-		{ value: 'DE', label: 'Germany' },
-		{ value: 'FR', label: 'France' },
-		{ value: 'IN', label: 'India' },
-		{ value: 'JP', label: 'Japan' },
-		{ value: 'SG', label: 'Singapore' },
-		{ value: 'AE', label: 'United Arab Emirates' },
-		{ value: 'BR', label: 'Brazil' },
-		{ value: 'MX', label: 'Mexico' },
-		{ value: 'CH', label: 'Switzerland' },
-		{ value: 'NL', label: 'Netherlands' },
-		{ value: 'ES', label: 'Spain' },
-		{ value: 'IT', label: 'Italy' }
+		{ value: '', label: '选择国家' },
+		{ value: 'CN', label: '中国' },
+		{ value: 'US', label: '美国' },
+		{ value: 'GB', label: '英国' },
+		{ value: 'CA', label: '加拿大' },
+		{ value: 'AU', label: '澳大利亚' },
+		{ value: 'DE', label: '德国' },
+		{ value: 'FR', label: '法国' },
+		{ value: 'IN', label: '印度' },
+		{ value: 'JP', label: '日本' },
+		{ value: 'SG', label: '新加坡' },
+		{ value: 'AE', label: '阿联酋' },
+		{ value: 'BR', label: '巴西' },
+		{ value: 'MX', label: '墨西哥' },
+		{ value: 'CH', label: '瑞士' },
+		{ value: 'NL', label: '荷兰' },
+		{ value: 'ES', label: '西班牙' },
+		{ value: 'IT', label: '意大利' },
+		{ value: 'KR', label: '韩国' },
+		{ value: 'HK', label: '香港' },
+		{ value: 'TW', label: '台湾' }
 	];
 
 	// Form state - initialized from settings via $effect
 	let formName = $state('');
 	let formDomain = $state('');
 	let formDescription = $state('');
-	let formCurrency = $state('USD');
+	let formCurrency = $state('CNY');
 	let formCountry = $state('');
 
 	// Update form state when settings change
@@ -52,14 +56,14 @@
 		formName = settings.name || '';
 		formDomain = settings.domain || '';
 		formDescription = settings.description || '';
-		formCurrency = settings.default_currency || 'USD';
-		formCountry = settings.default_country || '';
+		formCurrency = settings.default_currency || 'CNY';
+		formCountry = settings.default_country || 'CN';
 	});
 
 	// Handle form result
 	$effect(() => {
 		if (form?.success) {
-			toast.success('Organization settings updated');
+			toast.success('组织设置更新成功');
 			invalidateAll();
 		} else if (form?.error) {
 			toast.error(form.error);
@@ -68,10 +72,10 @@
 </script>
 
 <svelte:head>
-	<title>Organization Settings - BottleCRM</title>
+	<title>组织设置 - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Organization Settings" subtitle="Manage your organization preferences">
+<PageHeader title="组织设置" subtitle="管理您的组织偏好">
 	{#snippet actions()}
 		<div class="flex items-center gap-2">
 			<Settings class="text-muted-foreground h-5 w-5" />
@@ -96,24 +100,24 @@
 			<Card.Header class="pb-4">
 				<Card.Title class="flex items-center gap-2 text-lg">
 					<Building2 class="h-5 w-5" />
-					Organization Details
+					组织详细信息
 				</Card.Title>
-				<Card.Description class="">Basic information about your organization</Card.Description>
+				<Card.Description class="">关于您组织的基本信息</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-4">
 				<div class="grid gap-4 md:grid-cols-2">
 					<div class="grid gap-2">
-						<Label class="" for="name">Organization Name</Label>
+						<Label class="" for="name">组织名称</Label>
 						<Input
 							id="name"
 							name="name"
 							type="text"
 							bind:value={formName}
-							placeholder="Enter organization name"
+							placeholder="请输入组织名称"
 						/>
 					</div>
 					<div class="grid gap-2">
-						<Label class="" for="domain">Domain</Label>
+						<Label class="" for="domain">域名</Label>
 						<div class="relative">
 							<Globe class="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
 							<Input
@@ -128,13 +132,13 @@
 					</div>
 				</div>
 				<div class="grid gap-2">
-					<Label class="" for="description">Description</Label>
+					<Label class="" for="description">描述</Label>
 					<textarea
 						id="description"
 						name="description"
 						rows="3"
 						bind:value={formDescription}
-						placeholder="Describe your organization..."
+						placeholder="描述您的组织..."
 						class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
 					></textarea>
 				</div>
@@ -146,16 +150,16 @@
 			<Card.Header class="pb-4">
 				<Card.Title class="flex items-center gap-2 text-lg">
 					<Globe class="h-5 w-5" />
-					Locale Settings
+					本地化设置
 				</Card.Title>
 				<Card.Description class="">
-					Configure default currency and country for your organization
+					为您的组织配置默认货币和国家
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-4">
 				<div class="grid gap-4 md:grid-cols-2">
 					<div class="grid gap-2">
-						<Label class="" for="default_currency">Default Currency</Label>
+						<Label class="" for="default_currency">默认货币</Label>
 						<div class="relative">
 							<Banknote class="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
 							<select
@@ -170,12 +174,12 @@
 							</select>
 						</div>
 						<p class="text-muted-foreground text-xs">
-							This will be the default currency for new opportunities, leads, and invoices.
+							这将是新商机、线索和发票的默认货币。
 						</p>
 					</div>
 
 					<div class="grid gap-2">
-						<Label class="" for="default_country">Default Country</Label>
+						<Label class="" for="default_country">默认国家</Label>
 						<div class="relative">
 							<Globe class="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
 							<select
@@ -190,7 +194,7 @@
 							</select>
 						</div>
 						<p class="text-muted-foreground text-xs">
-							Default country for addresses and locale formatting.
+							地址和本地化格式的默认国家。
 						</p>
 					</div>
 				</div>
@@ -198,9 +202,9 @@
 				<!-- Preview -->
 				{#if formCurrency}
 					<div class="bg-muted/50 rounded-lg p-4">
-						<p class="text-muted-foreground mb-2 text-sm font-medium">Preview</p>
+						<p class="text-muted-foreground mb-2 text-sm font-medium">预览</p>
 						<p class="text-foreground text-lg font-semibold">
-							{new Intl.NumberFormat('en-US', {
+							{new Intl.NumberFormat('zh-CN', {
 								style: 'currency',
 								currency: formCurrency
 							}).format(12345.67)}
@@ -213,7 +217,7 @@
 		<!-- Save Button -->
 		<div class="flex justify-end">
 			<Button type="submit" disabled={isLoading}>
-				{isLoading ? 'Saving...' : 'Save Changes'}
+				{isLoading ? '保存中...' : '保存更改'}
 			</Button>
 		</div>
 	</form>

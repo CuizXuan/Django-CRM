@@ -23,7 +23,7 @@
 			icon: AlertCircle,
 			iconClass: 'text-red-500',
 			count: overdueCount,
-			label: 'Overdue',
+			label: '已逾期',
 			show: overdueCount > 0
 		},
 		{
@@ -31,7 +31,7 @@
 			icon: Calendar,
 			iconClass: 'text-orange-500',
 			count: todayCount,
-			label: 'Due Today',
+			label: '今日到期',
 			show: true
 		},
 		{
@@ -39,7 +39,7 @@
 			icon: Phone,
 			iconClass: 'text-blue-500',
 			count: followupsCount,
-			label: 'Follow-ups',
+			label: '今日跟进',
 			show: true
 		},
 		{
@@ -47,7 +47,7 @@
 			icon: Flame,
 			iconClass: 'text-red-500',
 			count: hotLeadsCount,
-			label: 'Hot Leads',
+			label: '热点线索',
 			show: hotLeadsCount > 0
 		}
 	]);
@@ -64,7 +64,7 @@
 			: 'border-border/50 bg-muted/30'}"
 	>
 		<span class="text-muted-foreground hidden text-xs font-medium uppercase tracking-wider sm:block"
-			>Today's Focus</span
+			>今日关注</span
 		>
 		<div class="flex items-center gap-1 sm:gap-3">
 			{#each visibleItems as item}

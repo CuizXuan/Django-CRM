@@ -27,6 +27,15 @@
 		{ id: 'CLOSED_WON', color: 'bg-green-500' },
 		{ id: 'CLOSED_LOST', color: 'bg-red-500' }
 	];
+
+	const stageNameMap = {
+		PROSPECTING: '初步接触',
+		QUALIFICATION: '需求确认',
+		PROPOSAL: '方案报价',
+		NEGOTIATION: '谈判',
+		CLOSED_WON: '赢单',
+		CLOSED_LOST: '丢单'
+	};
 </script>
 
 <div class="overflow-x-auto">
@@ -39,7 +48,7 @@
 			>
 				<div class="mb-1 flex items-center gap-1.5">
 					<div class="h-2 w-2 rounded-full {stage.color}"></div>
-					<span class="text-foreground text-xs font-medium">{data.label || stage.id}</span>
+					<span class="text-foreground text-xs font-medium">{data.label || stageNameMap[stage.id] || stage.id}</span>
 					<Badge variant="secondary" class="ml-auto h-5 px-1.5 text-[10px]">{data.count}</Badge>
 				</div>
 				<p class="text-foreground text-base font-semibold tabular-nums">

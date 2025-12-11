@@ -13,7 +13,7 @@
 	 */
 	let {
 		value = $bindable(''),
-		placeholder = 'Search...',
+		placeholder = '搜索...',
 		class: className,
 		onchange,
 		...restProps

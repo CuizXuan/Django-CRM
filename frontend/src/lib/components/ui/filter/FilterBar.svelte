@@ -41,7 +41,7 @@
 			{#if activeCount > 0 && onClear}
 				<Button variant="ghost" size="sm" onclick={onClear} class="h-8 gap-1 px-2 text-xs">
 					<X class="h-3 w-3" />
-					Clear
+					清除
 				</Button>
 			{/if}
 		</div>
@@ -57,7 +57,7 @@
 				disabled={!collapsible}
 			>
 				<Filter class="h-4 w-4" />
-				<span>Filters</span>
+				<span>筛选</span>
 				{#if activeCount > 0}
 					<Badge variant="secondary" class="h-5 px-1.5 text-xs">{activeCount}</Badge>
 				{/if}
@@ -72,7 +72,7 @@
 			{#if activeCount > 0 && onClear}
 				<Button variant="ghost" size="sm" onclick={onClear} class="h-7 gap-1 px-2 text-xs">
 					<X class="h-3 w-3" />
-					Clear all
+					清除全部
 				</Button>
 			{/if}
 		</div>

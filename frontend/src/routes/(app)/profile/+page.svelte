@@ -79,10 +79,10 @@
 </script>
 
 <svelte:head>
-	<title>Profile - BottleCRM</title>
+	<title>个人资料 - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Profile" subtitle="Manage your personal information">
+<PageHeader title="个人资料" subtitle="管理您的个人信息">
 	{#snippet actions()}
 		<Button
 			variant={isEditing ? 'outline' : 'default'}
@@ -91,10 +91,10 @@
 		>
 			{#if isEditing}
 				<X class="mr-2 h-4 w-4" />
-				Cancel
+				取消
 			{:else}
 				<Edit class="mr-2 h-4 w-4" />
-				Edit Profile
+				编辑资料
 			{/if}
 		</Button>
 	{/snippet}
@@ -142,7 +142,7 @@
 						{#if data.user.profilePhoto}
 							<Avatar.Image
 								src={data.user.profilePhoto}
-								alt={data.user.name || 'Profile'}
+								alt={data.user.name || '个人资料'}
 								class=""
 							/>
 						{/if}
@@ -154,12 +154,12 @@
 					<!-- User Info -->
 					<div class="flex-1 text-center sm:text-left">
 						<h2 class="text-foreground text-xl font-semibold">
-							{data.user.name || 'Unnamed User'}
+							{data.user.name || '未命名用户'}
 						</h2>
 						<p class="text-muted-foreground">{data.user.email}</p>
 						<div class="mt-3">
 							<Badge variant={data.user.isActive ? 'default' : 'destructive'}>
-								{data.user.isActive ? 'Active' : 'Inactive'}
+								{data.user.isActive ? '活跃' : '未激活'}
 							</Badge>
 						</div>
 					</div>
@@ -170,11 +170,11 @@
 		<!-- Profile Information Card -->
 		<Card.Root>
 			<Card.Header class="">
-				<Card.Title class="">Profile Information</Card.Title>
+				<Card.Title class="">个人资料信息</Card.Title>
 				<Card.Description class="">
 					{isEditing
-						? 'Update your personal details below'
-						: 'Your personal details and account information'}
+						? '在下方更新您的个人信息'
+						: '您的个人信息和账户资料'}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content>
@@ -184,21 +184,21 @@
 						<div class="grid gap-6 sm:grid-cols-2">
 							<!-- Name -->
 							<div class="sm:col-span-2">
-								<Label for="name" class="">Full Name *</Label>
+								<Label for="name" class="">全名 *</Label>
 								<Input
 									type="text"
 									id="name"
 									name="name"
 									bind:value={formData.name}
 									required
-									placeholder="Enter your full name"
+									placeholder="请输入您的全名"
 									class="mt-1.5"
 								/>
 							</div>
 
 							<!-- Email (read-only) -->
 							<div>
-								<Label for="email" class="">Email Address</Label>
+								<Label for="email" class="">邮箱地址</Label>
 								<Input
 									type="email"
 									id="email"
@@ -206,19 +206,19 @@
 									disabled
 									class="bg-muted mt-1.5"
 								/>
-								<p class="text-muted-foreground mt-1 text-xs">Email cannot be changed</p>
+								<p class="text-muted-foreground mt-1 text-xs">邮箱无法更改</p>
 							</div>
 
 							<!-- Phone -->
 							<div>
-								<Label for="phone" class="">Phone Number</Label>
+								<Label for="phone" class="">电话号码</Label>
 								<Input
 									type="tel"
 									id="phone"
 									name="phone"
 									bind:value={formData.phone}
 									oninput={validatePhone}
-									placeholder="Enter your phone number"
+									placeholder="请输入您的电话号码"
 									class="mt-1.5"
 								/>
 								{#if phoneError}
@@ -231,7 +231,7 @@
 
 						<div class="flex justify-end gap-3">
 							<Button type="button" variant="outline" onclick={toggleEdit} disabled={isSubmitting}>
-								Cancel
+								取消
 							</Button>
 							<Button type="submit" disabled={isSubmitting || !!phoneError}>
 								{#if isSubmitting}
@@ -250,10 +250,10 @@
 											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 										></path>
 									</svg>
-									Saving...
+									保存中...
 								{:else}
 									<Save class="mr-2 h-4 w-4" />
-									Save Changes
+									保存更改
 								{/if}
 							</Button>
 						</div>
@@ -265,7 +265,7 @@
 						<div class="space-y-1">
 							<div class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
 								<Mail class="h-4 w-4" />
-								Email Address
+								邮箱地址
 							</div>
 							<p class="text-foreground">{data.user.email}</p>
 						</div>
@@ -274,10 +274,10 @@
 						<div class="space-y-1">
 							<div class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
 								<Phone class="h-4 w-4" />
-								Phone Number
+								电话号码
 							</div>
 							<p class="text-foreground">
-								{data.user.phone ? formatPhoneNumber(data.user.phone) : 'Not provided'}
+								{data.user.phone ? formatPhoneNumber(data.user.phone) : '未提供'}
 							</p>
 						</div>
 
@@ -285,7 +285,7 @@
 						<div class="space-y-1">
 							<div class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
 								<Calendar class="h-4 w-4" />
-								Last Login
+								最后登录
 							</div>
 							<p class="text-foreground">{formatDate(data.user.lastLogin)}</p>
 						</div>
@@ -294,7 +294,7 @@
 						<div class="space-y-1">
 							<div class="text-muted-foreground flex items-center gap-2 text-sm font-medium">
 								<Calendar class="h-4 w-4" />
-								Member Since
+								注册时间
 							</div>
 							<p class="text-foreground">{formatDate(data.user.createdAt)}</p>
 						</div>
@@ -307,8 +307,8 @@
 		{#if data.user.organizations && data.user.organizations.length > 0}
 			<Card.Root>
 				<Card.Header class="">
-					<Card.Title class="">Organizations</Card.Title>
-					<Card.Description class="">Organizations you are a member of</Card.Description>
+					<Card.Title class="">所属组织</Card.Title>
+					<Card.Description class="">您所属的组织</Card.Description>
 				</Card.Header>
 				<Card.Content class="space-y-4">
 					{#each data.user.organizations as userOrg}
@@ -324,12 +324,12 @@
 										{userOrg.organization.name}
 									</h4>
 									<p class="text-muted-foreground text-sm">
-										Joined {formatDate(userOrg.joinedAt)}
+										加入于 {formatDate(userOrg.joinedAt)}
 									</p>
 								</div>
 							</div>
 							<Badge variant={userOrg.role === 'ADMIN' ? 'default' : 'secondary'}>
-								{userOrg.role}
+								{userOrg.role === 'ADMIN' ? '管理员' : userOrg.role}
 							</Badge>
 						</div>
 					{/each}

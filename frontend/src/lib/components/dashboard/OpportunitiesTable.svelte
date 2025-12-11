@@ -28,12 +28,12 @@
 	let { opportunities = [] } = $props();
 
 	const stageConfig = /** @type {Record<string, { label: string, color: string }>} */ ({
-		PROSPECTING: { label: 'Prospecting', color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
-		QUALIFICATION: { label: 'Qualification', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
-		PROPOSAL: { label: 'Proposal', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
-		NEGOTIATION: { label: 'Negotiation', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
-		CLOSED_WON: { label: 'Won', color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
-		CLOSED_LOST: { label: 'Lost', color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }
+		PROSPECTING: { label: '初步接触', color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
+		QUALIFICATION: { label: '需求确认', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
+		PROPOSAL: { label: '方案报价', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
+		NEGOTIATION: { label: '谈判', color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' },
+		CLOSED_WON: { label: '赢单', color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+		CLOSED_LOST: { label: '丢单', color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }
 	});
 
 	/**
@@ -56,10 +56,10 @@
 	 */
 	function formatDaysUntilClose(days) {
 		if (days === null) return '';
-		if (days < 0) return `${Math.abs(days)}d overdue`;
-		if (days === 0) return 'Today';
-		if (days === 1) return 'Tomorrow';
-		return `${days}d`;
+		if (days < 0) return `逾期 ${Math.abs(days)} 天`;
+		if (days === 0) return '今天';
+		if (days === 1) return '明天';
+		return `${days} 天`;
 	}
 
 	// Only show open opportunities
@@ -72,10 +72,10 @@
 	<Card.Header class="flex-row items-center justify-between space-y-0 pb-3">
 		<div class="flex items-center gap-2">
 			<Target class="h-4 w-4 text-green-500" />
-			<Card.Title class="text-foreground text-sm font-medium">My Opportunities</Card.Title>
+			<Card.Title class="text-foreground text-sm font-medium">我的商机</Card.Title>
 		</div>
 		<Button variant="ghost" size="sm" href="/opportunities" class="text-xs">
-			View all
+			查看全部
 			<ChevronRight class="ml-1 h-3 w-3" />
 		</Button>
 	</Card.Header>
@@ -83,7 +83,7 @@
 		{#if openOpportunities.length === 0}
 			<div class="text-muted-foreground flex h-full flex-col items-center justify-center py-8 text-center">
 				<Target class="text-muted-foreground/30 mb-2 h-10 w-10" />
-				<p class="text-sm">No open opportunities</p>
+				<p class="text-sm">暂无进行中的商机</p>
 			</div>
 		{:else}
 			<div class="divide-border/50 divide-y">
@@ -99,7 +99,7 @@
 									{opp.name}
 								</p>
 								<p class="text-muted-foreground truncate text-xs">
-									{opp.account?.name || 'No account'}
+									{opp.account?.name || '未关联客户'}
 								</p>
 							</div>
 							<span class="text-foreground flex-shrink-0 text-sm font-semibold tabular-nums">

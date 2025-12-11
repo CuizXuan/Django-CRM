@@ -11,18 +11,18 @@ from common.utils import CURRENCY_CODES
 
 
 class Invoice(BaseModel):
-    """Model definition for Invoice."""
+    """发票模型定义"""
 
     INVOICE_STATUS = (
-        ("Draft", "Draft"),
-        ("Sent", "Sent"),
-        ("Paid", "Paid"),
-        ("Pending", "Pending"),
-        ("Cancelled", "Cancel"),
+        ("Draft", "草稿"),
+        ("Sent", "已发送"),
+        ("Paid", "已支付"),
+        ("Pending", "待处理"),
+        ("Cancelled", "已取消"),
     )
 
-    invoice_title = models.CharField(_("Invoice Title"), max_length=50)
-    invoice_number = models.CharField(_("Invoice Number"), max_length=50)
+    invoice_title = models.CharField(_("发票标题"), max_length=50)
+    invoice_number = models.CharField(_("发票编号"), max_length=50)
     from_address = models.ForeignKey(
         Address,
         related_name="invoice_from_address",
@@ -32,8 +32,8 @@ class Invoice(BaseModel):
     to_address = models.ForeignKey(
         Address, related_name="invoice_to_address", on_delete=models.SET_NULL, null=True
     )
-    name = models.CharField(_("Name"), max_length=100)
-    email = models.EmailField(_("Email"))
+    name = models.CharField(_("姓名"), max_length=100)
+    email = models.EmailField(_("邮箱"))
     assigned_to = models.ManyToManyField(Profile, related_name="invoice_assigned_to")
     # quantity is the number of hours worked
     quantity = models.PositiveIntegerField(default=0)
@@ -57,7 +57,7 @@ class Invoice(BaseModel):
     )
     is_email_sent = models.BooleanField(default=False)
     status = models.CharField(choices=INVOICE_STATUS, max_length=15, default="Draft")
-    details = models.TextField(_("Details"), null=True, blank=True)
+    details = models.TextField(_("详情"), null=True, blank=True)
     due_date = models.DateField(blank=True, null=True)
     accounts = models.ManyToManyField(Account, related_name="accounts_invoices")
     teams = models.ManyToManyField(Teams, related_name="invoices_teams")
@@ -65,8 +65,8 @@ class Invoice(BaseModel):
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="invoices")
 
     class Meta:
-        verbose_name = "Invoice"
-        verbose_name_plural = "Invoices"
+        verbose_name = "发票"
+        verbose_name_plural = "发票"
         db_table = "invoice"
         ordering = ("-created_at",)
 
@@ -150,22 +150,22 @@ class Invoice(BaseModel):
 
 
 class InvoiceHistory(BaseModel):
-    """Model definition for InvoiceHistory.
-    This model is used to track/keep a record of the updates made to original invoice object.
+    """发票历史记录模型定义。
+    此模型用于跟踪/记录对原始发票对象所做的更新。
     """
 
     INVOICE_STATUS = (
-        ("Draft", "Draft"),
-        ("Sent", "Sent"),
-        ("Paid", "Paid"),
-        ("Pending", "Pending"),
-        ("Cancelled", "Cancel"),
+        ("Draft", "草稿"),
+        ("Sent", "已发送"),
+        ("Paid", "已支付"),
+        ("Pending", "待处理"),
+        ("Cancelled", "已取消"),
     )
     invoice = models.ForeignKey(
         Invoice, on_delete=models.CASCADE, related_name="invoice_history"
     )
-    invoice_title = models.CharField(_("Invoice Title"), max_length=50)
-    invoice_number = models.CharField(_("Invoice Number"), max_length=50)
+    invoice_title = models.CharField(_("发票标题"), max_length=50)
+    invoice_number = models.CharField(_("发票编号"), max_length=50)
     from_address = models.ForeignKey(
         Address,
         related_name="invoice_history_from_address",
@@ -178,8 +178,8 @@ class InvoiceHistory(BaseModel):
         on_delete=models.SET_NULL,
         null=True,
     )
-    name = models.CharField(_("Name"), max_length=100)
-    email = models.EmailField(_("Email"))
+    name = models.CharField(_("姓名"), max_length=100)
+    email = models.EmailField(_("邮箱"))
     assigned_to = models.ManyToManyField(
         Profile, related_name="invoice_history_assigned_to"
     )
@@ -211,7 +211,7 @@ class InvoiceHistory(BaseModel):
     is_email_sent = models.BooleanField(default=False)
     status = models.CharField(choices=INVOICE_STATUS, max_length=15, default="Draft")
     # details or description here stores the fields changed in the original invoice object
-    details = models.TextField(_("Details"), null=True, blank=True)
+    details = models.TextField(_("详情"), null=True, blank=True)
     due_date = models.DateField(blank=True, null=True)
     org = models.ForeignKey(
         Org,
@@ -220,8 +220,8 @@ class InvoiceHistory(BaseModel):
     )
 
     class Meta:
-        verbose_name = "InvoiceHistory"
-        verbose_name_plural = "InvoiceHistories"
+        verbose_name = "发票历史记录"
+        verbose_name_plural = "发票历史记录"
         db_table = "invoice_history"
         ordering = ("-created_at",)
         indexes = [
@@ -257,7 +257,7 @@ class InvoiceHistory(BaseModel):
 
 
 class Product(BaseModel):
-    """Product Catalog for Line Items"""
+    """发票产品目录 - 用于行项目"""
 
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -269,9 +269,9 @@ class Product(BaseModel):
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="products")
 
     class Meta:
-        verbose_name = "Product"
-        verbose_name_plural = "Products"
-        db_table = "product"
+        verbose_name = "发票产品"
+        verbose_name_plural = "发票产品"
+        db_table = "invoice_product"
         ordering = ("name",)
         unique_together = [["sku", "org"]]
 
@@ -280,7 +280,7 @@ class Product(BaseModel):
 
 
 class InvoiceLineItem(BaseModel):
-    """Line Item for Invoices"""
+    """发票行项目"""
 
     invoice = models.ForeignKey(
         Invoice, on_delete=models.CASCADE, related_name="line_items"
@@ -304,8 +304,8 @@ class InvoiceLineItem(BaseModel):
     )
 
     class Meta:
-        verbose_name = "Invoice Line Item"
-        verbose_name_plural = "Invoice Line Items"
+        verbose_name = "发票行项目"
+        verbose_name_plural = "发票行项目"
         db_table = "invoice_line_item"
         ordering = ("order",)
         indexes = [

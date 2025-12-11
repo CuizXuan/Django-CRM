@@ -1,78 +1,75 @@
-# BottleCRM Backend - Django REST API
+BottleCRM 后端 - Django REST API
+BottleCRM 的后端系统，一个基于 Django REST Framework 构建的多租户 CRM 平台。
 
-The backend for BottleCRM, a multi-tenant CRM platform built with Django REST Framework.
+技术栈
+Django 4.2.1 - Web 框架
 
-## Tech Stack
+Django REST Framework 3.14.0 - API 工具包
 
-- **Django 4.2.1** - Web framework
-- **Django REST Framework 3.14.0** - API toolkit
-- **PostgreSQL** - Database (psycopg2-binary 2.9.11)
-- **Celery 5.5.3** - Async task queue
-- **Redis 4.6.0** - Message broker for Celery
-- **djangorestframework-simplejwt 5.2.2** - JWT authentication
-- **drf-spectacular 0.26.2** - OpenAPI/Swagger documentation
-- **django-ses 3.5.0** - AWS SES email backend
-- **Sentry SDK 1.24.0** - Error tracking
+PostgreSQL - 数据库 (psycopg2-binary 2.9.11)
 
-## Django Apps
+Celery 5.5.3 - 异步任务队列
 
-| App | Description |
-|-----|-------------|
-| `common` | User, Organization, Profile, Comments, Attachments, Document models |
-| `accounts` | Customer account management |
-| `leads` | Lead tracking and conversion |
-| `contacts` | Contact management |
-| `opportunity` | Sales pipeline and deal tracking |
-| `cases` | Customer support tickets |
-| `tasks` | Task management |
-| `invoices` | Invoicing system |
-| `events` | Calendar events |
-| `teams` | Team management |
-| `emails` | Email handling |
-| `planner` | Planner events |
-| `boards` | Kanban board system |
-| `marketing` | Newsletter and contact forms |
+Redis 4.6.0 - Celery 的消息代理
 
-## Prerequisites
+djangorestframework-simplejwt 5.2.2 - JWT 认证
 
-- **Python 3.8+**
-- **PostgreSQL**
-- **Redis** (for Celery)
-- **virtualenv**
+drf-spectacular 0.26.2 - OpenAPI/Swagger 文档
 
-## Installation
+django-ses 3.5.0 - AWS SES 邮件后端
 
-### 1. Create and activate virtual environment
+Sentry SDK 1.24.0 - 错误追踪
 
-```bash
+Django 应用
+应用	描述
+common	用户、组织、个人资料、评论、附件、文档模型
+accounts	客户账户管理
+leads	线索跟踪和转化
+contacts	联系人管理
+opportunity	销售管道和交易跟踪
+cases	客户支持工单
+tasks	任务管理
+invoices	发票系统
+events	日历事件
+teams	团队管理
+emails	邮件处理
+planner	计划事件
+boards	看板系统
+marketing	新闻稿和联系表单
+先决条件
+Python 3.8+
+
+PostgreSQL
+
+Redis (用于 Celery)
+
+virtualenv
+
+安装
+1. 创建并激活虚拟环境
+bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### 2. Install dependencies
-
-```bash
+source venv/bin/activate  # Windows: venv\Scripts\activate
+2. 安装依赖
+bash
 pip install -r requirements.txt
-```
+3. 配置环境变量
+在 backend/ 目录中创建 .env 文件：
 
-### 3. Configure environment variables
-
-Create a `.env` file in the `backend/` directory:
-
-```env
+env
 # Django
-SECRET_KEY=your-secret-key-here
+SECRET_KEY=你的密钥
 ENV_TYPE=dev
 
-# Database
+# 数据库
 DBNAME=bottlecrm
 DBUSER=postgres
 DBPASSWORD=root
 DBHOST=localhost
 DBPORT=5432
 
-# Email
+# 邮件
 DEFAULT_FROM_EMAIL=noreply@bottlecrm.com
 ADMIN_EMAIL=admin@bottlecrm.com
 
@@ -80,224 +77,198 @@ ADMIN_EMAIL=admin@bottlecrm.com
 CELERY_BROKER_URL=redis://localhost:6379/0
 CELERY_RESULT_BACKEND=redis://localhost:6379/0
 
-# Domain
+# 域名
 DOMAIN_NAME=http://localhost:8000
 SWAGGER_ROOT_URL=http://localhost:8000
-```
-
-### 4. Set up database
-
-```bash
-# Create PostgreSQL database
+4. 设置数据库
+bash
+# 创建 PostgreSQL 数据库
 sudo -u postgres psql
 CREATE DATABASE bottlecrm WITH OWNER = postgres;
 ALTER USER postgres WITH PASSWORD 'root';
 \q
 
-# Run migrations
+# 运行迁移
 python manage.py migrate
 
-# Create superuser (optional)
+# 创建超级用户（可选）
 python manage.py createsuperuser
-```
-
-### 5. Run the development server
-
-```bash
+5. 运行开发服务器
+bash
 python manage.py runserver
-```
+API 将在 http://localhost:8000 可用
 
-The API will be available at `http://localhost:8000`
+运行 Celery
+对于后台任务（邮件、通知），运行 Celery worker：
 
-## Running Celery
-
-For background tasks (emails, notifications), run the Celery worker:
-
-```bash
+bash
 celery -A crm worker --loglevel=INFO
-```
+API 文档
+Swagger UI: http://localhost:8000/swagger-ui/
 
-## API Documentation
+ReDoc: http://localhost:8000/api/schema/redoc/
 
-- **Swagger UI**: http://localhost:8000/swagger-ui/
-- **ReDoc**: http://localhost:8000/api/schema/redoc/
-- **Django Admin**: http://localhost:8000/admin/
+Django 管理后台: http://localhost:8000/admin/
 
-### Generating Schema
+生成 Schema
+要生成 OpenAPI schema 文件：
 
-To generate the OpenAPI schema file:
-
-```bash
+bash
 python manage.py spectacular --file openapi.yml
-```
+架构
+多租户
+每个请求都在组织上下文中操作：
 
-## Architecture
+组织 (Org): 顶层租户容器
 
-### Multi-Tenancy
+用户: 具有 USER 角色的普通成员
 
-Every request operates within an organization context:
+管理员: 具有 ADMIN 角色的组织管理员
 
-- **Organization (Org)**: Top-level tenant container
-- **Users**: Regular members with USER role
-- **Admins**: Organization administrators with ADMIN role
-- **Super Admin**: Users with @micropyramid.com email domain have platform-wide access
+超级管理员: 使用 @micropyramid.com 邮箱域名的用户具有平台级访问权限
 
-### Authentication
+认证
+基于 JWT 的认证：
 
-JWT-based authentication:
-
-```
+text
 Authorization: Bearer <token>
-```
+组织 ID 嵌入在 JWT token 中（不作为头部发送）
 
-- Organization ID is embedded in the JWT token (not sent as header)
-- Access token lifetime: 1 day
-- Refresh token lifetime: 365 days
+访问令牌有效期：1 天
 
-### Middleware
+刷新令牌有效期：365 天
 
-The middleware chain provides security:
+中间件
+中间件链提供安全保护：
 
-1. **`GetProfileAndOrg`** (`common.middleware.get_company`):
-   - Extracts org_id from JWT token claims (not headers - prevents spoofing)
-   - Validates user has active membership in the organization
-   - Sets `request.profile` and `request.org`
+GetProfileAndOrg (common.middleware.get_company):
 
-2. **`RequireOrgContext`** (`common.middleware.rls_context`):
-   - Sets PostgreSQL session variable `app.current_org` for RLS
-   - Resets context after each request
+从 JWT token 声明中提取 org_id（不是头部 - 防止伪造）
 
-### Row-Level Security (RLS)
+验证用户在组织中具有活跃的成员资格
 
-PostgreSQL RLS provides database-level tenant isolation as defense-in-depth.
+设置 request.profile 和 request.org
 
-#### How It Works
+RequireOrgContext (common.middleware.rls_context):
 
-1. **Middleware sets context**: `SET app.current_org = '<org_id>'`
-2. **RLS policies filter queries**: Only rows matching `org_id` are visible
-3. **Fail-safe design**: Empty context returns zero rows (NULLIF pattern)
+为 RLS 设置 PostgreSQL 会话变量 app.current_org
 
-#### Protected Tables (24 total)
+每个请求后重置上下文
 
-| Category | Tables |
-|----------|--------|
-| Core Business | `lead`, `accounts`, `contacts`, `opportunity`, `case`, `task`, `invoice` |
-| Supporting | `comment`, `attachments`, `document`, `teams`, `activity`, `tags`, `address`, `solution` |
-| Boards | `board`, `board_column`, `board_task`, `board_member` |
-| Other | `apiSettings`, `account_email`, `emailLogs`, `invoice_history`, `security_audit_log` |
+行级安全性 (RLS)
+PostgreSQL RLS 作为纵深防御的一部分，提供数据库级的租户隔离。
 
-#### Configuration
+工作原理
+中间件设置上下文: SET app.current_org = '<org_id>'
 
-RLS is configured in `common/rls/__init__.py`:
+RLS 策略过滤查询: 仅匹配 org_id 的行可见
 
-```python
+故障安全设计: 空上下文返回零行（NULLIF 模式）
+
+受保护的表（共 24 个）
+类别	表
+核心业务	lead, accounts, contacts, opportunity, case, task, invoice
+支持功能	comment, attachments, document, teams, activity, tags, address, solution
+看板	board, board_column, board_task, board_member
+其他	apiSettings, account_email, emailLogs, invoice_history, security_audit_log
+配置
+RLS 在 common/rls/__init__.py 中配置：
+
+python
 from common.rls import RLS_CONFIG, get_enable_policy_sql
 
-# List of protected tables
+# 受保护的表列表
 tables = RLS_CONFIG['tables']
 
-# Enable RLS on a table
+# 在表上启用 RLS
 cursor.execute(get_enable_policy_sql('my_table'))
-```
-
-#### Management Commands
-
-```bash
-# Check RLS status on all tables
+管理命令
+bash
+# 检查所有表的 RLS 状态
 python manage.py manage_rls --status
 
-# Verify database user is non-superuser (required for RLS)
+# 验证数据库用户是非超级用户（RLS 必需）
 python manage.py manage_rls --verify-user
 
-# Test RLS isolation between organizations
+# 测试组织间的 RLS 隔离
 python manage.py manage_rls --test
 
-# Enable RLS on all configured tables
+# 在所有配置的表上启用 RLS
 python manage.py manage_rls --enable
 
-# Disable RLS (for debugging only)
+# 禁用 RLS（仅用于调试）
 python manage.py manage_rls --disable
-```
+关键：数据库用户设置
+PostgreSQL 超级用户绕过所有 RLS 策略。 必须使用非超级用户：
 
-#### Critical: Database User Setup
-
-**PostgreSQL superusers bypass ALL RLS policies.** You must use a non-superuser:
-
-```sql
--- Create application user
+sql
+-- 创建应用用户
 CREATE USER crm_app WITH PASSWORD 'your_secure_password';
 
--- Grant permissions
+-- 授予权限
 GRANT CONNECT ON DATABASE bottlecrm TO crm_app;
 GRANT USAGE ON SCHEMA public TO crm_app;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO crm_app;
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO crm_app;
 
--- Future tables inherit permissions
+-- 未来表继承权限
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crm_app;
-```
+更新 .env：
 
-Update `.env`:
-```env
+env
 DBUSER=crm_app
 DBPASSWORD=your_secure_password
-```
+Celery 任务和 RLS
+后台任务不通过中间件，因此需要手动设置 RLS 上下文：
 
-#### Celery Tasks & RLS
-
-Background tasks don't go through middleware, so set RLS context manually:
-
-```python
+python
 from common.tasks import set_rls_context
 
 @app.task
 def my_background_task(data_id, org_id):
-    set_rls_context(org_id)  # Required!
+    set_rls_context(org_id)  # 必需！
     obj = MyModel.objects.get(id=data_id)
-    # ... process
-```
+    # ... 处理
+为新表添加 RLS
+将表名添加到 common/rls/__init__.py 中的 ORG_SCOPED_TABLES
 
-#### Adding RLS to New Tables
+使用 get_enable_policy_sql() 创建迁移
 
-1. Add table name to `ORG_SCOPED_TABLES` in `common/rls/__init__.py`
-2. Create migration using `get_enable_policy_sql()`
-3. Ensure model has `org = models.ForeignKey(Org, ...)`
+确保模型有 org = models.ForeignKey(Org, ...)
 
-### BaseModel Pattern
+BaseModel 模式
+所有模型都继承自 BaseModel (common.base.BaseModel)：
 
-All models inherit from `BaseModel` (`common.base.BaseModel`):
+UUID 主键（不是整数 ID）
 
-- UUID primary keys (not integer IDs)
-- Automatic timestamps: `created_at`, `updated_at`
-- Audit trail: `created_by`, `updated_by`
-- Organization isolation: `org = models.ForeignKey(Org)`
+自动时间戳：created_at, updated_at
 
-### API Endpoint Pattern
+审计追踪：created_by, updated_by
 
-```
-GET/POST       /api/<module>/              # List/Create
-GET/PUT/DELETE /api/<module>/<pk>/         # Detail/Update/Delete
-GET/POST       /api/<module>/comment/<pk>/ # Comments
-GET/POST       /api/<module>/attachment/<pk>/ # Attachments
-```
+组织隔离：org = models.ForeignKey(Org)
 
-## Project Structure
-
-```
+API 端点模式
+text
+GET/POST       /api/<模块>/              # 列表/创建
+GET/PUT/DELETE /api/<模块>/<pk>/         # 详情/更新/删除
+GET/POST       /api/<模块>/comment/<pk>/ # 评论
+GET/POST       /api/<模块>/attachment/<pk>/ # 附件
+项目结构
+text
 backend/
 ├── manage.py
 ├── requirements.txt
-├── crm/                    # Django project settings
+├── crm/                    # Django 项目设置
 │   ├── settings.py
 │   ├── urls.py
 │   ├── celery.py
 │   └── wsgi.py
-├── common/                 # Core models and utilities
-│   ├── models.py           # User, Org, Profile, etc.
+├── common/                 # 核心模型和工具
+│   ├── models.py           # 用户、组织、个人资料等
 │   ├── base.py             # BaseModel
 │   ├── middleware/
-│   └── tasks.py            # Celery tasks
+│   └── tasks.py            # Celery 任务
 ├── accounts/
 ├── leads/
 ├── contacts/
@@ -313,103 +284,78 @@ backend/
 ├── marketing/
 ├── templates/
 └── static/
-```
-
-## Development
-
-### Code Quality
-
-```bash
-# Format code
+开发
+代码质量
+bash
+# 格式化代码
 black .
 
-# Sort imports
+# 排序导入
 isort .
 
-# Run tests
+# 运行测试
 pytest
-```
+创建新应用
+创建应用：
 
-### Creating a New App
+bash
+python manage.py startapp myapp
+在 crm/settings.py 的 INSTALLED_APPS 中添加
 
-1. Create the app:
-   ```bash
-   python manage.py startapp myapp
-   ```
+创建继承自 BaseModel 的模型：
 
-2. Add to `INSTALLED_APPS` in `crm/settings.py`
+python
+from common.base import BaseModel
+from common.models import Org
 
-3. Create models inheriting from `BaseModel`:
-   ```python
-   from common.base import BaseModel
-   from common.models import Org
+class MyModel(BaseModel):
+    org = models.ForeignKey(Org, on_delete=models.CASCADE)
+    # ... 其他字段
+始终按组织过滤查询：
 
-   class MyModel(BaseModel):
-       org = models.ForeignKey(Org, on_delete=models.CASCADE)
-       # ... other fields
-   ```
+python
+queryset = MyModel.objects.filter(org=request.profile.org)
+运行迁移：
 
-4. Always filter queries by organization:
-   ```python
-   queryset = MyModel.objects.filter(org=request.profile.org)
-   ```
-
-5. Run migrations:
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-
-## Environment Variables Reference
-
-| Variable | Description |
-|----------|-------------|
-| `SECRET_KEY` | Django secret key |
-| `ENV_TYPE` | Environment type (`dev` or `prod`) |
-| `DBNAME` | PostgreSQL database name |
-| `DBUSER` | PostgreSQL username |
-| `DBPASSWORD` | PostgreSQL password |
-| `DBHOST` | PostgreSQL host |
-| `DBPORT` | PostgreSQL port |
-| `DEFAULT_FROM_EMAIL` | Default sender email |
-| `ADMIN_EMAIL` | Admin notification email |
-| `CELERY_BROKER_URL` | Redis URL for Celery broker |
-| `CELERY_RESULT_BACKEND` | Redis URL for Celery results |
-| `DOMAIN_NAME` | Application domain |
-| `SWAGGER_ROOT_URL` | Swagger documentation root URL |
-
-## Troubleshooting
-
-### Database Connection Issues
-
-```bash
-# Check PostgreSQL is running
+bash
+python manage.py makemigrations
+python manage.py migrate
+环境变量参考
+变量	描述
+SECRET_KEY	Django 密钥
+ENV_TYPE	环境类型 (dev 或 prod)
+DBNAME	PostgreSQL 数据库名
+DBUSER	PostgreSQL 用户名
+DBPASSWORD	PostgreSQL 密码
+DBHOST	PostgreSQL 主机
+DBPORT	PostgreSQL 端口
+DEFAULT_FROM_EMAIL	默认发件人邮箱
+ADMIN_EMAIL	管理员通知邮箱
+CELERY_BROKER_URL	Celery 代理的 Redis URL
+CELERY_RESULT_BACKEND	Celery 结果的 Redis URL
+DOMAIN_NAME	应用域名
+SWAGGER_ROOT_URL	Swagger 文档根 URL
+故障排除
+数据库连接问题
+bash
+# 检查 PostgreSQL 是否运行
 sudo systemctl status postgresql
 
-# Verify database exists
+# 验证数据库是否存在
 sudo -u postgres psql -l
-```
-
-### Migration Issues
-
-```bash
-# Show migration status
+迁移问题
+bash
+# 显示迁移状态
 python manage.py showmigrations
 
-# Reset migrations (development only)
+# 重置迁移（仅限开发）
 python manage.py migrate --fake <app> zero
-```
-
-### Celery Not Processing Tasks
-
-```bash
-# Check Redis is running
+Celery 不处理任务
+bash
+# 检查 Redis 是否运行
 redis-cli ping
 
-# Check Celery worker logs
+# 检查 Celery worker 日志
 celery -A crm worker --loglevel=DEBUG
-```
-
-## License
-
-MIT License - see [LICENSE](../LICENSE) for details.
+许可证
+MIT 许可证 - 详见 LICENSE。

@@ -12,12 +12,12 @@ from contacts.models import Contact
 
 class Opportunity(AssignableMixin, BaseModel):
     """
-    Opportunity model for CRM - Sales pipeline management
-    Based on Twenty CRM and Salesforce patterns
+    CRM商机模型 - 销售漏斗管理
+    基于 Twenty CRM 和 Salesforce 模式设计
     """
 
-    # Core Opportunity Information
-    name = models.CharField(_("Opportunity Name"), max_length=255)
+    # 核心商机信息
+    name = models.CharField(_("商机名称"), max_length=255)
     account = models.ForeignKey(
         Account,
         related_name="opportunities",
@@ -26,33 +26,33 @@ class Opportunity(AssignableMixin, BaseModel):
         null=True,
     )
     stage = models.CharField(
-        _("Stage"), max_length=64, choices=STAGES, default="PROSPECTING"
+        _("阶段"), max_length=64, choices=STAGES, default="PROSPECTING"
     )
     opportunity_type = models.CharField(
-        _("Type"), max_length=64, choices=OPPORTUNITY_TYPES, blank=True, null=True
+        _("类型"), max_length=64, choices=OPPORTUNITY_TYPES, blank=True, null=True
     )
 
-    # Financial Information
+    # 财务信息
     currency = models.CharField(
-        _("Currency"), max_length=3, choices=CURRENCY_CODES, blank=True, null=True
+        _("货币"), max_length=3, choices=CURRENCY_CODES, blank=True, null=True
     )
     amount = models.DecimalField(
-        _("Amount"), decimal_places=2, max_digits=12, blank=True, null=True
+        _("金额"), decimal_places=2, max_digits=12, blank=True, null=True
     )
     probability = models.IntegerField(
-        _("Probability (%)"), default=0, blank=True, null=True
+        _("概率 (%)"), default=0, blank=True, null=True
     )
-    closed_on = models.DateField(_("Expected Close Date"), blank=True, null=True)
+    closed_on = models.DateField(_("预计成交日期"), blank=True, null=True)
 
-    # Source & Context
+    # 来源与上下文
     lead_source = models.CharField(
-        _("Lead Source"), max_length=255, choices=SOURCES, blank=True, null=True
+        _("线索来源"), max_length=255, choices=SOURCES, blank=True, null=True
     )
 
-    # Relationships
+    # 关系
     contacts = models.ManyToManyField(Contact, related_name="opportunity_contacts")
 
-    # Assignment
+    # 分配
     assigned_to = models.ManyToManyField(
         Profile, related_name="opportunity_assigned_users"
     )
@@ -65,13 +65,13 @@ class Opportunity(AssignableMixin, BaseModel):
         related_name="opportunity_closed_by",
     )
 
-    # Tags
+    # 标签
     tags = models.ManyToManyField(Tags, related_name="opportunity_tags", blank=True)
 
-    # Notes
-    description = models.TextField(_("Notes"), blank=True, null=True)
+    # 备注
+    description = models.TextField(_("备注"), blank=True, null=True)
 
-    # System Fields
+    # 系统字段
     is_active = models.BooleanField(default=True)
     org = models.ForeignKey(
         Org,
@@ -80,8 +80,8 @@ class Opportunity(AssignableMixin, BaseModel):
     )
 
     class Meta:
-        verbose_name = "Opportunity"
-        verbose_name_plural = "Opportunities"
+        verbose_name = "商机"
+        verbose_name_plural = "商机"
         db_table = "opportunity"
         ordering = ("-created_at",)
         indexes = [

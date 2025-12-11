@@ -20,7 +20,7 @@ export function validatePhoneNumber(phoneNumber, defaultCountry) {
 			if (!isValid) {
 				return {
 					isValid: false,
-					error: 'Please enter a valid phone number with country code'
+					error: '请输入有效的电话号码（包含国家代码，如+86）'
 				};
 			}
 			const parsed = parsePhoneNumber(trimmed);
@@ -74,12 +74,12 @@ export function validatePhoneNumber(phoneNumber, defaultCountry) {
 		return {
 			isValid: false,
 			error:
-				'Please enter a valid phone number (include country code like +91 for India or +1 for US)'
+				'请输入有效的电话号码（请包含国家代码，如中国+86）'
 		};
 	} catch (error) {
 		return {
 			isValid: false,
-			error: 'Please enter a valid phone number'
+			error: '请输入有效的电话号码'
 		};
 	}
 }
@@ -90,7 +90,7 @@ export function validatePhoneNumber(phoneNumber, defaultCountry) {
  * @param {string} defaultCountry - Default country code
  * @returns {string} Formatted phone number or original if invalid
  */
-export function formatPhoneNumber(phoneNumber, defaultCountry = 'US') {
+export function formatPhoneNumber(phoneNumber, defaultCountry = 'CN') {
 	if (!phoneNumber) return '';
 
 	try {
@@ -134,7 +134,7 @@ export function formatPhoneForStorage(phoneNumber, defaultCountry) {
 		}
 
 		// Try common countries
-		const commonCountries = ['IN', 'US', 'GB', 'AU', 'CA', 'DE', 'FR'];
+		const commonCountries = ['CN', 'IN', 'US', 'GB', 'AU', 'CA', 'DE', 'FR'];
 		for (const country of commonCountries) {
 			try {
 				// @ts-ignore

@@ -77,6 +77,19 @@
 
 	const overdueTasks = $derived(tasks.filter((t) => t.status !== 'Completed' && isOverdue(t.dueDate)));
 
+	const statusLabelMap = /** @type {Record<string, string>} */ ({
+		Completed: '已完成',
+		Pending: '待处理',
+		Overdue: '逾期',
+		Planned: '已计划'
+	});
+
+	const priorityLabelMap = /** @type {Record<string, string>} */ ({
+		High: '高',
+		Medium: '中',
+		Low: '低'
+	});
+
 	/**
 	 * Get priority badge class
 	 * @param {string} priority
@@ -97,20 +110,20 @@
 	function formatDate(dateStr) {
 		if (!dateStr) return '';
 		const date = new Date(dateStr);
-		if (isToday(dateStr)) return 'Today';
+		if (isToday(dateStr)) return '今天';
 		if (isOverdue(dateStr)) {
 			const days = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-			return days === 1 ? 'Yesterday' : `${days}d ago`;
+			return days === 1 ? '昨天' : `${days} 天前`;
 		}
-		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+		return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 	}
 </script>
 
 <Card.Root class="flex h-full flex-col">
 	<Card.Header class="flex-row items-center justify-between space-y-0 pb-3">
-		<Card.Title class="text-foreground text-sm font-medium">My Tasks</Card.Title>
+		<Card.Title class="text-foreground text-sm font-medium">我的任务</Card.Title>
 		<Button variant="ghost" size="sm" href="/tasks" class="text-xs">
-			View all
+			查看全部
 			<ChevronRight class="ml-1 h-3 w-3" />
 		</Button>
 	</Card.Header>
@@ -121,7 +134,7 @@
 			class="h-7 px-2.5 text-xs"
 			onclick={() => (filter = 'all')}
 		>
-			All
+			全部
 		</Button>
 		<Button
 			variant={filter === 'overdue' ? 'secondary' : 'ghost'}
@@ -129,7 +142,7 @@
 			class="h-7 px-2.5 text-xs {overdueTasks.length > 0 ? 'text-red-600 dark:text-red-400' : ''}"
 			onclick={() => (filter = 'overdue')}
 		>
-			Overdue
+			逾期
 			{#if overdueTasks.length > 0}
 				<Badge variant="destructive" class="ml-1 h-4 px-1 text-[10px]">{overdueTasks.length}</Badge>
 			{/if}
@@ -140,7 +153,7 @@
 			class="h-7 px-2.5 text-xs"
 			onclick={() => (filter = 'today')}
 		>
-			Today
+			今天
 		</Button>
 		<Button
 			variant={filter === 'week' ? 'secondary' : 'ghost'}
@@ -148,13 +161,13 @@
 			class="h-7 px-2.5 text-xs"
 			onclick={() => (filter = 'week')}
 		>
-			Week
+			本周
 		</Button>
 	</div>
 	<Card.Content class="flex-1 overflow-auto p-0">
 		{#if filteredTasks().length === 0}
 			<div class="text-muted-foreground flex h-full items-center justify-center py-8 text-sm">
-				No tasks found
+				暂无任务
 			</div>
 		{:else}
 			<div class="divide-border/50 divide-y">
@@ -178,10 +191,12 @@
 							>
 								{task.subject}
 							</p>
-							<p class="text-muted-foreground truncate text-xs">{task.status}</p>
+							<p class="text-muted-foreground truncate text-xs">
+								{statusLabelMap[task.status] || task.status}
+							</p>
 						</div>
 						<Badge variant="outline" class="flex-shrink-0 text-[10px] {getPriorityClass(task.priority)}">
-							{task.priority}
+							{priorityLabelMap[task.priority] || task.priority}
 						</Badge>
 						{#if task.dueDate}
 							<span

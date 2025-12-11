@@ -64,9 +64,9 @@
 		<!-- Left side: showing info -->
 		<div class="flex items-center gap-4">
 			<p class="text-sm text-muted-foreground">
-				Showing <span class="font-medium text-foreground">{startItem}</span>
-				to <span class="font-medium text-foreground">{endItem}</span>
-				of <span class="font-medium text-foreground">{total}</span> results
+				显示第 <span class="font-medium text-foreground">{startItem}</span>
+				到 <span class="font-medium text-foreground">{endItem}</span>
+				条，共 <span class="font-medium text-foreground">{total}</span> 条结果
 			</p>
 		</div>
 
@@ -74,7 +74,7 @@
 		<div class="flex items-center gap-4">
 			<!-- Rows per page selector -->
 			<div class="flex items-center gap-2">
-				<span class="text-sm text-muted-foreground">Rows per page:</span>
+				<span class="text-sm text-muted-foreground">每页显示：</span>
 				<Popover.Root bind:open={limitPopoverOpen}>
 					<Popover.Trigger asChild class="">
 						{#snippet child({ props })}
@@ -112,15 +112,15 @@
 					size="icon-sm"
 					disabled={page <= 1}
 					onclick={handlePrevious}
-					aria-label="Previous page"
+					aria-label="上一页"
 				>
 					<ChevronLeft class="h-4 w-4" />
 				</Button>
 
 				<span class="min-w-[100px] text-center text-sm">
-					Page <span class="font-medium">{page}</span> of <span class="font-medium"
+					第 <span class="font-medium">{page}</span> 页，共 <span class="font-medium"
 						>{totalPages}</span
-					>
+					> 页
 				</span>
 
 				<Button
@@ -128,7 +128,7 @@
 					size="icon-sm"
 					disabled={page >= totalPages}
 					onclick={handleNext}
-					aria-label="Next page"
+					aria-label="下一页"
 				>
 					<ChevronRight class="h-4 w-4" />
 				</Button>

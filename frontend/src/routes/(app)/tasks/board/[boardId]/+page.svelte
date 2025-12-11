@@ -188,31 +188,31 @@
 								type="text"
 								name="title"
 								bind:value={newTaskTitle}
-								placeholder="Task title"
+								placeholder="任务标题"
 								required
 							/>
 							<textarea
 								name="description"
 								bind:value={newTaskDescription}
-								placeholder="Description (optional)"
+								placeholder="描述（可选）"
 								rows="2"
 							></textarea>
 							<select name="priority" bind:value={newTaskPriority}>
-								<option value="low">Low</option>
-								<option value="medium">Medium</option>
-								<option value="high">High</option>
-								<option value="urgent">Urgent</option>
+								<option value="low">低</option>
+								<option value="medium">中</option>
+								<option value="high">高</option>
+								<option value="urgent">紧急</option>
 							</select>
 							<div class="form-actions">
-								<button type="submit" class="btn-primary">Add Task</button>
+								<button type="submit" class="btn-primary">添加任务</button>
 								<button type="button" class="btn-secondary" on:click={cancelAddingTask}
-									>Cancel</button
+									>取消</button
 								>
 							</div>
 						</form>
 					{:else}
 						<button class="add-task-btn" on:click={() => startAddingTask(column.id)}>
-							+ Add Task
+							+ 添加任务
 						</button>
 					{/if}
 				</div>
@@ -240,12 +240,12 @@
 						type="text"
 						name="name"
 						bind:value={newColumnName}
-						placeholder="Column name"
+						placeholder="列名称"
 						required
 					/>
 					<input type="color" name="color" bind:value={newColumnColor} />
 					<div class="form-actions">
-						<button type="submit" class="btn-primary">Add</button>
+						<button type="submit" class="btn-primary">添加</button>
 						<button type="button" class="btn-secondary" on:click={() => (showAddColumn = false)}
 							>Cancel</button
 						>

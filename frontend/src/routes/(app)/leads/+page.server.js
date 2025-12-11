@@ -159,25 +159,25 @@ export async function load({ url, cookies, locals }) {
 			filters,
 			filterOptions: {
 				statuses: [
-					{ value: 'ASSIGNED', label: 'Assigned' },
-					{ value: 'IN_PROCESS', label: 'In Process' },
-					{ value: 'CONVERTED', label: 'Converted' },
-					{ value: 'RECYCLED', label: 'Recycled' },
-					{ value: 'CLOSED', label: 'Closed' }
+					{ value: 'ASSIGNED', label: '已分配' },
+					{ value: 'IN_PROCESS', label: '进行中' },
+					{ value: 'CONVERTED', label: '已转化' },
+					{ value: 'RECYCLED', label: '已回收' },
+					{ value: 'CLOSED', label: '已关闭' }
 				],
 				sources: [
-					{ value: 'call', label: 'Call' },
-					{ value: 'email', label: 'Email' },
-					{ value: 'existing customer', label: 'Existing Customer' },
-					{ value: 'partner', label: 'Partner' },
-					{ value: 'public relations', label: 'Public Relations' },
-					{ value: 'campaign', label: 'Campaign' },
-					{ value: 'other', label: 'Other' }
+					{ value: 'call', label: '电话' },
+					{ value: 'email', label: '邮件' },
+					{ value: 'existing customer', label: '现有客户' },
+					{ value: 'partner', label: '合作伙伴' },
+					{ value: 'public relations', label: '公共关系' },
+					{ value: 'campaign', label: '营销活动' },
+					{ value: 'other', label: '其他' }
 				],
 				ratings: [
-					{ value: 'HOT', label: 'Hot' },
-					{ value: 'WARM', label: 'Warm' },
-					{ value: 'COLD', label: 'Cold' }
+					{ value: 'HOT', label: '热点' },
+					{ value: 'WARM', label: '温热' },
+					{ value: 'COLD', label: '冷' }
 				]
 			}
 		};

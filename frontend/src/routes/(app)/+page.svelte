@@ -4,14 +4,18 @@
 		KPICard,
 		FocusBar,
 		MiniPipeline,
+		MiniPipelineWithCurrency,
 		PipelineChart,
+		PipelineChartWithCurrency,
 		TaskList,
 		HotLeadsPanel,
 		OpportunitiesTable,
 		ActivityFeed
 	} from '$lib/components/dashboard';
 	import { formatCurrency } from '$lib/utils/formatting.js';
+	import { getCurrencySymbol } from '$lib/utils/currencySymbols.js';
 	import { orgSettings } from '$lib/stores/org.js';
+	import { onMount } from 'svelte';
 
 	/** @type {{ data: any }} */
 	let { data } = $props();
@@ -23,27 +27,59 @@
 	const revenueMetrics = $derived(data.revenueMetrics || {});
 	const hotLeads = $derived(data.hotLeads || []);
 
+	// Initialize org settings from server data
+	let serverOrgSettings = $state({
+		default_currency: 'CNY',
+		default_country: 'CN'
+	});
+
+	// Initialize settings on page load
+	$effect(() => {
+		if (data.orgSettings) {
+			console.log('Dashboard: Org settings received:', data.orgSettings);
+			serverOrgSettings = data.orgSettings;
+			orgSettings.set(data.orgSettings);
+		}
+	});
+
+	// Also run on mount to ensure store is initialized
+	onMount(() => {
+		if (data.orgSettings) {
+			orgSettings.set(data.orgSettings);
+			serverOrgSettings = data.orgSettings;
+		}
+	});
+
 	// Get org's default currency for KPI display
-	const orgCurrency = $derived($orgSettings.default_currency || 'USD');
+	const orgCurrency = $derived(serverOrgSettings.default_currency || 'CNY');
+	const orgCurrencySymbol = $derived(getCurrencySymbol(orgCurrency));
 	const otherCurrencyCount = $derived(revenueMetrics.other_currency_count || 0);
 	const currencyNote = $derived(
 		otherCurrencyCount > 0
-			? `${orgCurrency} only (${otherCurrencyCount} in other currencies)`
-			: `${orgCurrency} only`
+			? `${orgCurrency} 结算（另有 ${otherCurrencyCount} 个其他币种）`
+			: `${orgCurrency} 结算`
 	);
+
+	// Format currency with symbol in the desired format (e.g., ¥2.32)
+	function formatCurrencyWithSymbol(amount, currency = orgCurrency) {
+		if (amount === null || amount === undefined) return '-';
+		const formattedNumber = formatCurrency(amount, currency, false, false); // 不显示符号，不使用紧凑格式
+		const symbol = getCurrencySymbol(currency);
+		return `${symbol}${formattedNumber}`;
+	}
 </script>
 
 <svelte:head>
-	<title>Dashboard - BottleCRM</title>
+	<title>仪表盘 - CRM系统</title>
 </svelte:head>
 
 <div class="space-y-6 p-6">
 	<!-- Header -->
 	<div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
 		<div>
-			<h1 class="text-foreground text-2xl font-semibold">Dashboard</h1>
+			<h1 class="text-foreground text-2xl font-semibold">仪表盘</h1>
 			<p class="text-muted-foreground text-sm">
-				Welcome back! Here's what's happening with your CRM.
+				欢迎回来，以下是当前业务概览。
 			</p>
 		</div>
 	</div>
@@ -67,10 +103,10 @@
 		<!-- Pipeline Overview - Full Width -->
 		<div class="rounded-lg border bg-card p-4">
 			<div class="mb-3 flex items-center justify-between">
-				<h2 class="text-foreground text-sm font-medium">Sales Pipeline</h2>
+				<h2 class="text-foreground text-sm font-medium">销售管道</h2>
 				<span class="text-muted-foreground text-[10px]">{currencyNote}</span>
 			</div>
-			<MiniPipeline pipelineData={pipelineByStage} currency={orgCurrency} />
+			<MiniPipelineWithCurrency pipelineData={pipelineByStage} currency={orgCurrency} />
 		</div>
 
 		<!-- Revenue Metrics + Pipeline Chart -->
@@ -78,8 +114,8 @@
 			<!-- Revenue Metrics - 2x2 Grid -->
 			<div class="grid grid-cols-2 gap-4">
 				<KPICard
-					label="Pipeline Value"
-					value={formatCurrency(revenueMetrics.pipeline_value || 0, orgCurrency, true)}
+					label="管道金额"
+					value={formatCurrencyWithSymbol(revenueMetrics.pipeline_value || 0, orgCurrency)}
 					subtitle={currencyNote}
 					borderColor="border-t-blue-500"
 				>
@@ -88,8 +124,8 @@
 					{/snippet}
 				</KPICard>
 				<KPICard
-					label="Weighted Pipeline"
-					value={formatCurrency(revenueMetrics.weighted_pipeline || 0, orgCurrency, true)}
+					label="加权管道"
+					value={formatCurrencyWithSymbol(revenueMetrics.weighted_pipeline || 0, orgCurrency)}
 					subtitle={currencyNote}
 					borderColor="border-t-purple-500"
 					iconBgClass="bg-purple-100 dark:bg-purple-900/30"
@@ -100,8 +136,8 @@
 					{/snippet}
 				</KPICard>
 				<KPICard
-					label="Won This Month"
-					value={formatCurrency(revenueMetrics.won_this_month || 0, orgCurrency, true)}
+					label="本月赢单"
+					value={formatCurrencyWithSymbol(revenueMetrics.won_this_month || 0, orgCurrency)}
 					subtitle={currencyNote}
 					borderColor="border-t-green-500"
 					iconBgClass="bg-green-100 dark:bg-green-900/30"
@@ -112,7 +148,7 @@
 					{/snippet}
 				</KPICard>
 				<KPICard
-					label="Conversion Rate"
+					label="转化率"
 					value="{revenueMetrics.conversion_rate || 0}%"
 					borderColor="border-t-orange-500"
 					iconBgClass="bg-orange-100 dark:bg-orange-900/30"
@@ -125,7 +161,7 @@
 			</div>
 
 			<!-- Pipeline Chart -->
-			<PipelineChart pipelineData={pipelineByStage} currency={orgCurrency} />
+			<PipelineChartWithCurrency pipelineData={pipelineByStage} currency={orgCurrency} />
 		</div>
 
 		<!-- Tasks + Hot Leads -->

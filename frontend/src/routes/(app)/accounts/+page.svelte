@@ -435,7 +435,7 @@
 
 	// Industry options for filter
 	const industryFilterOptions = $derived([
-		{ value: '', label: 'All Industries' },
+		{ value: '', label: '全部行业' },
 		...industries.map((ind) => ({ value: ind, label: ind }))
 	]);
 
@@ -714,10 +714,10 @@
 </script>
 
 <svelte:head>
-	<title>Accounts - BottleCRM</title>
+	<title>客户 - CRM系统</title>
 </svelte:head>
 
-<PageHeader title="Accounts" subtitle="{filteredAccounts.length} of {accounts.length} accounts">
+<PageHeader title="客户" subtitle="{filteredAccounts.length} / {accounts.length} 个客户">
 	{#snippet actions()}
 		<div class="flex items-center gap-2">
 			<!-- Status Filter Chips -->
@@ -730,7 +730,7 @@
 						? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					All
+					全部
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'ALL'
 							? 'bg-gray-700 text-gray-200 dark:bg-gray-200 dark:text-gray-700'
@@ -747,7 +747,7 @@
 						? 'bg-emerald-600 text-white dark:bg-emerald-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Active
+					活跃
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'active'
 							? 'bg-emerald-700 text-emerald-100 dark:bg-emerald-600'
@@ -764,7 +764,7 @@
 						? 'bg-gray-600 text-white dark:bg-gray-500'
 						: 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'}"
 				>
-					Closed
+					已关闭
 					<span
 						class="rounded-full px-1.5 py-0.5 text-xs {statusChipFilter === 'closed'
 							? 'bg-gray-700 text-gray-200 dark:bg-gray-600'
@@ -785,7 +785,7 @@
 				onclick={() => (filtersExpanded = !filtersExpanded)}
 			>
 				<Filter class="h-4 w-4" />
-				Filters
+				筛选
 				{#if activeFiltersCount > 0}
 					<span
 						class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -801,7 +801,7 @@
 					{#snippet child({ props })}
 						<Button {...props} variant="outline" size="sm" class="gap-2">
 							<Eye class="h-4 w-4" />
-							Columns
+							列
 							{#if visibleColumnCount < totalColumnCount}
 								<span
 									class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -813,7 +813,7 @@
 					{/snippet}
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end" class="w-48">
-					<DropdownMenu.Label>Toggle columns</DropdownMenu.Label>
+					<DropdownMenu.Label>切换列</DropdownMenu.Label>
 					<DropdownMenu.Separator />
 					{#each columns as column (column.key)}
 						<DropdownMenu.CheckboxItem
@@ -829,7 +829,7 @@
 			</DropdownMenu.Root>
 			<Button onclick={openCreate} disabled={false}>
 				<Plus class="mr-2 h-4 w-4" />
-				New Account
+				新建客户
 			</Button>
 		</div>
 	{/snippet}
@@ -847,16 +847,16 @@
 		<SearchInput
 			value={filters.search}
 			onchange={(value) => updateFilters({ ...filters, search: value })}
-			placeholder="Search accounts..."
+			placeholder="搜索客户..."
 		/>
 		<SelectFilter
-			label="Industry"
+			label="行业"
 			options={industryFilterOptions}
 			value={filters.industry}
 			onchange={(value) => updateFilters({ ...filters, industry: value })}
 		/>
 		<DateRangeFilter
-			label="Created"
+			label="创建时间"
 			startDate={filters.created_at_gte}
 			endDate={filters.created_at_lte}
 			onchange={(start, end) =>
@@ -867,7 +867,7 @@
 	{#if filteredAccounts.length === 0}
 		<div class="flex flex-col items-center justify-center py-16 text-center">
 			<Building2 class="text-muted-foreground/50 mb-4 h-12 w-12" />
-			<h3 class="text-foreground text-lg font-medium">No accounts found</h3>
+			<h3 class="text-foreground text-lg font-medium">未找到客户</h3>
 		</div>
 	{:else}
 		<!-- Desktop Table using CrmTable -->
@@ -881,7 +881,7 @@
 				{#snippet emptyState()}
 					<div class="flex flex-col items-center justify-center py-16 text-center">
 						<Building2 class="text-muted-foreground/50 mb-4 h-12 w-12" />
-						<h3 class="text-foreground text-lg font-medium">No accounts found</h3>
+						<h3 class="text-foreground text-lg font-medium">未找到客户</h3>
 					</div>
 				{/snippet}
 			</CrmTable>
@@ -911,7 +911,7 @@
 										<span
 											class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
 										>
-											Active
+											活跃
 										</span>
 									{:else}
 										<span
@@ -965,7 +965,7 @@
 	data={drawerFormData}
 	columns={drawerColumns}
 	titleKey="name"
-	titlePlaceholder="Account name"
+	titlePlaceholder="客户名称"
 	headerLabel="Account"
 	mode={drawerMode}
 	loading={drawerLoading || isSubmitting}
@@ -1007,7 +1007,7 @@
 						<p class="mt-0.5 text-lg font-semibold text-gray-900 dark:text-gray-100">
 							{selectedAccount.contactCount || 0}
 						</p>
-						<p class="text-[10px] text-gray-500 dark:text-gray-400">Contacts</p>
+						<p class="text-[10px] text-gray-500 dark:text-gray-400">联系人</p>
 					</div>
 					<div class="rounded-lg bg-gray-50 p-2 text-center dark:bg-gray-800">
 						<div class="flex items-center justify-center gap-1 text-gray-400 dark:text-gray-500">
@@ -1016,7 +1016,7 @@
 						<p class="mt-0.5 text-lg font-semibold text-gray-900 dark:text-gray-100">
 							{selectedAccount.opportunityCount || 0}
 						</p>
-						<p class="text-[10px] text-gray-500 dark:text-gray-400">Opportunities</p>
+						<p class="text-[10px] text-gray-500 dark:text-gray-400">商机</p>
 					</div>
 					<div class="rounded-lg bg-gray-50 p-2 text-center dark:bg-gray-800">
 						<div class="flex items-center justify-center gap-1 text-gray-400 dark:text-gray-500">
@@ -1078,12 +1078,12 @@
 
 	{#snippet footerActions()}
 		{#if drawerMode === 'create'}
-			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>Cancel</Button>
+			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>取消</Button>
 			<Button onclick={handleDrawerSave} disabled={isSubmitting || !drawerFormData.name?.trim()}>
-				{isSubmitting ? 'Creating...' : 'Create Account'}
+				{isSubmitting ? '创建中...' : '创建客户'}
 			</Button>
 		{:else if isClosed}
-			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>Cancel</Button>
+			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>取消</Button>
 			<Button
 				variant="outline"
 				class="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
@@ -1094,7 +1094,7 @@
 				Reopen Account
 			</Button>
 		{:else}
-			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>Cancel</Button>
+			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>取消</Button>
 			<Button
 				variant="ghost"
 				class="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
@@ -1105,7 +1105,7 @@
 				Close Account
 			</Button>
 			<Button onclick={handleDrawerUpdate} disabled={isSubmitting || !drawerFormData.name?.trim()}>
-				{isSubmitting ? 'Saving...' : 'Save'}
+				{isSubmitting ? '保存中...' : '保存'}
 			</Button>
 		{/if}
 	{/snippet}

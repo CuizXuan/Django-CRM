@@ -27,8 +27,8 @@ class Board(BaseModel):
     is_archived = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = "Board"
-        verbose_name_plural = "Boards"
+        verbose_name = "看板"
+        verbose_name_plural = "看板"
         db_table = "board"
         ordering = ("-created_at",)
         indexes = [
@@ -43,9 +43,9 @@ class BoardMember(BaseModel):
     """Board membership with roles"""
 
     ROLE_CHOICES = (
-        ("owner", "Owner"),
-        ("admin", "Admin"),
-        ("member", "Member"),
+        ("owner", _("所有者")),
+        ("admin", _("管理员")),
+        ("member", _("成员")),
     )
 
     board = models.ForeignKey(
@@ -62,8 +62,8 @@ class BoardMember(BaseModel):
     )
 
     class Meta:
-        verbose_name = "Board Member"
-        verbose_name_plural = "Board Members"
+        verbose_name = "看板成员"
+        verbose_name_plural = "看板成员"
         db_table = "board_member"
         unique_together = ("board", "profile")
         indexes = [
@@ -94,8 +94,8 @@ class BoardColumn(BaseModel):
     )
 
     class Meta:
-        verbose_name = "Board Column"
-        verbose_name_plural = "Board Columns"
+        verbose_name = "看板列"
+        verbose_name_plural = "看板列"
         db_table = "board_column"
         ordering = ("order",)
         unique_together = ("board", "name")
@@ -116,10 +116,10 @@ class BoardTask(BaseModel):
     """Task/Card in a board column"""
 
     PRIORITY_CHOICES = (
-        ("low", "Low"),
-        ("medium", "Medium"),
-        ("high", "High"),
-        ("urgent", "Urgent"),
+        ("low", _("低")),
+        ("medium", _("中")),
+        ("high", _("高")),
+        ("urgent", _("紧急")),
     )
 
     column = models.ForeignKey(
@@ -166,8 +166,8 @@ class BoardTask(BaseModel):
     )
 
     class Meta:
-        verbose_name = "Board Task"
-        verbose_name_plural = "Board Tasks"
+        verbose_name = "看板任务"
+        verbose_name_plural = "看板任务"
         db_table = "board_task"
         ordering = ("order",)
         indexes = [
@@ -199,12 +199,12 @@ class BoardTask(BaseModel):
 class Task(AssignableMixin, BaseModel):
 
     STATUS_CHOICES = (
-        ("New", "New"),
-        ("In Progress", "In Progress"),
-        ("Completed", "Completed"),
+        ("New", _("新建")),
+        ("In Progress", _("进行中")),
+        ("Completed", _("已完成")),
     )
 
-    PRIORITY_CHOICES = (("Low", "Low"), ("Medium", "Medium"), ("High", "High"))
+    PRIORITY_CHOICES = (("Low", _("低")), ("Medium", _("中")), ("High", _("高")))
 
     title = models.CharField(_("title"), max_length=200)
     status = models.CharField(_("status"), max_length=50, choices=STATUS_CHOICES)
@@ -248,8 +248,8 @@ class Task(AssignableMixin, BaseModel):
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="tasks")
 
     class Meta:
-        verbose_name = "Task"
-        verbose_name_plural = "Tasks"
+        verbose_name = "任务"
+        verbose_name_plural = "任务"
         db_table = "task"
         ordering = ("-due_date",)
         indexes = [

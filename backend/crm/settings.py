@@ -18,6 +18,8 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 # Security: Restrict allowed hosts - set ALLOWED_HOSTS env var in production
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
+from django.utils.translation import gettext_lazy as _
+
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
@@ -38,12 +40,14 @@ INSTALLED_APPS = [
     "opportunity",
     "tasks",
     "invoices",
+    "crm",  # Foreign trade models (Company, Product, Inquiry, Quotation, Order, Shipping)
     # "teams",  # Merged into common app
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.locale.LocaleMiddleware",  # 添加本地化中间件
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -52,7 +56,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "crum.CurrentRequestUserMiddleware",
     "common.middleware.get_company.GetProfileAndOrg",
-    "common.middleware.rls_context.RequireOrgContext",  # RLS: Enforce org context + set PostgreSQL session variable
+#    "common.middleware.rls_context.RequireOrgContext",  # RLS: Enforce org context + set PostgreSQL session variable
 ]
 
 ROOT_URLCONF = "crm.urls"
@@ -116,11 +120,20 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 
-TIME_ZONE = "Asia/Kolkata"
+TIME_ZONE = "Asia/Shanghai"
 
 USE_I18N = True
-
+LANGUAGE_CODE = 'zh-hans'
+USE_L10N = True  # 启用本地化格式
 USE_TZ = True
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('zh-hans', _('Chinese')),
+)
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -336,3 +349,10 @@ SWAGGER_ROOT_URL = os.environ["SWAGGER_ROOT_URL"]
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
 GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "")
+# 开发环境设置（推荐）
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '0.0.0.0',
+]
+CORS_ALLOW_ALL_ORIGINS = True  # 开发环境可以开启（生产环境不要用）

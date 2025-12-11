@@ -3,6 +3,7 @@ import json
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
@@ -216,8 +217,10 @@ class AccountsListView(APIView, LimitOffsetPagination):
                 account_object.id,
                 str(request.profile.org.id),
             )
-            return Response(
-                {"error": False, "message": "Account Created Successfully"},
+
+
+        return Response(
+                {"error": False, "message": "客户创建成功"},
                 status=status.HTTP_200_OK,
             )
         return Response(
@@ -244,7 +247,7 @@ class AccountDetailView(APIView):
         account_object = self.get_object(pk=pk)
         if account_object.org != request.profile.org:
             return Response(
-                {"error": True, "errors": "User company doesnot match with header...."},
+                {"error": True, "errors": "用户公司与请求头不匹配"},
                 status=status.HTTP_403_FORBIDDEN,
             )
         serializer = AccountCreateSerializer(
@@ -263,7 +266,7 @@ class AccountDetailView(APIView):
                     return Response(
                         {
                             "error": True,
-                            "errors": "You do not have Permission to perform this action",
+                            "errors": "您没有权限执行此操作",
                         },
                         status=status.HTTP_403_FORBIDDEN,
                     )
@@ -327,7 +330,7 @@ class AccountDetailView(APIView):
                 str(request.profile.org.id),
             )
             return Response(
-                {"error": False, "message": "Account Updated Successfully"},
+                {"error": False, "message": "客户更新成功"},
                 status=status.HTTP_200_OK,
             )
         return Response(
@@ -344,7 +347,7 @@ class AccountDetailView(APIView):
         self.object = self.get_object(pk)
         if self.object.org != request.profile.org:
             return Response(
-                {"error": True, "errors": "User company doesnot match with header...."},
+                {"error": True, "errors": "用户公司与请求头不匹配"},
                 status=status.HTTP_403_FORBIDDEN,
             )
         if self.request.profile.role != "ADMIN" and not self.request.profile.is_admin:
@@ -352,13 +355,13 @@ class AccountDetailView(APIView):
                 return Response(
                     {
                         "error": True,
-                        "errors": "You do not have Permission to perform this action",
+                        "errors": "您没有权限执行此操作",
                     },
                     status=status.HTTP_403_FORBIDDEN,
                 )
         self.object.delete()
         return Response(
-            {"error": False, "message": "Account Deleted Successfully."},
+            {"error": False, "message": "客户删除成功"},
             status=status.HTTP_200_OK,
         )
 
@@ -371,7 +374,7 @@ class AccountDetailView(APIView):
         self.account = self.get_object(pk=pk)
         if self.account.org != request.profile.org:
             return Response(
-                {"error": True, "errors": "User company doesnot match with header...."},
+                {"error": True, "errors": "用户公司与请求头不匹配"},
                 status=status.HTTP_404_NOT_FOUND,
             )
         context = {}
@@ -384,7 +387,7 @@ class AccountDetailView(APIView):
                 return Response(
                     {
                         "error": True,
-                        "errors": "You do not have Permission to perform this action",
+                        "errors": "您没有权限执行此操作",
                     },
                     status=status.HTTP_403_FORBIDDEN,
                 )
@@ -484,7 +487,7 @@ class AccountDetailView(APIView):
             return Response(
                 {
                     "error": True,
-                    "errors": "User company does not match with header....",
+                    "errors": "用户公司与请求头不匹配....",
                 },
                 status=status.HTTP_403_FORBIDDEN,
             )
@@ -496,7 +499,7 @@ class AccountDetailView(APIView):
                 return Response(
                     {
                         "error": True,
-                        "errors": "You do not have Permission to perform this action",
+                        "errors": "您没有权限执行此操作",
                     },
                     status=status.HTTP_403_FORBIDDEN,
                 )
@@ -541,7 +544,7 @@ class AccountDetailView(APIView):
         tags=["Accounts"],
         parameters=swagger_params.organization_params,
         request=AccountWriteSerializer,
-        description="Partial Account Update",
+        description="部分账户更新",
     )
     def patch(self, request, pk, format=None):
         """Handle partial updates to an account."""
@@ -549,7 +552,7 @@ class AccountDetailView(APIView):
         account_object = self.get_object(pk=pk)
         if account_object.org != request.profile.org:
             return Response(
-                {"error": True, "errors": "User company does not match with header...."},
+                {"error": True, "errors": "用户公司与请求头不匹配...."},
                 status=status.HTTP_403_FORBIDDEN,
             )
         if self.request.profile.role != "ADMIN" and not self.request.profile.is_admin:
@@ -560,7 +563,7 @@ class AccountDetailView(APIView):
                 return Response(
                     {
                         "error": True,
-                        "errors": "You do not have Permission to perform this action",
+                        "errors": "您没有权限执行此操作",
                     },
                     status=status.HTTP_403_FORBIDDEN,
                 )
@@ -623,7 +626,7 @@ class AccountDetailView(APIView):
                     account_object.assigned_to.add(*profiles)
 
             return Response(
-                {"error": False, "message": "Account Updated Successfully"},
+                {"error": False, "message": "客户更新成功"},
                 status=status.HTTP_200_OK,
             )
         return Response(
@@ -658,7 +661,7 @@ class AccountCommentView(APIView):
                 if serializer.is_valid():
                     serializer.save()
                     return Response(
-                        {"error": False, "message": "Comment Submitted"},
+                        {"error": False, "message": "评论已提交"},
                         status=status.HTTP_200_OK,
                     )
                 return Response(
@@ -668,7 +671,7 @@ class AccountCommentView(APIView):
         return Response(
             {
                 "error": True,
-                "errors": "You don't have permission to edit this Comment",
+                "errors": "您没有权限编辑此评论",
             },
             status=status.HTTP_403_FORBIDDEN,
         )
@@ -677,7 +680,7 @@ class AccountCommentView(APIView):
         tags=["Accounts"],
         parameters=swagger_params.organization_params,
         request=AccountCommentEditSwaggerSerializer,
-        description="Partial Comment Update",
+        description="部分评论更新",
     )
     def patch(self, request, pk, format=None):
         """Handle partial updates to a comment."""
@@ -692,7 +695,7 @@ class AccountCommentView(APIView):
             if serializer.is_valid():
                 serializer.save()
                 return Response(
-                    {"error": False, "message": "Comment Updated"},
+                    {"error": False, "message": "评论已提交"},
                     status=status.HTTP_200_OK,
                 )
             return Response(
@@ -702,7 +705,7 @@ class AccountCommentView(APIView):
         return Response(
             {
                 "error": True,
-                "errors": "You don't have permission to edit this Comment",
+                "errors": "您没有权限编辑此评论",
             },
             status=status.HTTP_403_FORBIDDEN,
         )
@@ -717,13 +720,13 @@ class AccountCommentView(APIView):
         ):
             self.object.delete()
             return Response(
-                {"error": False, "message": "Comment Deleted Successfully"},
+                {"error": False, "message": "评论删除成功"},
                 status=status.HTTP_200_OK,
             )
         return Response(
             {
                 "error": True,
-                "errors": "You don't have permission to perform this action",
+                "errors": "您没有权限执行此操作",
             },
             status=status.HTTP_403_FORBIDDEN,
         )
@@ -744,13 +747,13 @@ class AccountAttachmentView(APIView):
         ):
             self.object.delete()
             return Response(
-                {"error": False, "message": "Attachment Deleted Successfully"},
+                {"error": False, "message": "附件删除成功"},
                 status=status.HTTP_200_OK,
             )
         return Response(
             {
                 "error": True,
-                "errors": "You don't have permission to delete this Attachment",
+                "errors": "您没有权限删除此附件",
             },
             status=status.HTTP_403_FORBIDDEN,
         )
@@ -796,7 +799,7 @@ class AccountCreateMailView(APIView):
                         email_obj.recipients.add(contact)
                     else:
                         email_obj.delete()
-                        data["recipients"] = "Please enter valid recipient"
+                        data["recipients"] = "请输入有效的收件人"
                         return Response({"error": True, "errors": data})
             if data.get("scheduled_later") != "true":
                 send_email.delay(email_obj.id, str(request.profile.org.id))
@@ -804,7 +807,7 @@ class AccountCreateMailView(APIView):
                 email_obj.scheduled_later = True
                 email_obj.scheduled_date_time = scheduled_date_time
             return Response(
-                {"error": False, "message": "Email sent successfully"},
+                {"error": False, "message": "邮件发送成功"},
                 status=status.HTTP_200_OK,
             )
         return Response(

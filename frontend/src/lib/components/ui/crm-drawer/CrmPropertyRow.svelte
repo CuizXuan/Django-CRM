@@ -290,7 +290,7 @@
 				value={Array.isArray(value) ? value : []}
 				{options}
 				{placeholder}
-				emptyText={emptyText || 'None selected'}
+				emptyText={emptyText || '未选择'}
 				disabled={!editable}
 				onchange={handleMultiSelectChange}
 			/>
@@ -299,7 +299,7 @@
 				{#if value}
 					{value}
 				{:else}
-					<span class="text-gray-400">{emptyText || 'Empty'}</span>
+					<span class="text-gray-400">{emptyText || '空'}</span>
 				{/if}
 			</span>
 		{/if}

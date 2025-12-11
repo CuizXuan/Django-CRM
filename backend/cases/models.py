@@ -9,13 +9,13 @@ from common.utils import CASE_TYPE, PRIORITY_CHOICE, STATUS_CHOICE
 from contacts.models import Contact
 
 
-# Cleanup notes:
-# - Removed 'created_on_arrow' property from Case and Solution (frontend computes its own timestamps)
-# - Fixed case_type default from "" to None (empty string is bad default for nullable field)
+# 清理说明：
+# - 删除了 Case 和 Solution 的 'created_on_arrow' 属性（前端自行计算时间戳）
+# - 修复了 case_type 的默认值从 "" 改为 None（空字符串对于可为空的字段来说是不好的默认值）
 
 
 class Case(AssignableMixin, BaseModel):
-    name = models.CharField(pgettext_lazy("Name of the case", "Name"), max_length=64)
+    name = models.CharField(pgettext_lazy(_("案例名称"), "Name"), max_length=64)
     status = models.CharField(choices=STATUS_CHOICE, max_length=64)
     priority = models.CharField(choices=PRIORITY_CHOICE, max_length=64)
     case_type = models.CharField(
@@ -38,8 +38,8 @@ class Case(AssignableMixin, BaseModel):
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="cases")
 
     class Meta:
-        verbose_name = "Case"
-        verbose_name_plural = "Cases"
+        verbose_name = "案例"
+        verbose_name_plural = "案例"
         db_table = "case"
         ordering = ("-created_at",)
         indexes = [
@@ -54,32 +54,32 @@ class Case(AssignableMixin, BaseModel):
 
 class Solution(BaseModel):
     """
-    Knowledge Base Solution
+    知识库解决方案
 
-    Solutions are reusable answers/guides that can be linked to cases.
-    They form a knowledge base for common issues and their resolutions.
+    解决方案是可以链接到案例的可重用答案/指南。
+    它们构成了常见问题和解决方案的知识库。
     """
 
     title = models.CharField(max_length=255)
     description = models.TextField()
 
     STATUS_CHOICES = [
-        ("draft", "Draft"),
-        ("reviewed", "Reviewed"),
-        ("approved", "Approved"),
+        ("draft", "草稿"),
+        ("reviewed", "已审核"),
+        ("approved", "已批准"),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
     is_published = models.BooleanField(default=False)
 
-    # Organization relation
+    # 组织关系
     org = models.ForeignKey(Org, on_delete=models.CASCADE, related_name="solutions")
 
-    # Cases that use this solution
+    # 使用此解决方案的案例
     cases = models.ManyToManyField(Case, related_name="solutions", blank=True)
 
     class Meta:
-        verbose_name = "Solution"
-        verbose_name_plural = "Solutions"
+        verbose_name = "解决方案"
+        verbose_name_plural = "解决方案"
         db_table = "solution"
         ordering = ("-created_at",)
         indexes = [
@@ -92,12 +92,12 @@ class Solution(BaseModel):
         return self.title
 
     def publish(self):
-        """Publish the solution (must be approved first)"""
+        """发布解决方案（必须先批准）"""
         if self.status == "approved":
             self.is_published = True
             self.save()
 
     def unpublish(self):
-        """Unpublish the solution"""
+        """取消发布解决方案"""
         self.is_published = False
         self.save()

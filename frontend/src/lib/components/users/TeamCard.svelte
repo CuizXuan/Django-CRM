@@ -42,7 +42,7 @@
 	 * @param {TeamMember} member
 	 */
 	function getMemberName(member) {
-		return member.user_details?.email?.split('@')[0] || 'User';
+		return member.user_details?.email?.split('@')[0] || '用户';
 	}
 
 	/**
@@ -66,7 +66,7 @@
 				<div>
 					<Card.Title class="text-base">{team.name}</Card.Title>
 					<p class="text-muted-foreground text-sm">
-						{members.length} member{members.length !== 1 ? 's' : ''}
+						{members.length} 名成员
 					</p>
 				</div>
 			</div>
@@ -86,15 +86,14 @@
 					</AlertDialog.Trigger>
 					<AlertDialog.Content>
 						<AlertDialog.Header>
-							<AlertDialog.Title>Delete Team</AlertDialog.Title>
+							<AlertDialog.Title>删除团队</AlertDialog.Title>
 							<AlertDialog.Description>
-								Are you sure you want to delete <strong>{team.name}</strong>? This will remove the
-								team from all assigned records. This action cannot be undone.
+								确定要删除 <strong>{team.name}</strong> 吗？这将从所有分配的记录中移除此团队。此操作无法撤销。
 							</AlertDialog.Description>
 						</AlertDialog.Header>
 						<AlertDialog.Footer>
-							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-							<Button variant="destructive" onclick={() => onDelete?.(team.id)}>Delete</Button>
+							<AlertDialog.Cancel>取消</AlertDialog.Cancel>
+							<Button variant="destructive" onclick={() => onDelete?.(team.id)}>删除</Button>
 						</AlertDialog.Footer>
 					</AlertDialog.Content>
 				</AlertDialog.Root>
@@ -132,7 +131,7 @@
 				{/if}
 			</div>
 			{#if members.length === 0}
-				<span class="text-muted-foreground text-sm italic">No members assigned</span>
+				<span class="text-muted-foreground text-sm italic">未分配成员</span>
 			{/if}
 		</div>
 	</Card.Content>

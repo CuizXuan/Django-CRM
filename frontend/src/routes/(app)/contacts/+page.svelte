@@ -44,27 +44,27 @@
 	const columns = [
 		{
 			key: 'name',
-			label: 'Contact',
+			label: '联系人',
 			type: 'text',
 			width: 'w-48',
 			editable: false,
 			canHide: false,
 			getValue: (row) => `${row.firstName || ''} ${row.lastName || ''}`.trim(),
-			emptyText: 'Unnamed'
+			emptyText: '未命名'
 		},
 		{
 			key: 'organization',
-			label: 'Company',
+			label: '公司',
 			type: 'text',
 			width: 'w-40',
 			emptyText: ''
 		},
-		{ key: 'title', label: 'Title', type: 'text', width: 'w-36', emptyText: '' },
-		{ key: 'email', label: 'Email', type: 'email', width: 'w-52', emptyText: '' },
-		{ key: 'phone', label: 'Phone', type: 'text', width: 'w-36', emptyText: '' },
+		{ key: 'title', label: '职位', type: 'text', width: 'w-36', emptyText: '' },
+		{ key: 'email', label: '邮箱', type: 'email', width: 'w-52', emptyText: '' },
+		{ key: 'phone', label: '电话', type: 'text', width: 'w-36', emptyText: '' },
 		{
 			key: 'createdAt',
-			label: 'Created',
+			label: '创建时间',
 			type: 'date',
 			width: 'w-32',
 			editable: false
@@ -72,7 +72,7 @@
 		// Hidden by default
 		{
 			key: 'owner',
-			label: 'Owner',
+			label: '负责人',
 			type: 'relation',
 			width: 'w-36',
 			relationIcon: 'user',
@@ -137,22 +137,22 @@
 
 	// Drawer column definitions for CrmDrawer (derived to include allTags)
 	const drawerColumns = $derived([
-		{ key: 'firstName', label: 'First Name', type: 'text', icon: User, placeholder: 'First name' },
-		{ key: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Last name' },
-		{ key: 'email', label: 'Email', type: 'email', icon: Mail, placeholder: 'email@example.com' },
-		{ key: 'phone', label: 'Phone', type: 'text', icon: Phone, placeholder: '+1 (555) 000-0000' },
+		{ key: 'firstName', label: '名', type: 'text', icon: User, placeholder: '请输入名' },
+		{ key: 'lastName', label: '姓', type: 'text', placeholder: '请输入姓' },
+		{ key: 'email', label: '邮箱', type: 'email', icon: Mail, placeholder: '请输入邮箱' },
+		{ key: 'phone', label: '电话', type: 'text', icon: Phone, placeholder: '请输入电话' },
 		{
 			key: 'organization',
-			label: 'Company',
+			label: '公司',
 			type: 'text',
 			icon: Building2,
-			placeholder: 'Company name'
+			placeholder: '请输入公司名称'
 		},
-		{ key: 'title', label: 'Job Title', type: 'text', icon: Briefcase, placeholder: 'Job title' },
-		{ key: 'department', label: 'Department', type: 'text', placeholder: 'Department' },
+		{ key: 'title', label: '职位', type: 'text', icon: Briefcase, placeholder: '请输入职位' },
+		{ key: 'department', label: '部门', type: 'text', placeholder: '请输入部门' },
 		{
 			key: 'doNotCall',
-			label: 'Do Not Call',
+			label: '禁止致电',
 			type: 'checkbox',
 			icon: PhoneOff
 		},
@@ -165,35 +165,35 @@
 		},
 		{
 			key: 'addressLine',
-			label: 'Address',
+			label: '地址',
 			type: 'text',
 			icon: MapPin,
-			placeholder: 'Street address'
+			placeholder: '街道地址'
 		},
-		{ key: 'city', label: 'City', type: 'text', placeholder: 'City' },
-		{ key: 'state', label: 'State', type: 'text', placeholder: 'State/Province' },
-		{ key: 'postcode', label: 'Postal Code', type: 'text', placeholder: 'Postal code' },
+		{ key: 'city', label: '城市', type: 'text', placeholder: '城市' },
+		{ key: 'state', label: '省/州', type: 'text', placeholder: '省/州' },
+		{ key: 'postcode', label: '邮编', type: 'text', placeholder: '邮政编码' },
 		{
 			key: 'country',
-			label: 'Country',
+			label: '国家',
 			type: 'select',
 			options: countryOptions,
-			placeholder: 'Select country'
+			placeholder: '选择国家'
 		},
 		{
 			key: 'tags',
-			label: 'Tags',
+			label: '标签',
 			type: 'multiselect',
 			icon: Tag,
 			options: allTags.map((/** @type {any} */ t) => ({ id: t.id, name: t.name })),
-			emptyText: 'No tags'
+			emptyText: '无标签'
 		},
 		{
 			key: 'description',
-			label: 'Notes',
+			label: '备注',
 			type: 'textarea',
 			icon: FileText,
-			placeholder: 'Add notes about this contact...'
+			placeholder: '添加关于此联系人的备注...'
 		}
 	]);
 
@@ -648,10 +648,10 @@
 </script>
 
 <svelte:head>
-	<title>Contacts - BottleCRM</title>
+	<title>联系人 - BottleCRM</title>
 </svelte:head>
 
-<PageHeader title="Contacts" subtitle="{filteredContacts.length} of {contacts.length} contacts">
+<PageHeader title="联系人" subtitle="{filteredContacts.length} / {contacts.length} 个联系人">
 	{#snippet actions()}
 		<div class="flex items-center gap-2">
 			<!-- Filter Toggle Button -->
@@ -662,7 +662,7 @@
 				onclick={() => (filtersExpanded = !filtersExpanded)}
 			>
 				<Filter class="h-4 w-4" />
-				Filters
+				筛选
 				{#if activeFiltersCount > 0}
 					<span
 						class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
@@ -690,7 +690,7 @@
 					{/snippet}
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content align="end" class="w-48">
-					<DropdownMenu.Label>Toggle columns</DropdownMenu.Label>
+					<DropdownMenu.Label>切换列</DropdownMenu.Label>
 					<DropdownMenu.Separator />
 					{#each columns as column (column.key)}
 						<DropdownMenu.CheckboxItem
@@ -707,7 +707,7 @@
 
 			<Button onclick={openCreate}>
 				<Plus class="mr-2 h-4 w-4" />
-				New Contact
+				新建联系人
 			</Button>
 		</div>
 	{/snippet}
@@ -724,12 +724,12 @@
 	>
 		<SearchInput
 			value={filters.search}
-			placeholder="Search contacts..."
+			placeholder="搜索联系人..."
 			onchange={(value) => updateFilters({ ...filters, search: value })}
 			class="w-64"
 		/>
 		<DateRangeFilter
-			label="Created"
+			label="创建时间"
 			startDate={filters.created_at_gte}
 			endDate={filters.created_at_lte}
 			onchange={(start, end) =>
@@ -742,7 +742,7 @@
 	{#if filteredContacts.length === 0}
 		<div class="flex flex-col items-center justify-center py-16 text-center">
 			<User class="text-muted-foreground/50 mb-4 h-12 w-12" />
-			<h3 class="text-foreground text-lg font-medium">No contacts found</h3>
+			<h3 class="text-foreground text-lg font-medium">未找到联系人</h3>
 		</div>
 	{:else}
 		<CrmTable
@@ -755,7 +755,7 @@
 			{#snippet emptyState()}
 				<div class="flex flex-col items-center justify-center py-16 text-center">
 					<User class="text-muted-foreground/50 mb-4 h-12 w-12" />
-					<h3 class="text-foreground text-lg font-medium">No contacts found</h3>
+					<h3 class="text-foreground text-lg font-medium">未找到联系人</h3>
 				</div>
 			{/snippet}
 		</CrmTable>
@@ -778,7 +778,7 @@
 	data={{ ...drawerFormData, displayName: drawerTitle }}
 	columns={drawerColumns}
 	titleKey="displayName"
-	titlePlaceholder="New Contact"
+	titlePlaceholder="新建联系人"
 	titleEditable={false}
 	headerLabel="Contact"
 	mode={drawerMode}
@@ -816,20 +816,20 @@
 
 	{#snippet footerActions()}
 		{#if drawerMode === 'create'}
-			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>Cancel</Button>
+			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>取消</Button>
 			<Button
 				onclick={handleDrawerSave}
 				disabled={isSubmitting || !drawerFormData.firstName?.trim()}
 			>
-				{isSubmitting ? 'Creating...' : 'Create Contact'}
+				{isSubmitting ? '创建中...' : '创建联系人'}
 			</Button>
 		{:else}
-			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>Cancel</Button>
+			<Button variant="outline" onclick={closeDrawer} disabled={isSubmitting}>取消</Button>
 			<Button
 				onclick={handleDrawerUpdate}
 				disabled={isSubmitting || !drawerFormData.firstName?.trim()}
 			>
-				{isSubmitting ? 'Saving...' : 'Save'}
+				{isSubmitting ? '保存中...' : '保存'}
 			</Button>
 		{/if}
 	{/snippet}
