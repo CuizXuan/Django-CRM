@@ -36,7 +36,7 @@
 		OPPORTUNITY_TYPES,
 		OPPORTUNITY_SOURCES,
 		CURRENCY_CODES
-	} from '$lib/constants/filters.js';
+	} from '$lib/constants/filters-zh.js';
 	import { orgSettings } from '$lib/stores/org.js';
 
 	const STORAGE_KEY = 'opportunities-crm-columns';

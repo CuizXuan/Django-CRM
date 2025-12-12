@@ -190,20 +190,28 @@ class Comment(BaseModel):
 
     # 通用关系到任何模型
     content_type = models.ForeignKey(
-        ContentType, on_delete=models.CASCADE, related_name="comments"
+        ContentType,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        verbose_name="内容类型"
     )
-    object_id = models.UUIDField()
+    object_id = models.UUIDField(verbose_name="对象ID")
     content_object = GenericForeignKey("content_type", "object_id")
 
-    comment = models.CharField(max_length=255)
-    commented_on = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField(max_length=255, verbose_name="评论内容")
+    commented_on = models.DateTimeField(auto_now_add=True, verbose_name="评论时间")
     commented_by = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, blank=True, null=True
+        Profile,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name="评论者"
     )
     org = models.ForeignKey(
         "Org",
         on_delete=models.CASCADE,
         related_name="comments",
+        verbose_name="组织"
     )
 
     class Meta:
@@ -246,7 +254,7 @@ class CommentFiles(BaseModel):
     安全性：添加 org 字段以实现 RLS 保护和组织级隔离。
     """
 
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment,verbose_name="评论", on_delete=models.CASCADE)
     comment_file = models.FileField(
         _("文件"), upload_to="CommentFiles", null=True, blank=True
     )
@@ -257,6 +265,7 @@ class CommentFiles(BaseModel):
         related_name="comment_files",
         null=True,  # 迁移期间暂时可为空
         blank=True,
+        verbose_name="组织"
     )
 
     class Meta:

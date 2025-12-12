@@ -81,7 +81,7 @@ export const TASK_STATUSES = [
 
 /** @type {{ value: string, label: string }[]} */
 export const OPPORTUNITY_TYPES = [
-	{ value: '', label: 'Select Type' },
+	{ value: '', label: '选择类型' },
 	{ value: 'NEW_BUSINESS', label: 'New Business' },
 	{ value: 'EXISTING_BUSINESS', label: 'Existing Business' },
 	{ value: 'RENEWAL', label: 'Renewal' },
@@ -91,7 +91,7 @@ export const OPPORTUNITY_TYPES = [
 
 /** @type {{ value: string, label: string }[]} */
 export const OPPORTUNITY_SOURCES = [
-	{ value: '', label: 'Select Source' },
+	{ value: '', label: '选择来源' },
 	{ value: 'NONE', label: 'None' },
 	{ value: 'CALL', label: 'Call' },
 	{ value: 'EMAIL', label: 'Email' },
@@ -105,7 +105,7 @@ export const OPPORTUNITY_SOURCES = [
 
 /** @type {{ value: string, label: string }[]} */
 export const CURRENCY_CODES = [
-	{ value: '', label: 'Select Currency' },
+	{ value: '', label: '选择币种' },
 	{ value: 'USD', label: 'USD - Dollar' },
 	{ value: 'EUR', label: 'EUR - Euro' },
 	{ value: 'GBP', label: 'GBP - Pound' },

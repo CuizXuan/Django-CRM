@@ -35,7 +35,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { PageHeader } from '$lib/components/layout';
 	import { INDUSTRIES, COUNTRIES } from '$lib/constants/lead-choices.js';
-	import { CURRENCY_CODES } from '$lib/constants/filters.js';
+	import { CURRENCY_CODES } from '$lib/constants/filters-zh.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { formatRelativeDate, formatDate, getNameInitials } from '$lib/utils/formatting.js';
 	import {
@@ -398,7 +398,7 @@
 			placeholder: '选择日期',
 			hideOnCreate: true
 		},
-		// Activity
+		// 活动记录
 		{
 			key: 'lastContacted',
 			label: '最后联系',
@@ -574,13 +574,13 @@
 			const activeUsers = usersResponse?.active_users?.active_users || [];
 			const users = activeUsers.map((/** @type {any} */ u) => ({
 				value: u.id,
-				label: u.user_details?.email || u.user?.email || u.email || 'Unknown'
+				label: u.user_details?.email || u.user?.email || u.email || '未知'
 			}));
 
 			const teamsList = (teamsResponse.teams || teamsResponse || []).map(
 				(/** @type {any} */ t) => ({
 					value: t.id,
-					label: t.name || 'Unknown'
+					label: t.name || '未知'
 				})
 			);
 
@@ -591,14 +591,14 @@
 				[]
 			).map((/** @type {any} */ c) => ({
 				value: c.id,
-				label: `${c.first_name || ''} ${c.last_name || ''}`.trim() || c.email || 'Unknown'
+				label: `${c.first_name || ''} ${c.last_name || ''}`.trim() || c.email || '未知'
 			}));
 
 			const tagsList = (
 				Array.isArray(tagsResponse) ? tagsResponse : tagsResponse.results || []
 			).map((/** @type {any} */ t) => ({
 				value: t.id,
-				label: t.name || 'Unknown'
+				label: t.name || '未知'
 			}));
 
 			formOptions = { users, teamsList, contactsList, tagsList };
@@ -876,7 +876,7 @@
 	 */
 	async function handleCreateLead() {
 		if (!createFormData.title?.trim()) {
-			toast.error('Lead title is required');
+			toast.error('线索标题是必填项');
 			return;
 		}
 
@@ -926,7 +926,7 @@
 	const filterOptions = $derived(data.filterOptions);
 
 	// Count active filters (excluding status since it's handled via chips in header)
-	const activeFiltersCount = $derived.by(() => {
+	const active筛选Count = $derived.by(() => {
 		let count = 0;
 		if (filters.search) count++;
 		if (filters.source) count++;
@@ -939,9 +939,9 @@
 
 	/**
 	 * Update URL with new filters
-	 * @param {Record<string, any>} newFilters
+	 * @param {Record<string, any>} new筛选
 	 */
-	async function updateFilters(newFilters) {
+	async function update筛选(new筛选) {
 		const url = new URL($page.url);
 		// Clear existing filter params (preserve view/action)
 		[
@@ -955,7 +955,7 @@
 			'created_at_lte'
 		].forEach((key) => url.searchParams.delete(key));
 		// Set new params
-		Object.entries(newFilters).forEach(([key, value]) => {
+		Object.entries(new筛选).forEach(([key, value]) => {
 			if (Array.isArray(value)) {
 				value.forEach((v) => url.searchParams.append(key, v));
 			} else if (value && value !== 'ALL') {
@@ -968,8 +968,8 @@
 	/**
 	 * Clear all filters
 	 */
-	function clearFilters() {
-		updateFilters({});
+	function clear筛选() {
+		update筛选({});
 	}
 
 	/**
@@ -1058,7 +1058,7 @@
 		state: '',
 		postcode: '',
 		country: '',
-		// Activity
+		// 活动记录
 		lastContacted: '',
 		nextFollowUp: '',
 		description: '',
@@ -1117,7 +1117,7 @@
 		formState.state = formData.state || '';
 		formState.postcode = formData.postcode || '';
 		formState.country = formData.country || '';
-		// Activity
+		// 活动记录
 		formState.lastContacted = formData.last_contacted || '';
 		formState.nextFollowUp = formData.next_follow_up || '';
 		formState.description = formData.description || '';
@@ -1143,7 +1143,7 @@
 	 */
 	async function handleDelete() {
 		if (!drawerData) return;
-		if (!confirm(`Are you sure you want to delete ${getFullName(drawerData)}?`)) return;
+		if (!confirm(`确定要删除 ${getFullName(drawerData)}?`)) return;
 
 		formState.leadId = drawerData.id;
 		await tick();
@@ -1166,7 +1166,7 @@
 	 * @param {any} lead
 	 */
 	async function handleRowDelete(lead) {
-		if (!confirm(`Are you sure you want to delete ${getFullName(lead)}?`)) return;
+		if (!confirm(`确定要删除 ${getFullName(lead)}?`)) return;
 
 		formState.leadId = lead.id;
 		await tick();
@@ -1330,12 +1330,12 @@
 				onclick={() => (filtersExpanded = !filtersExpanded)}
 			>
 				<Filter class="h-4 w-4" />
-				Filters
-				{#if activeFiltersCount > 0}
+				筛选
+				{#if active筛选Count > 0}
 					<span
 						class="rounded-full bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
 					>
-						{activeFiltersCount}
+						{active筛选Count}
 					</span>
 				{/if}
 			</Button>
@@ -1386,28 +1386,28 @@
 	<FilterBar
 		minimal={true}
 		expanded={filtersExpanded}
-		activeCount={activeFiltersCount}
-		onClear={clearFilters}
+		activeCount={active筛选Count}
+		onClear={clear筛选}
 		class="pb-4"
 	>
 		<SearchInput
 			value={filters.search}
 			placeholder="搜索线索..."
-			onchange={(value) => updateFilters({ ...filters, search: value })}
+			onchange={(value) => update筛选({ ...filters, search: value })}
 			class="w-64"
 		/>
 		<SelectFilter
 			label="来源"
 			options={filterOptions.sources}
 			value={filters.source || 'ALL'}
-			onchange={(value) => updateFilters({ ...filters, source: value })}
+			onchange={(value) => update筛选({ ...filters, source: value })}
 			class="w-40"
 		/>
 		<SelectFilter
 			label="评分"
 			options={filterOptions.ratings}
 			value={filters.rating || 'ALL'}
-			onchange={(value) => updateFilters({ ...filters, rating: value })}
+			onchange={(value) => update筛选({ ...filters, rating: value })}
 			class="w-32"
 		/>
 		<DateRangeFilter
@@ -1415,7 +1415,7 @@
 			startDate={filters.created_at_gte}
 			endDate={filters.created_at_lte}
 			onchange={(start, end) =>
-				updateFilters({ ...filters, created_at_gte: start, created_at_lte: end })}
+				update筛选({ ...filters, created_at_gte: start, created_at_lte: end })}
 			class="w-56"
 		/>
 	</FilterBar>
@@ -1497,7 +1497,7 @@
 				class="flex w-full items-center gap-2 px-4 py-3 text-sm text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300"
 			>
 				<Plus class="h-4 w-4" />
-				New
+				新建
 			</button>
 		</div>
 	{/if}
@@ -1532,7 +1532,7 @@
 			<div class="space-y-3">
 				<div class="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
 					<MessageSquare class="h-4 w-4" />
-					Activity
+					活动记录
 				</div>
 				{#each drawerData.comments.slice(0, 3) as comment (comment.id)}
 					<div class="flex gap-3">
@@ -1543,8 +1543,8 @@
 						</div>
 						<div class="min-w-0 flex-1">
 							<p class="text-sm text-gray-900 dark:text-gray-100">
-								<span class="font-medium">{comment.author?.name || 'Unknown'}</span>
-								{' '}added a note
+								<span class="font-medium">{comment.author?.name || '未知'}</span>
+								{' '}添加了备注
 							</p>
 							<p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
 								{formatRelativeDate(comment.createdAt)}
@@ -1565,13 +1565,13 @@
 			<Button onclick={handleCreateLead} disabled={isSaving}>
 				{#if isSaving}
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-					Creating...
+					创建中...
 				{:else}
 					创建线索
 				{/if}
 			</Button>
 		{:else}
-			<Button variant="outline" onclick={closeDrawer} disabled={isSaving}>Cancel</Button>
+			<Button variant="outline" onclick={closeDrawer} disabled={isSaving}>取消</Button>
 			{#if drawerData?.status !== 'converted'}
 				<Button variant="outline" onclick={handleDrawerConvert} disabled={isSaving}>
 					<ArrowRightCircle class="mr-2 h-4 w-4" />
@@ -1624,7 +1624,7 @@
 	<input type="hidden" name="state" value={formState.state} />
 	<input type="hidden" name="postcode" value={formState.postcode} />
 	<input type="hidden" name="country" value={formState.country} />
-	<!-- Activity -->
+	<!-- 活动记录 -->
 	<input type="hidden" name="lastContacted" value={formState.lastContacted} />
 	<input type="hidden" name="nextFollowUp" value={formState.nextFollowUp} />
 	<input type="hidden" name="description" value={formState.description} />
@@ -1670,7 +1670,7 @@
 	<input type="hidden" name="state" value={formState.state} />
 	<input type="hidden" name="postcode" value={formState.postcode} />
 	<input type="hidden" name="country" value={formState.country} />
-	<!-- Activity -->
+	<!-- 活动记录 -->
 	<input type="hidden" name="lastContacted" value={formState.lastContacted} />
 	<input type="hidden" name="nextFollowUp" value={formState.nextFollowUp} />
 	<input type="hidden" name="description" value={formState.description} />

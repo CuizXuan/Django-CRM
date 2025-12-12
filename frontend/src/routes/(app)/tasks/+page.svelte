@@ -38,7 +38,7 @@
 	import { FilterBar, SearchInput, SelectFilter, DateRangeFilter } from '$lib/components/ui/filter';
 	import { Pagination } from '$lib/components/ui/pagination';
 	import { cn } from '$lib/utils.js';
-	import { TASK_STATUSES as statuses, PRIORITIES as priorities } from '$lib/constants/filters.js';
+	import { TASK_STATUSES as statuses, PRIORITIES as priorities } from '$lib/constants/filters-zh.js';
 	import { CrmTable } from '$lib/components/ui/crm-table';
 	import { formatRelativeDate } from '$lib/utils/formatting.js';
 

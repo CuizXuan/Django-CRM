@@ -85,7 +85,7 @@
 	function formatDate(dateStr) {
 		if (!dateStr) return '';
 		const date = new Date(dateStr);
-		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+		return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 	}
 
 	/**
@@ -262,7 +262,7 @@
 											{#if formattedValue}
 												{formattedValue}
 											{:else}
-												<span class="text-gray-400">{column.emptyText || 'Empty'}</span>
+												<span class="text-gray-400">{column.emptyText || '-'}</span>
 											{/if}
 										</button>
 									{:else}
@@ -270,7 +270,7 @@
 											{#if formattedValue}
 												{formattedValue}
 											{:else}
-												<span class="text-gray-400">{column.emptyText || 'Empty'}</span>
+												<span class="text-gray-400">{column.emptyText || '-'}</span>
 											{/if}
 										</span>
 									{/if}
@@ -293,7 +293,7 @@
 											{#if formattedValue}
 												{formattedValue}
 											{:else}
-												<span class="text-gray-400">{column.emptyText || 'Empty'}</span>
+												<span class="text-gray-400">{column.emptyText || '-'}</span>
 											{/if}
 										</button>
 									{:else}
@@ -301,7 +301,7 @@
 											{#if formattedValue}
 												{formattedValue}
 											{:else}
-												<span class="text-gray-400">{column.emptyText || 'Empty'}</span>
+												<span class="text-gray-400">{column.emptyText || '-'}</span>
 											{/if}
 										</span>
 									{/if}

@@ -37,7 +37,7 @@
 	import { Pagination } from '$lib/components/ui/pagination';
 	import { formatRelativeDate, formatCurrency, getInitials } from '$lib/utils/formatting.js';
 	import { COUNTRIES, getCountryName } from '$lib/constants/countries.js';
-	import { CURRENCY_CODES } from '$lib/constants/filters.js';
+	import { CURRENCY_CODES } from '$lib/constants/filters-zh.js';
 	import { orgSettings } from '$lib/stores/org.js';
 
 	// Column visibility configuration

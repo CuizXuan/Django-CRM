@@ -1,0 +1,274 @@
+/* 筛选栏布局优化 */
+
+/* FilterBar 布局优化 */
+.filter-bar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: flex-end;
+}
+
+/* 筛选项容器 - 每项占一行，标签在上，控件在下 */
+.filter-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	min-width: 0;
+}
+
+/* 筛选项标签 */
+.filter-label {
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: rgb(107 114 128);
+	line-height: 1;
+	margin-bottom: 0;
+}
+
+.dark .filter-label {
+	color: rgb(156 163 175);
+}
+
+/* 筛选项输入容器 */
+.filter-input-container {
+	display: flex;
+	align-items: center;
+	position: relative;
+	min-width: 0;
+	width: 100%;
+}
+
+/* 输入框样式统一 */
+.filter-input,
+.filter-select,
+.filter-date-range {
+	flex: 1;
+	min-width: 0;
+}
+
+/* 搜索框特定样式 */
+.filter-search-input {
+	padding-left: 2.5rem !important;
+	padding-right: 2.5rem !important;
+}
+
+/* Select 组件样式 */
+.filter-select {
+	position: relative;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+	background-position: right 0.5rem center;
+	background-repeat: no-repeat;
+	background-size: 1.5em 1.5em;
+	padding-right: 2.5rem !important;
+}
+
+/* 搜索图标 */
+.filter-search-icon {
+	position: absolute;
+	left: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	pointer-events: none;
+	color: rgb(156 163 175);
+	z-index: 10;
+}
+
+/* 清除按钮 */
+.filter-clear-icon {
+	position: absolute;
+	right: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	color: rgb(156 163 175);
+	z-index: 10;
+}
+
+.has-value .filter-clear-icon {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.filter-clear-icon:hover {
+	color: rgb(107 114 128);
+}
+
+/* 日期范围选择器 */
+.filter-date-range {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.filter-date-input {
+	flex: 1;
+}
+
+/* 响应式布局 */
+@media (min-width: 640px) {
+	.filter-bar {
+		align-items: flex-end;
+	}
+
+	.filter-item {
+		min-width: 120px;
+	}
+
+	.filter-search-container {
+		min-width: 256px;
+	}
+
+	.filter-select-container {
+		min-width: 160px;
+	}
+
+	.filter-rating-container {
+		min-width: 128px;
+	}
+
+	.filter-date-container {
+		min-width: 224px;
+	}
+}
+
+@media (min-width: 768px) {
+	.filter-bar {
+		gap: 1.5rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.filter-bar {
+		gap: 2rem;
+	}
+
+	.filter-search-container {
+		min-width: 320px;
+	}
+}
+
+/* 暗色模式适配 */
+.dark .filter-select {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* 确保ChevronDown图标对齐 */
+[data-radix-select-trigger] > div:last-child {
+	position: absolute;
+	right: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+[data-radix-select-trigger] svg[data-lucide="chevron-down"] {
+	width: 1rem;
+	height: 1rem;
+	flex-shrink: 0;
+	opacity: 0.5;
+}
+
+/* Popover内容样式优化 */
+[data-radix-popover-content] {
+	z-index: 50;
+}
+
+/* 分页组件样式优化 */
+.pagination-component {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.875rem;
+}
+
+.pagination-page-size {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.pagination-page-size select {
+	font-size: 0.8125rem;
+	padding: 0.25rem 0.5rem;
+	border: 1px solid rgb(229 231 235);
+	border-radius: 0.375rem;
+	background: white;
+	color: rgb(31 41 55);
+}
+
+.dark .pagination-page-size select {
+	background: rgb(31 41 55);
+	border-color: rgb(75 85 99);
+	color: rgb(243 244 246);
+}
+
+.pagination-info {
+	font-size: 0.8125rem;
+	color: rgb(107 114 128);
+}
+
+.dark .pagination-info {
+	color: rgb(156 163 175);
+}
+
+/* 优化清除按钮hover效果 */
+.filter-clear-button {
+	border: none;
+	background: none;
+	cursor: pointer;
+	padding: 0.25rem;
+	border-radius: 0.25rem;
+	transition: all 0.15s ease-in-out;
+}
+
+.filter-clear-button:hover {
+	background-color: rgb(243 244 246);
+}
+
+.dark .filter-clear-button:hover {
+	background-color: rgb(55 65 81);
+}
+
+/* 确保筛选器激活状态 */
+.filter-active {
+	border-color: rgb(59 130 246) !important;
+	box-shadow: 0 0 0 1px rgb(59 130 246) !important;
+}
+
+.dark .filter-active {
+	border-color: rgb(96 165 250) !important;
+	box-shadow: 0 0 0 1px rgb(96 165 250) !important;
+}
+
+/* 确保所有文本对齐 */
+.filter-text-left {
+	text-align: left;
+}
+
+/* 按钮间距优化 */
+.filter-actions {
+	display: flex;
+	gap: 0.5rem;
+}
+
+/* 额外的辅助类 */
+.filter-w-xs { min-width: 100px; }
+.filter-w-sm { min-width: 128px; }
+.filter-w-md { min-width: 160px; }
+.filter-w-lg { min-width: 192px; }
+.filter-w-xl { min-width: 256px; }
+
+.filter-flex-1 { flex: 1; }
+.filter-flex-none { flex: none; }
+/* Filter container - 用于FilterBar组件 */
+.filter-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: flex-end;
+}
