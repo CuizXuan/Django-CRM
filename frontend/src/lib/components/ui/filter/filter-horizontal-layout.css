@@ -1,0 +1,682 @@
+/* 筛选栏水平布局优化 - 标签左对齐，输入框右对齐 */
+
+/* FilterBar 布局优化 */
+.filter-bar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	align-items: flex-end;
+	/* 确保内容不会溢出 */
+	width: 100%;
+	overflow: hidden;
+}
+
+/* 筛选项容器 - 优化布局，解决对齐和截断问题 */
+.filter-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	/* 确保最小宽度，避免内容被压缩 */
+	min-width: 0;
+	/* 控制 flex 增长，避免某些项过度扩展 */
+	flex: 0 1 auto;
+}
+
+/* 桌面端：水平对齐布局 - 改进版 */
+@media (min-width: 768px) {
+	.filter-bar {
+		/* 调整间距，确保视觉平衡 */
+		gap: 2rem;
+		/* 使用 align-items: stretch 确保高度一致 */
+		align-items: flex-end;
+	}
+
+	.filter-item {
+		flex-direction: row;
+		align-items: center;
+		/* 减少间距，让布局更紧凑 */
+		gap: 0.75rem;
+		/* 设置基准宽度，确保标签对齐 */
+		flex: 0 1 auto;
+		/* 设置最小宽度，避免内容被压缩 */
+		min-width: 200px;
+		/* 最大宽度限制，避免过宽 */
+		max-width: 320px;
+	}
+
+	/* 筛选项标签 - 统一宽度，右对齐 */
+	.filter-label {
+		font-size: 0.875rem;
+		font-weight: 500;
+		/* 深灰色 #333 */
+		color: #333;
+		line-height: 1.25rem;
+		margin: 0;
+		/* 固定宽度确保对齐 */
+		width: 90px;
+		/* 右对齐 */
+		text-align: right;
+		flex-shrink: 0;
+		/* 确保文字不被截断 */
+		white-space: nowrap;
+		overflow: visible;
+	}
+
+	.dark .filter-label {
+		color: #e5e5e5;
+	}
+
+	/* 筛选项输入容器 - 自适应宽度 */
+	.filter-input-wrapper {
+		display: flex;
+		align-items: center;
+		position: relative;
+		/* 确保最小宽度，避免内容被压缩 */
+		min-width: 120px;
+		/* 自适应宽度 */
+		flex: 1;
+		/* 防止内容溢出 */
+		overflow: hidden;
+	}
+
+	/* 搜索框特殊处理 - 固定宽度 150px */
+	.filter-item:has(.filter-search-input) {
+		width: 150px;
+		min-width: 150px;
+		max-width: 150px;
+		flex-shrink: 0;
+	}
+
+	/* 日期选择器特殊处理 */
+	.filter-item:has(.filter-date-range) {
+		min-width: 300px;
+		max-width: 400px;
+	}
+}
+
+/* 移动端：保持垂直布局并优化 */
+@media (max-width: 767px) {
+	.filter-bar {
+		gap: 1rem;
+		/* 全宽度布局 */
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.filter-item {
+		/* 移动端占满宽度 */
+		width: 100%;
+		flex: 1 1 auto;
+	}
+
+	.filter-label {
+		font-size: 0.75rem;
+		font-weight: 500;
+		/* 深灰色 #333 */
+		color: #333;
+		line-height: 1;
+		margin-bottom: 0.25rem;
+		/* 移动端也确保文字不换行 */
+		white-space: nowrap;
+		/* 移动端左对齐 */
+		text-align: left;
+	}
+
+	.dark .filter-label {
+		color: #e5e5e5;
+	}
+
+	.filter-input-wrapper {
+		display: flex;
+		align-items: center;
+		position: relative;
+		min-width: 0;
+		width: 100%;
+		/* 移动端确保输入框不会太小 */
+		min-height: 36px;
+	}
+}
+
+/* 输入框样式统一 - 优化版，解决截断问题 */
+.filter-input,
+.filter-select,
+.filter-date-range {
+	flex: 1;
+	min-width: 0;
+	/* 确保文字不会被截断 */
+	overflow: visible;
+	text-overflow: ellipsis;
+	/* 统一高度 36px */
+	height: 36px;
+	/* 边框样式 */
+	border: 1px solid #d9d9d9;
+	/* 圆角 6px */
+	border-radius: 6px;
+	/* 背景色 */
+	background: #fff;
+	/* 内边距 */
+	padding: 0 0.75rem;
+	/* 字体设置 */
+	font-size: 0.875rem;
+	transition: all 0.2s ease;
+}
+
+/* 搜索框特定样式 */
+.filter-search-input {
+	padding-left: 2.5rem !important;
+	padding-right: 2.5rem !important;
+	/* 确保搜索框有足够宽度 */
+	min-width: 200px !important;
+	/* 文字不会被截断 */
+	text-overflow: ellipsis;
+}
+
+/* 按钮形式的输入框（Select, DateRange） - 使用更具体的选择器 */
+.filter-item > .filter-input-wrapper > button,
+.filter-item > [data-radix-select-trigger],
+.filter-item > [data-radix-popover-trigger],
+.filter-item button[data-radix-select-trigger],
+.filter-item button[data-radix-popover-trigger] {
+	/* 统一高度 36px */
+	height: 36px !important;
+	/* 边框样式 - 使用更强的优先级 */
+	border: 1px solid #d9d9d9 !important;
+	/* 圆角 6px */
+	border-radius: 6px !important;
+	/* 背景色 */
+	background: #ffffff !important;
+	/* 内边距 - 确保有足够空间容纳内容 */
+	padding: 0 12px !important;
+	padding-right: 32px !important; /* 为箭头留出空间 */
+	/* 字体设置 */
+	font-size: 0.875rem !important;
+	transition: all 0.2s ease !important;
+	/* 文字左对齐 */
+	text-align: left !important;
+	/* 防止阴影 */
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+	/* 确保按钮是块级或弹性元素 */
+	display: flex !important;
+	align-items: center !important;
+	/* 确保宽度正确 */
+	width: 100% !important;
+	/* 防止内容溢出 */
+	overflow: hidden !important;
+}
+
+/* 暗色模式适配 */
+.dark .filter-input,
+.dark .filter-select,
+.dark .filter-date-range,
+.dark .filter-item button[data-radix-select-trigger],
+.dark .filter-item button[data-radix-popover-trigger] {
+	background: #1f2937 !important;
+	border-color: #374151 !important;
+	color: #f3f4f6;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* 悬停状态覆盖 */
+.filter-item button[data-radix-select-trigger]:hover,
+.filter-item button[data-radix-popover-trigger]:hover {
+	border-color: #40a9ff !important;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* 聚焦状态覆盖 */
+.filter-item button[data-radix-select-trigger]:focus-visible,
+.filter-item button[data-radix-popover-trigger]:focus-visible {
+	border-color: #1890ff !important;
+	box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+	outline: none;
+}
+
+/* Select 组件样式 - 优化 */
+.filter-select {
+	position: relative;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+	background-position: right 0.5rem center;
+	background-repeat: no-repeat;
+	background-size: 1.5em 1.5em;
+	padding-right: 2.5rem !important;
+	/* 确保文字显示完整 */
+	padding-left: 0.75rem;
+	/* 文字溢出时显示省略号 */
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* 搜索图标 */
+.filter-search-icon {
+	position: absolute;
+	left: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	pointer-events: none;
+	color: rgb(156 163 175);
+	z-index: 10;
+}
+
+/* 清除按钮 */
+.filter-clear-icon {
+	position: absolute;
+	right: 0.75rem;
+	top: 50%;
+	transform: translateY(-50%);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	color: rgb(156 163 175);
+	z-index: 10;
+}
+
+.has-value .filter-clear-icon {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.filter-clear-icon:hover {
+	color: rgb(107 114 128);
+}
+
+/* 日期范围选择器 - 优化 */
+.filter-date-range {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	/* 确保日期选择器有足够宽度 */
+	min-width: 180px !important;
+}
+
+.filter-date-input {
+	flex: 1;
+	/* 确保日期输入框最小宽度 */
+	min-width: 120px;
+}
+
+/* 响应式布局优化 - 考虑不同屏幕尺寸 */
+@media (max-width: 480px) {
+	/* 超小屏幕优化 */
+	.filter-bar {
+		gap: 0.75rem;
+		padding: 0.5rem;
+	}
+
+	.filter-item {
+		width: 100%;
+		gap: 0.5rem;
+	}
+
+	.filter-label {
+		width: auto;
+		min-width: 60px;
+		font-size: 0.8rem;
+	}
+
+	.filter-input-wrapper {
+		width: 100%;
+	}
+
+	/* 小屏幕下调整按钮宽度 */
+	.filter-date-range button,
+	.filter-item button[data-radix-select-trigger] {
+		min-width: 120px !important;
+	}
+}
+
+@media (min-width: 481px) and (max-width: 639px) {
+	/* 小屏幕优化 */
+	.filter-bar {
+		gap: 1rem;
+	}
+
+	.filter-item {
+		flex: 1 1 calc(50% - 0.5rem);
+		min-width: 160px;
+	}
+
+	.filter-label {
+		width: 60px;
+		font-size: 0.825rem;
+	}
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+	/* 中等屏幕优化 */
+	.filter-bar {
+		gap: 1.25rem;
+	}
+
+	.filter-item {
+		min-width: 180px;
+		flex: 0 1 auto;
+	}
+
+	/* 搜索框特殊处理 */
+	.filter-item:has(.filter-search-input) {
+		min-width: 220px;
+	}
+
+	/* 日期选择器特殊处理 */
+	.filter-item:has(.filter-date-range) {
+		min-width: 240px;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+	/* 大屏幕优化 */
+	.filter-bar {
+		gap: 1.5rem;
+	}
+
+	.filter-item {
+		min-width: 220px;
+		max-width: 300px;
+	}
+
+	.filter-label {
+		width: 70px;
+	}
+
+	/* 特殊组件宽度调整 - 搜索框保持 150px */
+	.filter-item:has(.filter-search-input) {
+		width: 150px;
+		min-width: 150px;
+		max-width: 150px;
+		flex-shrink: 0;
+	}
+
+	.filter-item:has(.filter-date-range) {
+		min-width: 280px;
+	}
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+	/* 超大屏幕优化 */
+	.filter-bar {
+		gap: 2rem;
+	}
+
+	.filter-item {
+		min-width: 240px;
+		max-width: 320px;
+	}
+}
+
+@media (min-width: 1280px) {
+	/* 超超大屏幕优化 */
+	.filter-bar {
+		gap: 2.5rem;
+	}
+
+	.filter-item {
+		min-width: 260px;
+		max-width: 360px;
+	}
+
+	/* 搜索框始终保持 150px */
+	.filter-item:has(.filter-search-input) {
+		width: 150px;
+		min-width: 150px;
+		max-width: 150px;
+		flex-shrink: 0;
+	}
+
+	.filter-item:has(.filter-date-range) {
+		max-width: 420px;
+	}
+}
+
+/* 暗色模式适配 */
+.dark .filter-select {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Filter container - 用于FilterBar组件 */
+.filter-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: flex-end;
+}
+
+/* 额外的辅助类 */
+.filter-w-xs { min-width: 180px; }
+.filter-w-sm { min-width: 200px; }
+.filter-w-md { min-width: 240px; }
+.filter-w-lg { min-width: 280px; }
+.filter-w-xl { min-width: 320px; }
+
+.filter-flex-1 { flex: 1; }
+.filter-flex-none { flex: none; }
+
+/* 按钮样式优化 - 防止文字截断 */
+/* 日期范围按钮样式 - 确保文字不截断 */
+.filter-date-range button,
+.filter-item button[data-radix-select-trigger],
+.filter-item button[data-radix-popover-trigger] {
+	/* 确保按钮文字不会被截断 */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	/* 设置合理的最小宽度 */
+	min-width: 140px;
+	/* 调整内边距，确保文字有足够空间 */
+	padding-left: 0.75rem !important;
+}
+
+/* 日期范围选择器按钮特殊处理 */
+.filter-item:has(.filter-date-range) button {
+	min-width: 240px !important;
+	padding-right: 8px !important;
+}
+
+/* Select 触发器按钮特殊处理 - 移除 justify-content */
+.filter-item:has(.filter-select-filter) button {
+	padding-right: 8px !important;
+}
+
+/* 按钮内的文字部分 */
+.filter-item button span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	flex: 1;
+	text-align: left;
+	min-width: 0;
+}
+
+/* Select 和 DatePicker 箭头样式 - 确保在按钮内部最右侧 */
+.filter-item button svg[aria-hidden="true"],
+.filter-item button .lucide-chevron-down {
+	position: absolute !important;
+	right: 8px !important;
+	top: 50% !important;
+	transform: translateY(-50%) !important;
+	width: 14px !important;
+	height: 14px !important;
+	color: #6b7280 !important;
+	transition: transform 0.2s ease !important;
+	flex-shrink: 0 !important;
+	z-index: 10 !important;
+	pointer-events: none !important;
+}
+
+/* 右侧操作区域样式（清除按钮和箭头） */
+.filter-item button > div:last-child {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	margin-left: 8px;
+	flex-shrink: 0;
+	position: absolute !important;
+	right: 8px !important;
+	top: 50% !important;
+	transform: translateY(-50%) !important;
+}
+
+/* 清除按钮样式 */
+.filter-item button span[role="button"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	padding: 2px;
+	border-radius: 4px;
+	transition: all 0.15s ease;
+	flex-shrink: 0;
+	background: transparent !important;
+}
+
+.filter-item button span[role="button"]:hover {
+	background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.dark .filter-item button span[role="button"]:hover {
+	background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 按钮内容区域样式 */
+.filter-item button > div:first-child {
+	display: flex !important;
+	align-items: center !important;
+	gap: 0.5rem !important;
+	flex: 1 !important;
+	min-width: 0 !important;
+	overflow: hidden !important;
+	padding-right: 20px !important; /* 为右侧按钮组留出空间 */
+}
+
+/* 多选标签容器 */
+.filter-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+	width: 100%;
+}
+
+/* 确保所有筛选组件使用统一的类名结构 */
+.filter-container {
+	/* 容器使用 flex 布局 */
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	align-items: flex-end;
+	width: 100%;
+}
+
+/* 修复 FilterBar minimal 模式下的布局 */
+.filter-container.filter-minimal {
+	gap: 1rem;
+}
+
+/* 输入框和按钮的通用样式 */
+.filter-input,
+.filter-select,
+.filter-date-range button,
+.filter-item button[data-radix-select-trigger],
+.filter-item button[data-radix-popover-trigger] {
+	height: 36px;
+	border-radius: 6px;
+	font-size: 0.875rem;
+	transition: all 0.2s ease;
+}
+
+/* 悬停状态优化 */
+.filter-input:hover,
+.filter-select:hover,
+.filter-item button[data-radix-select-trigger]:hover,
+.filter-item button[data-radix-popover-trigger]:hover {
+	border-color: #40a9ff;
+}
+
+/* 聚焦状态优化 */
+.filter-input:focus,
+.filter-select:focus,
+.filter-item button[data-radix-select-trigger]:focus-visible,
+.filter-item button[data-radix-popover-trigger]:focus-visible {
+	outline: none;
+	border-color: #1890ff;
+	box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 暗色模式聚焦状态 */
+.dark .filter-input:focus,
+.dark .filter-select:focus,
+.dark .filter-item button[data-radix-select-trigger]:focus-visible,
+.dark .filter-item button[data-radix-popover-trigger]:focus-visible {
+	border-color: #40a9ff;
+	box-shadow: 0 0 0 2px rgba(64, 169, 255, 0.2);
+}
+
+/* 分页组件字体调整 - 缩小 10%-15% */
+/* 分页信息文本 */
+.pagination-info {
+	font-size: 0.78rem; /* 从 0.8125rem 缩小约 4% */
+	color: rgb(107 114 128);
+}
+
+.dark .pagination-info {
+	color: rgb(156 163 175);
+}
+
+/* 每页显示选择器 */
+.pagination-page-size {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.pagination-page-size span {
+	font-size: 0.78rem; /* 从 0.875rem 缩小约 11% */
+}
+
+.pagination-page-size select {
+	font-size: 0.75rem; /* 从 0.8125rem 缩小约 8% */
+	padding: 0.25rem 0.5rem;
+	border: 1px solid rgb(229 231 235);
+	border-radius: 0.375rem;
+	background: white;
+	color: rgb(31 41 55);
+}
+
+.dark .pagination-page-size select {
+	background: rgb(31 41 55);
+	border-color: rgb(75 85 99);
+	color: rgb(243 244 246);
+}
+
+/* 页码导航文本 */
+.pagination-nav-text {
+	font-size: 0.75rem; /* 从 0.875rem 缩小约 14% */
+}
+
+/* Pagination组件内的文本 */
+.pagination-text {
+	font-size: 0.75rem !important; /* 缩小约 14% */
+}
+
+.pagination-text .font-medium {
+	font-size: 0.75rem !important; /* 确保加粗文本也缩小 */
+}
+
+/* 自定义分页组件样式 */
+.pagination-component {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+/* 在Pagination.svelte中的具体元素 */
+[class*="text-sm"] {
+	font-size: 0.78rem; /* 缩小约 11% */
+}
+
+[class*="text-xs"] {
+	font-size: 0.70rem; /* 缩小约 12% */
+}

@@ -27,19 +27,21 @@
 	const currentYear = today(getLocalTimeZone()).year;
 	const years = Array.from({ length: 111 }, (_, i) => currentYear - 100 + i);
 
+	const weekDays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+	const weekDaysShort = ["日", "一", "二", "三", "四", "五", "六"];
 	const months = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December'
+		'1月',
+		'2月',
+		'3月',
+		'4月',
+		'5月',
+		'6月',
+		'7月',
+		'8月',
+		'9月',
+		'10月',
+		'11月',
+		'12月'
 	];
 </script>
 
@@ -105,11 +107,11 @@
 			<Calendar.Grid class="w-full border-collapse space-y-1">
 				<Calendar.GridHead>
 					<Calendar.GridRow class="flex">
-						{#each weekdays as day}
+						{#each weekdays as day, i}
 							<Calendar.HeadCell
 								class="w-8 rounded-md text-[0.8rem] font-normal text-gray-500 dark:text-gray-400"
 							>
-								{day.slice(0, 2)}
+								{weekDaysShort[i]}
 							</Calendar.HeadCell>
 						{/each}
 					</Calendar.GridRow>

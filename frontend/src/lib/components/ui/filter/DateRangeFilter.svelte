@@ -39,29 +39,29 @@
 		{
 			label: '今天',
 			getRange: () => {
-				const d = todayDate.toString();
+				const d = toDateString(todayDate);
 				return { start: d, end: d };
 			}
 		},
 		{
 			label: '最近7天',
 			getRange: () => ({
-				start: todayDate.subtract({ days: 7 }).toString(),
-				end: todayDate.toString()
+				start: toDateString(todayDate.subtract({ days: 7 })),
+				end: toDateString(todayDate)
 			})
 		},
 		{
 			label: '最近30天',
 			getRange: () => ({
-				start: todayDate.subtract({ days: 30 }).toString(),
-				end: todayDate.toString()
+				start: toDateString(todayDate.subtract({ days: 30 })),
+				end: toDateString(todayDate)
 			})
 		},
 		{
 			label: '本月',
 			getRange: () => ({
-				start: todayDate.set({ day: 1 }).toString(),
-				end: todayDate.toString()
+				start: toDateString(todayDate.set({ day: 1 })),
+				end: toDateString(todayDate)
 			})
 		},
 		{
@@ -70,8 +70,8 @@
 				const lastMonth = todayDate.subtract({ months: 1 });
 				const lastDayOfLastMonth = lastMonth.set({ day: 1 }).add({ months: 1 }).subtract({ days: 1 });
 				return {
-					start: lastMonth.set({ day: 1 }).toString(),
-					end: lastDayOfLastMonth.toString()
+					start: toDateString(lastMonth.set({ day: 1 })),
+					end: toDateString(lastDayOfLastMonth)
 				};
 			}
 		}
@@ -81,19 +81,31 @@
 		if (!startDate && !endDate) return placeholder;
 		if (startDate && endDate) {
 			if (startDate === endDate) return formatDate(startDate);
-			return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+			return `${formatDate(startDate)} ~ ${formatDate(endDate)}`;
 		}
-		if (startDate) return `从 ${formatDate(startDate)}`;
-		return `至 ${formatDate(endDate)}`;
+		if (startDate) return `${formatDate(startDate)} ~ `;
+		return `~ ${formatDate(endDate)}`;
 	});
+
+	/**
+	 * 将日期值转换为 YYYY-MM-DD 格式字符串
+	 * @param {import('@internationalized/date').DateValue | string} dateValue
+	 */
+	function toDateString(dateValue) {
+		if (!dateValue) return '';
+		if (typeof dateValue === 'string') {
+			return dateValue;
+		}
+		return dateValue.toString();
+	}
 
 	/**
 	 * @param {string} dateStr
 	 */
 	function formatDate(dateStr) {
 		if (!dateStr) return '';
-		const date = new Date(dateStr);
-		return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric', year: 'numeric' });
+		// 日期格式已经是 YYYY-MM-DD，直接返回
+		return dateStr;
 	}
 
 	/**
@@ -112,7 +124,7 @@
 	 */
 	function handleDateSelect(dateValue) {
 		if (!dateValue) return;
-		const dateStr = dateValue.toString();
+		const dateStr = toDateString(dateValue);
 
 		if (!selectingEnd) {
 			startDate = dateStr;
@@ -142,52 +154,52 @@
 	const hasValue = $derived(!!startDate || !!endDate);
 </script>
 
-<div class={cn('flex flex-col gap-1', className)}>
+<div class={cn('filter-item', className)}>
 	{#if label}
-		<span class="text-xs font-medium text-muted-foreground">{label}</span>
+		<span class="filter-label">{label}</span>
 	{/if}
-	<Popover.Root bind:open onOpenChange={(o) => { if (!o) selectingEnd = false; }}>
+	<div class="filter-input-wrapper">
+		<Popover.Root bind:open onOpenChange={(o) => { if (!o) selectingEnd = false; }}>
 		<Popover.Trigger asChild class="">
 			{#snippet child({ props })}
 				<button
 					type="button"
 					class={cn(
-						'flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-						hasValue && 'border-primary/50'
+						'relative flex h-9 w-full items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 overflow-hidden',
+						hasValue && 'border-blue-500'
 					)}
+					style="height: 36px; border: 1px solid #d9d9d9 !important; background: #ffffff !important;"
 					{...props}
 				>
-					<div class="flex items-center gap-2">
-						<CalendarDays class="h-4 w-4 text-muted-foreground" />
-						<span class={cn('truncate', !hasValue && 'text-muted-foreground')}>
+					<div class="flex items-center gap-2 flex-1 min-w-0 overflow-hidden pr-8">
+						<CalendarDays class="h-4 w-4 text-muted-foreground flex-shrink-0" />
+						<span class={cn('truncate', !hasValue && 'text-muted-foreground')} style="min-width: 0;">
 							{displayText}
 						</span>
 					</div>
-					<div class="flex items-center gap-1">
-						{#if hasValue}
-							<!-- svelte-ignore node_invalid_placement_ssr -->
-							<span
-								role="button"
-								tabindex="0"
-								onclick={(e) => {
+					{#if hasValue}
+						<!-- svelte-ignore node_invalid_placement_ssr -->
+						<span
+							role="button"
+							tabindex="0"
+							onclick={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+								handleClear();
+							}}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
 									e.stopPropagation();
 									e.preventDefault();
 									handleClear();
-								}}
-								onkeydown={(e) => {
-									if (e.key === 'Enter' || e.key === ' ') {
-										e.stopPropagation();
-										e.preventDefault();
-										handleClear();
-									}
-								}}
-								class="rounded p-0.5 hover:bg-muted cursor-pointer"
-							>
-								<X class="h-3 w-3" />
-							</span>
-						{/if}
-						<ChevronDown class="h-4 w-4 opacity-50" />
-					</div>
+								}
+							}}
+							class="absolute right-8 top-1/2 -translate-y-1/2 rounded-sm p-0.5 hover:bg-muted cursor-pointer flex-shrink-0 z-10"
+						>
+							<X class="h-3 w-3" />
+						</span>
+					{/if}
+					<ChevronDown class="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 opacity-50 flex-shrink-0 z-10" />
 				</button>
 			{/snippet}
 		</Popover.Trigger>
@@ -228,4 +240,5 @@
 			</div>
 		</Popover.Content>
 	</Popover.Root>
+	</div>
 </div>

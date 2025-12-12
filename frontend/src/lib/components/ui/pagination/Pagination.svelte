@@ -63,7 +63,7 @@
 	>
 		<!-- Left side: showing info -->
 		<div class="flex items-center gap-4">
-			<p class="text-sm text-muted-foreground">
+			<p class="pagination-info">
 				显示第 <span class="font-medium text-foreground">{startItem}</span>
 				到 <span class="font-medium text-foreground">{endItem}</span>
 				条，共 <span class="font-medium text-foreground">{total}</span> 条结果
@@ -73,14 +73,14 @@
 		<!-- Right side: limit selector and page navigation -->
 		<div class="flex items-center gap-4">
 			<!-- Rows per page selector -->
-			<div class="flex items-center gap-2">
-				<span class="text-sm text-muted-foreground">每页显示：</span>
+			<div class="pagination-page-size">
+				<span>每页显示：</span>
 				<Popover.Root bind:open={limitPopoverOpen}>
 					<Popover.Trigger asChild class="">
 						{#snippet child({ props })}
 							<button
 								type="button"
-								class="flex h-8 items-center gap-1 rounded-md border border-input bg-background px-2.5 text-sm shadow-xs hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+								class="flex h-7 items-center gap-1 rounded-md border border-input bg-background px-2 text-xs shadow-xs hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 								{...props}
 							>
 								{limit}
@@ -93,7 +93,7 @@
 							<button
 								type="button"
 								class={cn(
-									'relative flex w-full cursor-pointer items-center justify-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent',
+									'relative flex w-full cursor-pointer items-center justify-center rounded-sm px-2 py-1 text-xs outline-none hover:bg-accent',
 									option === limit && 'bg-accent font-medium'
 								)}
 								onclick={() => handleLimitSelect(option)}
@@ -117,7 +117,7 @@
 					<ChevronLeft class="h-4 w-4" />
 				</Button>
 
-				<span class="min-w-[100px] text-center text-sm">
+				<span class="min-w-[100px] text-center pagination-nav-text">
 					第 <span class="font-medium">{page}</span> 页，共 <span class="font-medium"
 						>{totalPages}</span
 					> 页

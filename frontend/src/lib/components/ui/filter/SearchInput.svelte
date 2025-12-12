@@ -7,13 +7,15 @@
 	 *   value?: string,
 	 *   placeholder?: string,
 	 *   class?: string,
+		label?: string,
 	 *   onchange?: (value: string) => void,
 	 *   [key: string]: any
 	 * }}
 	 */
 	let {
 		value = $bindable(''),
-		placeholder = '搜索...',
+		placeholder = "搜索...",
+		label = "",
 		class: className,
 		onchange,
 		...restProps
@@ -67,7 +69,11 @@
 	}
 </script>
 
-<div class={cn('relative', className)} {...restProps}>
+	<div class={cn('filter-item', className)} {...restProps}>
+	{#if label}
+		<span class="filter-label">{label}</span>
+	{/if}
+	<div class="filter-input-wrapper">
 	<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 	<input
 		bind:this={inputEl}
@@ -89,4 +95,5 @@
 			<X class="h-4 w-4" />
 		</button>
 	{/if}
+</div>
 </div>

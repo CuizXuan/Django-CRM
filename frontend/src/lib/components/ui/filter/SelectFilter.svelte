@@ -27,7 +27,7 @@
 		options = [],
 		value = $bindable(''),
 		multiple = false,
-		placeholder = '选择...',
+		placeholder = '请选择...',
 		label = '',
 		allLabel = '全部',
 		class: className,
@@ -85,9 +85,9 @@
 	const hasValue = $derived(multiple ? selectedValues.length > 0 : value && value !== 'ALL');
 </script>
 
-<div class={cn('flex flex-col gap-1', className)}>
+<div class={cn('filter-item', className)}>
 	{#if label}
-		<span class="text-xs font-medium text-muted-foreground">{label}</span>
+		<span class="filter-label">{label}</span>
 	{/if}
 	<Popover.Root bind:open>
 		<Popover.Trigger asChild class="">
@@ -95,39 +95,38 @@
 				<button
 					type="button"
 					class={cn(
-						'flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-						hasValue && 'border-primary/50'
+						'relative flex h-9 w-full items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 overflow-hidden',
+						hasValue && 'border-blue-500'
 					)}
+					style="height: 36px; border: 1px solid #d9d9d9 !important; background: #ffffff !important;"
 					{...props}
 				>
-					<span class={cn('truncate', !hasValue && 'text-muted-foreground')}>
+					<span class={cn('truncate', !hasValue && 'text-muted-foreground')} style="min-width: 0; flex: 1; padding-right: 20px;">
 						{displayText}
 					</span>
-					<div class="flex items-center gap-1">
-						{#if hasValue}
-							<!-- svelte-ignore node_invalid_placement_ssr -->
-							<span
-								role="button"
-								tabindex="0"
-								onclick={(e) => {
+					{#if hasValue}
+						<!-- svelte-ignore node_invalid_placement_ssr -->
+						<span
+							role="button"
+							tabindex="0"
+							onclick={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+								handleClear();
+							}}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
 									e.stopPropagation();
 									e.preventDefault();
 									handleClear();
-								}}
-								onkeydown={(e) => {
-									if (e.key === 'Enter' || e.key === ' ') {
-										e.stopPropagation();
-										e.preventDefault();
-										handleClear();
-									}
-								}}
-								class="rounded p-0.5 hover:bg-muted cursor-pointer"
-							>
-								<X class="h-3 w-3" />
-							</span>
-						{/if}
-						<ChevronDown class="h-4 w-4 opacity-50" />
-					</div>
+								}
+							}}
+							class="absolute right-8 top-1/2 -translate-y-1/2 rounded-sm p-0.5 hover:bg-muted cursor-pointer flex-shrink-0 z-10"
+						>
+							<X class="h-3 w-3" />
+						</span>
+					{/if}
+					<ChevronDown class="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 opacity-50 flex-shrink-0 z-10" />
 				</button>
 			{/snippet}
 		</Popover.Trigger>
@@ -174,7 +173,7 @@
 </div>
 
 {#if multiple && selectedValues.length > 0}
-	<div class="mt-1 flex flex-wrap gap-1">
+	<div class="filter-badges">
 		{#each selectedValues as val}
 			{@const opt = options.find((o) => o.value === val)}
 			<Badge variant="secondary" class="gap-1 text-xs">

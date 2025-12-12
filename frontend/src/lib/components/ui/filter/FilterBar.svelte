@@ -3,6 +3,8 @@
 	import { cn } from '$lib/utils.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import './filter-horizontal-layout.css';
+	import './filter-fixes.css';
 
 	/**
 	 * @type {{
@@ -36,7 +38,7 @@
 {#if minimal}
 	<!-- Minimal mode: just filter content without header/border -->
 	{#if isExpanded}
-		<div class={cn('flex flex-wrap items-end gap-3', className)}>
+		<div class={cn('filter-container', className)}>
 			{@render children?.()}
 			{#if activeCount > 0 && onClear}
 				<Button variant="ghost" size="sm" onclick={onClear} class="h-8 gap-1 px-2 text-xs">
@@ -80,7 +82,7 @@
 		<!-- Filter content -->
 		{#if !collapsible || isExpanded}
 			<div class="border-t px-4 py-3">
-				<div class="flex flex-wrap items-end gap-3">
+				<div class="filter-container">
 					{@render children?.()}
 				</div>
 			</div>
