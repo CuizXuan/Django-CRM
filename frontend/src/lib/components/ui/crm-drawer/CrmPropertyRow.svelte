@@ -54,7 +54,7 @@
 	function getOptionLabel(val) {
 		if (type !== 'select') return val;
 		const opt = options.find((/** @type {any} */ o) => o.value === val);
-		return opt?.label || val || emptyText || 'Select...';
+		return opt?.label || val || emptyText || '请选择...';
 	}
 
 	/**
